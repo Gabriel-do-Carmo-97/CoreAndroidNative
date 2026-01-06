@@ -1,0 +1,96 @@
+name: Android Publish Lib CoreAndroidNative
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build_Test_and_Publish:
+
+    name: Build, Test and Publish
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          lfs: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Detect changed modules
+        id: changed_modules
+        uses: tj-actions/changed-files@v47
+        with:
+          files: |
+            core/**
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: 🤖 Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: ⬆️ Upload Debugs AARs as Artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: debugs-aars
+          path: |
+            ./core/build/outputs/aar/core-debug.aar
+
+      - name: ⬆️ Upload Release AARs as Artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: release-aars
+          path: |
+            ./core/build/outputs/aar/core-release.aar
+
+      - name: 📦 Publish core if changed
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && contains(steps.changed_modules.outputs.all_changed_files, 'core/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew :core:publish
+
+      - name: Configure GitHub Access
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+
+      - name: Create Git Tag
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME="v0.0.${{ github.run_number }}"
+          git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
+          git push origin "$TAG_NAME"
+
+      - name: Create Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME="v0.0.${{ github.run_number }}"
+          gh release create "$TAG_NAME" \
+            --title "Release $TAG_NAME" \
+            --notes "Release automático. Mudanças detectadas em: ${{ steps.changed_modules.outputs.all_changed_files }}." \
+            ./core/build/outputs/aar/core-release.aar \
