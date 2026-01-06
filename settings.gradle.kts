@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "CoreAndroidNative"
 include(":app")
- 
+include(":core")
