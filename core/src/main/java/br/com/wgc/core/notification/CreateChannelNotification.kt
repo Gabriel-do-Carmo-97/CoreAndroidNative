@@ -1,119 +1,86 @@
 package br.com.wgc.core.notification
 
-import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Context.NOTIFICATION_SERVICE
-import android.content.Intent
-import android.content.pm.PackageManager
-import androidx.annotation.DrawableRes
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import br.com.wgc.core.R
-import kotlin.jvm.java
-import kotlin.reflect.KClass
 
-class CreateChannelNotification {
+/**
+ * Classe responsável por criar canais de notificação do Android.
+ *
+ * Utiliza o padrão Builder para simplificar e flexibilizar a criação de canais,
+ * exigindo um Build.VERSION_CODES.O ou superior.
+ */
+class CreateChannelNotification(private val context: Context) {
 
+    private val notificationManager: NotificationManager by lazy {
+        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    }
 
-    fun createChannel(
-        context: Context,
-        channelID: String,
-        name: String,
-        description: String,
-        importance: Int = NotificationManager.IMPORTANCE_DEFAULT,
+    /**
+     * Inicia a construção de um novo canal de notificação.
+     *
+     * @param channelId O ID único para este canal.
+     * @param name O nome do canal que será visível ao usuário nas configurações.
+     */
+    fun with(channelId: String, name: String): Builder {
+        return Builder(channelId, name)
+    }
+
+    inner class Builder(
+        private val channelId: String,
+        private val name: String
     ) {
-        val mChannel = NotificationChannel(channelID, name, importance).apply {
+        // Valores padrão para as configurações do canal
+        private var description: String = ""
+        private var importance: Int = NotificationManager.IMPORTANCE_DEFAULT
+        private var enableLight: Boolean = true
+        private var enableVibration: Boolean = true
+
+        /**
+         * Define a descrição do canal, visível ao usuário nas configurações.
+         */
+        fun withDescription(description: String): Builder {
             this.description = description
+            return this // Retorna a própria instância para encadear chamadas
         }
-        val notificationManager =
-            context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(mChannel)
-    }
 
-    fun createNotification(
-        context: Context,
-        channelID: String,
-        @DrawableRes icon: Int,
-        textTitle: String,
-        textContent: String,
-        priority: Int = NotificationCompat.PRIORITY_DEFAULT,
-    ): NotificationCompat.Builder = NotificationCompat.Builder(context, channelID)
-        .setSmallIcon(icon)
-        .setContentTitle(textTitle)
-        .setContentText(textContent)
-        .setPriority(priority)
-
-
-    fun createLongNotification(
-        context: Context,
-        channelID: String,
-        @DrawableRes icon: Int,
-        textTitle: String,
-        textContent: String,
-        bigText: String,
-        priority: Int = NotificationCompat.PRIORITY_DEFAULT,
-    ): NotificationCompat.Builder = NotificationCompat.Builder(context, channelID)
-        .setSmallIcon(icon)
-        .setContentTitle(textTitle)
-        .setContentText(textContent)
-        .setStyle(
-            NotificationCompat.BigTextStyle()
-                .bigText(bigText)
-        )
-        .setPriority(priority)
-
-    fun createReactUser(
-        context: Context,
-        kClass: KClass<*>,
-        channelID: String,
-        @DrawableRes icon: Int,
-        textTitle: String,
-        textContent: String,
-        priority: Int = NotificationCompat.PRIORITY_DEFAULT,
-    ): NotificationCompat.Builder {
-        val intent = Intent(context, kClass::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        /**
+         * Define a importância do canal. Use as constantes de NotificationManager.
+         * Ex: NotificationManager.IMPORTANCE_HIGH
+         */
+        fun withImportance(importance: Int): Builder {
+            this.importance = importance
+            return this
         }
-        val pendingIntent: PendingIntent =
-            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
-        return NotificationCompat.Builder(context, channelID)
-            .setSmallIcon(icon)
-            .setContentTitle(textTitle)
-            .setContentText(textContent)
-            .setPriority(priority)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-    }
+        /**
+         * Habilita ou desabilita a luz de notificação para este canal.
+         */
+        fun withLight(enabled: Boolean): Builder {
+            this.enableLight = enabled
+            return this
+        }
 
+        /**
+         * Habilita ou desabilita a vibração para este canal.
+         */
+        fun withVibration(enabled: Boolean): Builder {
+            this.enableVibration = enabled
+            return this
+        }
 
-    fun showNotification(
-        context: Context,
-        notificationID: Int,
-        builder: NotificationCompat.Builder,
-    ){
-        with(NotificationManagerCompat.from(context)) {
-            if (ActivityCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // TODO: Consider calling
-                // ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                // public fun onRequestPermissionsResult(requestCode: Int, permissions: Array&lt;out String&gt;,
-                //                                        grantResults: IntArray)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-
-                return@with
+        /**
+         * Constrói e registra o NotificationChannel no sistema.
+         * Este é o passo final da construção.
+         */
+        fun create() {
+            val channel = NotificationChannel(channelId, name, importance).apply {
+                this.description = this@Builder.description
+                this.enableLights(this@Builder.enableLight)
+                this.enableVibration(this@Builder.enableVibration)
+                // Outras configurações (como som) poderiam ser adicionadas aqui
             }
-            notify(notificationID, builder.build())
+            notificationManager.createNotificationChannel(channel)
         }
-
     }
 }
