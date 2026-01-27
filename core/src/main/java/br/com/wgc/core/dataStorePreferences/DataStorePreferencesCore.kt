@@ -24,7 +24,6 @@ class DataStorePreferencesCore @Inject constructor(
 ) {
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = dataStoreName)
 
-
     suspend fun saveString(key: String, value: String) {
         context.dataStore.edit { preferences ->
             val preferencesKey = stringPreferencesKey(key)
