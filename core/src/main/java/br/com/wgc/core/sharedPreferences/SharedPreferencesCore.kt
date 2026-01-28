@@ -2,9 +2,13 @@ package br.com.wgc.core.sharedPreferences
 
 import android.content.Context
 import androidx.core.content.edit
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SharedPreferencesCore(
-    private val context: Context,
+@Singleton
+class SharedPreferencesCore @Inject constructor(
+    @param:ApplicationContext private val context: Context,
     private val sharedPreferencesName: String
 ) {
     private val sharedPreferences = context.getSharedPreferences(

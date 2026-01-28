@@ -3,7 +3,9 @@ package br.com.wgc.coreandroidnative
 import android.app.Application
 import android.app.NotificationManager
 import br.com.wgc.core.notification.CreateChannelNotification
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class CoreAndroidApplication(): Application() {
     override fun onCreate() {
         super.onCreate()
