@@ -22,6 +22,7 @@ dependencies {
     compileOnly(libs.detekt.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
     compileOnly(libs.hilt.gradlePlugin)
+    compileOnly(libs.dokka.gradlePlugin)
 }
 
 gradlePlugin {
@@ -41,6 +42,10 @@ gradlePlugin {
         register("androidPublish") {
             id = "wgc.android.publish"
             implementationClass = "AndroidPublishConventionPlugin"
+        }
+        register("androidDokka") {
+            id = "wgc.android.dokka"
+            implementationClass = "AndroidDokkaConventionPlugin"
         }
     }
 }

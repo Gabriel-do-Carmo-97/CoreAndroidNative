@@ -36,4 +36,8 @@ include(":core-storage")
 include(":core-device")
 include(":core-ui")
 include(":core-network")
+include(":core-database")
+include(":core-location")
+include(":core-camera")
+include(":core-analytics")
 

@@ -5,20 +5,19 @@ plugins {
 }
 
 android {
-    namespace = "br.com.wgc.core"
+    namespace = "br.com.wgc.core.analytics"
 }
 
 dependencies {
     api(project(":core-common"))
     api(project(":core-storage"))
-    api(project(":core-device"))
-    api(project(":core-network"))
-    api(project(":core-ui"))
-    api(project(":core-database"))
-    api(project(":core-location"))
-    api(project(":core-camera"))
-    api(project(":core-analytics"))
 
     implementation(libs.androidx.core.ktx)
+
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.test.core)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
 }
