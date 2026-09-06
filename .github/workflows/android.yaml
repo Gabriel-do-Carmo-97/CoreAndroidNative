@@ -77,43 +77,13 @@ jobs:
             ./core/build/outputs/aar/*-release.aar
             ./core-*/build/outputs/aar/*-release.aar
 
-      # ─── Publicação individual de cada módulo ─────────────────────────────
+      # ─── Publicação dos Módulos ─────────────────────────────────────────────
 
-      - name: 📦 Publish :core-common
+      - name: 📦 Publish all modules to GitHub Packages
         if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :core-common:publish
-
-      - name: 📦 Publish :core-storage
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :core-storage:publish
-
-      - name: 📦 Publish :core-device
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :core-device:publish
-
-      - name: 📦 Publish :core-network
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :core-network:publish
-
-      - name: 📦 Publish :core-ui
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :core-ui:publish
-
-      - name: 📦 Publish :core (guarda-chuva)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :core:publish
+        run: ./gradlew publish
 
       # ─── Tag e Release ─────────────────────────────────────────────────────
 
