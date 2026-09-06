@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="br.com.wgc.core.network.AuthInterceptorTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-09-06T19:33:20.587Z" hostname="DESKTOP-UADTKH3" time="0.051">
-  <properties/>
-  <testcase name="intercept_whenTokenExists_shouldAttachBearerHeader" classname="br.com.wgc.core.network.AuthInterceptorTest" time="0.031"/>
-  <testcase name="intercept_whenTokenIsNull_shouldNotAttachBearerHeader" classname="br.com.wgc.core.network.AuthInterceptorTest" time="0.019"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

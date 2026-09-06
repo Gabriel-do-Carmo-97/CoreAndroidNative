@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="br.com.wgc.core.network.ApiResultTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-09-06T19:33:20.557Z" hostname="DESKTOP-UADTKH3" time="0.015">
-  <properties/>
-  <testcase name="apiResult_success_shouldHoldDataAndStatusCode" classname="br.com.wgc.core.network.ApiResultTest" time="0.008"/>
-  <testcase name="apiResult_failure_shouldHoldTypedNetworkException" classname="br.com.wgc.core.network.ApiResultTest" time="0.006"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

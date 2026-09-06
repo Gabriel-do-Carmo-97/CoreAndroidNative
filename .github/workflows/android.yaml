@@ -30,6 +30,11 @@ jobs:
         with:
           files: |
             core/**
+            core-common/**
+            core-storage/**
+            core-device/**
+            core-network/**
+            core-ui/**
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -61,49 +66,51 @@ jobs:
         with:
           name: debugs-aars
           path: |
-            ./core/**/build/outputs/aar/*-debug.aar
+            ./core/build/outputs/aar/*-debug.aar
+            ./core-*/build/outputs/aar/*-debug.aar
 
       - name: ⬆️ Upload Release AARs as Artifacts
         uses: actions/upload-artifact@v6
         with:
           name: release-aars
           path: |
-            ./core/**/build/outputs/aar/*-release.aar
+            ./core/build/outputs/aar/*-release.aar
+            ./core-*/build/outputs/aar/*-release.aar
 
-      # ─── Publicação individual de cada submódulo ────────────────────────────
+      # ─── Publicação individual de cada módulo ─────────────────────────────
 
-      - name: 📦 Publish :core:common
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && contains(steps.changed_modules.outputs.all_changed_files, 'core/')
+      - name: 📦 Publish :core-common
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :core:common:publish
+        run: ./gradlew :core-common:publish
 
-      - name: 📦 Publish :core:storage
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && contains(steps.changed_modules.outputs.all_changed_files, 'core/')
+      - name: 📦 Publish :core-storage
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :core:storage:publish
+        run: ./gradlew :core-storage:publish
 
-      - name: 📦 Publish :core:device
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && contains(steps.changed_modules.outputs.all_changed_files, 'core/')
+      - name: 📦 Publish :core-device
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :core:device:publish
+        run: ./gradlew :core-device:publish
 
-      - name: 📦 Publish :core:network
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && contains(steps.changed_modules.outputs.all_changed_files, 'core/')
+      - name: 📦 Publish :core-network
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :core:network:publish
+        run: ./gradlew :core-network:publish
 
-      - name: 📦 Publish :core:ui
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && contains(steps.changed_modules.outputs.all_changed_files, 'core/')
+      - name: 📦 Publish :core-ui
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :core:ui:publish
+        run: ./gradlew :core-ui:publish
 
-      - name: 📦 Publish :core (umbrella)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && contains(steps.changed_modules.outputs.all_changed_files, 'core/')
+      - name: 📦 Publish :core (guarda-chuva)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew :core:publish
@@ -144,8 +151,8 @@ jobs:
             - br.com.wgc:core-android-native (guarda-chuva)
             Mudanças detectadas em: ${{ steps.changed_modules.outputs.all_changed_files }}." \
             ./core/build/outputs/aar/core-release.aar \
-            ./core/common/build/outputs/aar/common-release.aar \
-            ./core/storage/build/outputs/aar/storage-release.aar \
-            ./core/device/build/outputs/aar/device-release.aar \
-            ./core/network/build/outputs/aar/network-release.aar \
-            ./core/ui/build/outputs/aar/ui-release.aar
+            ./core-common/build/outputs/aar/core-common-release.aar \
+            ./core-storage/build/outputs/aar/core-storage-release.aar \
+            ./core-device/build/outputs/aar/core-device-release.aar \
+            ./core-network/build/outputs/aar/core-network-release.aar \
+            ./core-ui/build/outputs/aar/core-ui-release.aar

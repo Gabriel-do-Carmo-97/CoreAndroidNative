@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="br.com.wgc.core.device.DefaultHapticFeedbackHelperTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-09-06T19:31:28.589Z" hostname="DESKTOP-UADTKH3" time="0.25">
-  <properties/>
-  <testcase name="hapticFeedback_shouldExecuteWithoutThrowingExceptions" classname="br.com.wgc.core.device.DefaultHapticFeedbackHelperTest" time="0.25"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

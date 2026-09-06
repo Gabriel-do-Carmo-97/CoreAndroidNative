@@ -3,18 +3,15 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.detekt)
     id("maven-publish")
-    id("com.google.devtools.ksp")
-    id("com.google.dagger.hilt.android")
     id("jacoco")
 }
 
 android {
-    namespace = "br.com.wgc.core"
+    namespace = "br.com.wgc.core.device"
     compileSdk = 36
 
     defaultConfig {
         minSdk = 29
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -47,8 +44,6 @@ android {
     }
     lint {
         abortOnError = false
-        checkDependencies = true
-        warningsAsErrors = false
     }
     publishing {
         singleVariant("release") {
@@ -64,28 +59,46 @@ detekt {
     buildUponDefaultConfig = true
 }
 
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn("testDebugUnitTest")
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+    val fileFilter = listOf(
+        "**/R.class", "**/R$*.class", "**/BuildConfig.*", "**/Manifest*.*",
+        "**/*Test*.*", "android/**/*.*"
+    )
+    val debugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    }
+    val mainSrc = "${project.projectDir}/src/main/java"
+    sourceDirectories.setFrom(files(mainSrc))
+    classDirectories.setFrom(files(debugTree))
+    executionData.setFrom(fileTree(layout.buildDirectory.get()) {
+        include("outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
+    })
+}
+
 dependencies {
-    // Submódulos especializados agregados via api para compatibilidade com consumidores de :core
     api(project(":core-common"))
-    api(project(":core-storage"))
-    api(project(":core-device"))
-    api(project(":core-network"))
-    api(project(":core-ui"))
-
-    // Injeção de dependência Hilt para o CoreModule agregador
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
-    implementation(libs.androidx.hilt.navigation.compose)
-
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.hilt.android)
+
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.test.core)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
 }
 
 publishing {
     publications {
         create<MavenPublication>("release") {
             groupId = "br.com.wgc"
-            artifactId = "core-android-native"
+            artifactId = "core-device"
             version = "0.0.${System.getenv("GITHUB_RUN_NUMBER") ?: "0.0.1-SNAPSHOT"}"
 
             afterEvaluate {

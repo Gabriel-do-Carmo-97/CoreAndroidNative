@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="br.com.wgc.core.security.biometric.BiometricAuthHelperTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-09-06T19:41:48.350Z" hostname="DESKTOP-UADTKH3" time="0.009">
-  <properties/>
-  <testcase name="default config should have standard properties" classname="br.com.wgc.core.security.biometric.BiometricAuthHelperTest" time="0.002"/>
-  <testcase name="biometric auth results should represent correct states" classname="br.com.wgc.core.security.biometric.BiometricAuthHelperTest" time="0.003"/>
-  <testcase name="biometric auth status representations" classname="br.com.wgc.core.security.biometric.BiometricAuthHelperTest" time="0.004"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

@@ -9,7 +9,8 @@
 /.idea/assetWizardSettings.xml
 .DS_Store
 .kotlin/
-/build
+build/
+**/build/
 /captures
 .externalNativeBuild
 .cxx

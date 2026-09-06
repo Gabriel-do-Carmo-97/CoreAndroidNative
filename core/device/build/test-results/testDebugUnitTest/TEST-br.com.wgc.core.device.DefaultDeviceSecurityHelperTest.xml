@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="br.com.wgc.core.device.DefaultDeviceSecurityHelperTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-09-06T19:31:27.727Z" hostname="DESKTOP-UADTKH3" time="0.841">
-  <properties/>
-  <testcase name="root detection can be explicitly enabled" classname="br.com.wgc.core.device.DefaultDeviceSecurityHelperTest" time="0.408"/>
-  <testcase name="checkSecurity produces comprehensive diagnostic report" classname="br.com.wgc.core.device.DefaultDeviceSecurityHelperTest" time="0.295"/>
-  <testcase name="root detection should be disabled by default" classname="br.com.wgc.core.device.DefaultDeviceSecurityHelperTest" time="0.138"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
