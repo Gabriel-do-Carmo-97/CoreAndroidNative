@@ -62,7 +62,7 @@ jobs:
         run: ./gradlew build
 
       - name: ⬆️ Upload Debug AARs as Artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: debugs-aars
           path: |
@@ -70,7 +70,7 @@ jobs:
             ./core-*/build/outputs/aar/*-debug.aar
 
       - name: ⬆️ Upload Release AARs as Artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: release-aars
           path: |
