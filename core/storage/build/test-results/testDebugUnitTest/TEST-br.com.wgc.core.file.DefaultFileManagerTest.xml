@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.com.wgc.core.file.DefaultFileManagerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-09-06T19:41:46.177Z" hostname="DESKTOP-UADTKH3" time="2.163">
+  <properties/>
+  <testcase name="getCacheSizeBytes_andClearCache_shouldCalculateAndPurgeFiles" classname="br.com.wgc.core.file.DefaultFileManagerTest" time="2.074"/>
+  <testcase name="deleteFile_shouldDeleteSingleFile" classname="br.com.wgc.core.file.DefaultFileManagerTest" time="0.037"/>
+  <testcase name="createTempFile_shouldCreateFileInCacheDir" classname="br.com.wgc.core.file.DefaultFileManagerTest" time="0.052"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

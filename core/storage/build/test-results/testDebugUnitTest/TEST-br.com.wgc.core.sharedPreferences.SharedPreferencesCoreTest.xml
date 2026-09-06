@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.com.wgc.core.sharedPreferences.SharedPreferencesCoreTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-09-06T19:41:52.435Z" hostname="DESKTOP-UADTKH3" time="1.192">
+  <properties/>
+  <testcase name="saveAndGetLong_returnsSavedValue" classname="br.com.wgc.core.sharedPreferences.SharedPreferencesCoreTest" time="0.299"/>
+  <testcase name="clear_removesAllData" classname="br.com.wgc.core.sharedPreferences.SharedPreferencesCoreTest" time="0.143"/>
+  <testcase name="saveAndGetFloat_returnsSavedValue" classname="br.com.wgc.core.sharedPreferences.SharedPreferencesCoreTest" time="0.137"/>
+  <testcase name="containsAndRemove_worksCorrectly" classname="br.com.wgc.core.sharedPreferences.SharedPreferencesCoreTest" time="0.143"/>
+  <testcase name="saveAndGetStringSet_returnsSavedValue" classname="br.com.wgc.core.sharedPreferences.SharedPreferencesCoreTest" time="0.106"/>
+  <testcase name="saveAndGetInt_returnsSavedValue" classname="br.com.wgc.core.sharedPreferences.SharedPreferencesCoreTest" time="0.13"/>
+  <testcase name="saveAndGetString_returnsSavedValue" classname="br.com.wgc.core.sharedPreferences.SharedPreferencesCoreTest" time="0.124"/>
+  <testcase name="saveAndGetBoolean_returnsSavedValue" classname="br.com.wgc.core.sharedPreferences.SharedPreferencesCoreTest" time="0.11"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

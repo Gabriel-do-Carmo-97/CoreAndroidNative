@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.com.wgc.core.network.NetworkMonitorTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-09-06T19:31:34.676Z" hostname="DESKTOP-UADTKH3" time="1.201">
+  <properties/>
+  <testcase name="isConnectedFlow_emitsInitialState" classname="br.com.wgc.core.network.NetworkMonitorTest" time="1.014"/>
+  <testcase name="isCurrentlyConnected_returnsFalseWhenNoActiveNetwork" classname="br.com.wgc.core.network.NetworkMonitorTest" time="0.092"/>
+  <testcase name="statusFlow_emitsInitialStateWhenDisconnected" classname="br.com.wgc.core.network.NetworkMonitorTest" time="0.094"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

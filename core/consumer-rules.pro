@@ -1,10 +1,16 @@
 # CoreAndroidNative Consumer Proguard Rules
 
-# DataStore
--keep class androidx.datastore.** { *; }
+# Preserve public library APIs and interfaces while allowing R8 tree-shaking
+-keep public class br.com.wgc.core.** {
+    public protected *;
+}
 
-# Security Crypto / EncryptedSharedPreferences
--keep class androidx.security.crypto.** { *; }
+# Preserve DataStore Preferences key reflection and serialization
+-keepclassmembers class * extends androidx.datastore.preferences.core.Preferences {
+    public *;
+}
 
-# Keep Core Library Public APIs
--keep class br.com.wgc.core.** { *; }
+# Preserve Security Crypto components used by EncryptedSharedPreferencesCore
+-keep class androidx.security.crypto.EncryptedSharedPreferences { *; }
+-keep class androidx.security.crypto.MasterKey { *; }
+-keep class androidx.security.crypto.MasterKey$* { *; }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.com.wgc.core.ui.media.DefaultImageCompressorTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-09-06T19:42:00.937Z" hostname="DESKTOP-UADTKH3" time="4.285">
+  <properties/>
+  <testcase name="compressBitmap should scale down bitmap when dimensions exceed max bounds" classname="br.com.wgc.core.ui.media.DefaultImageCompressorTest" time="4.212"/>
+  <testcase name="compressBitmap should return valid byte array for unscaled bitmap" classname="br.com.wgc.core.ui.media.DefaultImageCompressorTest" time="0.073"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[[Robolectric] WARN: Android SDK 36 requires Java 21 (have Java 17). Tests won't be run on SDK 36 unless explicitly requested.
+]]></system-err>
+</testsuite>

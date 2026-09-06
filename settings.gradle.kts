@@ -30,3 +30,9 @@ dependencyResolutionManagement {
 rootProject.name = "CoreAndroidNative"
 include(":app")
 include(":core")
+include(":core:common")
+include(":core:storage")
+include(":core:device")
+include(":core:ui")
+include(":core:network")
+

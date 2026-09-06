@@ -1,17 +1,16 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.detekt)
     id("maven-publish")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("jacoco")
 }
 
 android {
     namespace = "br.com.wgc.core"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 29
@@ -21,6 +20,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -43,49 +45,40 @@ android {
             isIncludeAndroidResources = true
         }
     }
+    lint {
+        abortOnError = false
+        checkDependencies = true
+        warningsAsErrors = false
+    }
     publishing {
-        singleVariant("release")
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
     }
 }
 
+detekt {
+    toolVersion = libs.versions.detekt.get()
+    config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
+    buildUponDefaultConfig = true
+}
+
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    // Submódulos especializados agregados via api para compatibilidade com consumidores de :core
+    api(project(":core:common"))
+    api(project(":core:storage"))
+    api(project(":core:device"))
+    api(project(":core:network"))
+    api(project(":core:ui"))
 
-    // Compose UI
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.foundation)
-    implementation(libs.androidx.compose.runtime)
-
-    // Encrypted Security SharedPreferences
-    implementation(libs.androidx.security.crypto)
-
-    // Testing
-    testImplementation(libs.junit)
-    testImplementation(libs.androidx.test.core)
-    testImplementation(libs.robolectric)
-    testImplementation(libs.turbine)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.mockk)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-
+    // Injeção de dependência Hilt para o CoreModule agregador
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
-
-    // Typed DataStore for custom data objects (for example, using Proto or JSON).
-    implementation(libs.androidx.datastore)
-    // Alternatively - without an Android dependency.
-    implementation(libs.androidx.datastore.core)
-
-    // Preferences DataStore (SharedPreferences like APIs)
-    implementation(libs.androidx.datastore.preferences)
-    // Alternatively - without an Android dependency.
-    implementation(libs.androidx.datastore.preferences.core)
+    implementation(libs.androidx.core.ktx)
+    testImplementation(libs.junit)
 }
 
 publishing {

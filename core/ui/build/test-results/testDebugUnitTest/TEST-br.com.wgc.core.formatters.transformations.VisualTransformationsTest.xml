@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.com.wgc.core.formatters.transformations.VisualTransformationsTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-09-06T19:41:59.037Z" hostname="DESKTOP-UADTKH3" time="0.139">
+  <properties/>
+  <testcase name="cepVisualTransformation_shouldFormatTextAndMapOffsets" classname="br.com.wgc.core.formatters.transformations.VisualTransformationsTest" time="0.131"/>
+  <testcase name="phoneVisualTransformation_shouldFormatMobileAndFixedNumbers" classname="br.com.wgc.core.formatters.transformations.VisualTransformationsTest" time="0.003"/>
+  <testcase name="cpfVisualTransformation_shouldFormatTextAndMapOffsets" classname="br.com.wgc.core.formatters.transformations.VisualTransformationsTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

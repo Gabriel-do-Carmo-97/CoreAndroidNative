@@ -1,0 +1,46 @@
+version: 2
+updates:
+  # Monitoramento e atualização de dependências do Gradle e Version Catalog (libs.versions.toml)
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "gradle"
+    groups:
+      androidx:
+        patterns:
+          - "androidx.*"
+      compose:
+        patterns:
+          - "*compose*"
+      hilt:
+        patterns:
+          - "com.google.dagger:*"
+          - "androidx.hilt:*"
+      testing:
+        patterns:
+          - "junit:*"
+          - "org.junit.*"
+          - "io.mockk:*"
+          - "org.robolectric:*"
+          - "app.cash.turbine:*"
+          - "org.jetbrains.kotlinx:kotlinx-coroutines-test"
+
+  # Monitoramento e atualização das Actions utilizadas no CI/CD (.github/workflows)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"

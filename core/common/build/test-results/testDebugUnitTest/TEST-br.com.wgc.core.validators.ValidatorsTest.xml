@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.com.wgc.core.validators.ValidatorsTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-09-06T19:31:07.170Z" hostname="DESKTOP-UADTKH3" time="0.033">
+  <properties/>
+  <testcase name="isValidCnpj_whenGivenValidCnpj_shouldReturnTrue" classname="br.com.wgc.core.validators.ValidatorsTest" time="0.025"/>
+  <testcase name="isValidPhone_whenGivenInvalidPhone_shouldReturnFalse" classname="br.com.wgc.core.validators.ValidatorsTest" time="0.0"/>
+  <testcase name="isValidCpf_whenGivenValidCpf_shouldReturnTrue" classname="br.com.wgc.core.validators.ValidatorsTest" time="0.001"/>
+  <testcase name="isValidEmail_whenGivenInvalidEmail_shouldReturnFalse" classname="br.com.wgc.core.validators.ValidatorsTest" time="0.001"/>
+  <testcase name="isValidEmail_whenGivenValidEmail_shouldReturnTrue" classname="br.com.wgc.core.validators.ValidatorsTest" time="0.0"/>
+  <testcase name="isValidPhone_whenGivenValidFixedOrMobile_shouldReturnTrue" classname="br.com.wgc.core.validators.ValidatorsTest" time="0.0"/>
+  <testcase name="isValidCep_whenGivenInvalidCep_shouldReturnFalse" classname="br.com.wgc.core.validators.ValidatorsTest" time="0.0"/>
+  <testcase name="isValidCnpj_whenGivenInvalidOrMalformedCnpj_shouldReturnFalse" classname="br.com.wgc.core.validators.ValidatorsTest" time="0.001"/>
+  <testcase name="isValidCpf_whenGivenInvalidOrMalformedCpf_shouldReturnFalse" classname="br.com.wgc.core.validators.ValidatorsTest" time="0.0"/>
+  <testcase name="isValidCep_whenGivenValidCep_shouldReturnTrue" classname="br.com.wgc.core.validators.ValidatorsTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

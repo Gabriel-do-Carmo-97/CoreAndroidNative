@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.com.wgc.core.extensions.ContextExtensionsTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-09-06T19:31:29.666Z" hostname="DESKTOP-UADTKH3" time="4.954">
+  <properties/>
+  <testcase name="hasPermission_returnsFalseWhenNotGranted_andTrueWhenGranted" classname="br.com.wgc.core.extensions.ContextExtensionsTest" time="4.757"/>
+  <testcase name="showToast_displaysToastWithGivenMessage" classname="br.com.wgc.core.extensions.ContextExtensionsTest" time="0.197"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

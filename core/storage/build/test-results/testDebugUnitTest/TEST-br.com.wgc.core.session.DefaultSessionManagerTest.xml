@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.com.wgc.core.session.DefaultSessionManagerTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-09-06T19:41:48.371Z" hostname="DESKTOP-UADTKH3" time="4.012">
+  <properties/>
+  <testcase name="clearSession_whenClearCacheIsTrue_shouldPurgeAllStoragesAndCache" classname="br.com.wgc.core.session.DefaultSessionManagerTest" time="3.973"/>
+  <testcase name="clearSession_whenClearCacheIsFalse_shouldPurgeStoragesWithoutClearingCache" classname="br.com.wgc.core.session.DefaultSessionManagerTest" time="0.038"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

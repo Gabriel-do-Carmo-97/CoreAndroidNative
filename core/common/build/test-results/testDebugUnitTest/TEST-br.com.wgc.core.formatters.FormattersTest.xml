@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.com.wgc.core.formatters.FormattersTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-09-06T19:31:06.524Z" hostname="DESKTOP-UADTKH3" time="0.149">
+  <properties/>
+  <testcase name="formatCpf_shouldMask11DigitsCorrectly" classname="br.com.wgc.core.formatters.FormattersTest" time="0.03"/>
+  <testcase name="toCurrencyFormatted_whenDouble_shouldFormatWithCurrencySymbol" classname="br.com.wgc.core.formatters.FormattersTest" time="0.069"/>
+  <testcase name="formatCnpj_shouldMask14DigitsCorrectly" classname="br.com.wgc.core.formatters.FormattersTest" time="0.014"/>
+  <testcase name="unmask_shouldRemoveNonDigits" classname="br.com.wgc.core.formatters.FormattersTest" time="0.0"/>
+  <testcase name="toCurrencyFormatted_whenBigDecimal_shouldFormatWithCurrencySymbol" classname="br.com.wgc.core.formatters.FormattersTest" time="0.004"/>
+  <testcase name="toFormattedDate_shouldFormatTimestampAccordingToPattern" classname="br.com.wgc.core.formatters.FormattersTest" time="0.016"/>
+  <testcase name="formatCep_shouldMask8DigitsCorrectly" classname="br.com.wgc.core.formatters.FormattersTest" time="0.005"/>
+  <testcase name="formatPhone_shouldFormatFixedAndMobileNumbers" classname="br.com.wgc.core.formatters.FormattersTest" time="0.007"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
