@@ -44,6 +44,9 @@ jobs:
       - name: 🤖 Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: 🧪 Run Unit Tests
+        run: ./gradlew :core:testDebugUnitTest
+
       - name: Build with Gradle
         run: ./gradlew build
 
@@ -93,4 +96,4 @@ jobs:
           gh release create "$TAG_NAME" \
             --title "Release $TAG_NAME" \
             --notes "Release automático. Mudanças detectadas em: ${{ steps.changed_modules.outputs.all_changed_files }}." \
-            ./core/build/outputs/aar/core-release.aar \
+            ./core/build/outputs/aar/core-release.aar
