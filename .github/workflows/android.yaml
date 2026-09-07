@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           lfs: true
@@ -29,29 +29,20 @@ jobs:
         uses: tj-actions/changed-files@v47
         with:
           files: |
-            core/**
-            core-common/**
-            core-storage/**
-            core-device/**
-            core-network/**
-            core-ui/**
-            core-database/**
-            core-location/**
-            core-camera/**
-            core-analytics/**
+            modules/**
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
 
       - name: 🤖 Setup Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
 
       - name: 🔍 Run Detekt Static Analysis
         run: ./gradlew detekt
@@ -66,20 +57,18 @@ jobs:
         run: ./gradlew build
 
       - name: ⬆️ Upload Debug AARs as Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: debugs-aars
           path: |
-            ./core/build/outputs/aar/*-debug.aar
-            ./core-*/build/outputs/aar/*-debug.aar
+            ./modules/*/build/outputs/aar/*-debug.aar
 
       - name: ⬆️ Upload Release AARs as Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-aars
           path: |
-            ./core/build/outputs/aar/*-release.aar
-            ./core-*/build/outputs/aar/*-release.aar
+            ./modules/*/build/outputs/aar/*-release.aar
 
       # ─── Publicação dos Módulos ─────────────────────────────────────────────
 
@@ -128,13 +117,13 @@ jobs:
             - br.com.wgc:core-analytics
             - br.com.wgc:core-android-native (guarda-chuva)
             Mudanças detectadas em: ${{ steps.changed_modules.outputs.all_changed_files }}." \
-            ./core/build/outputs/aar/core-release.aar \
-            ./core-common/build/outputs/aar/core-common-release.aar \
-            ./core-storage/build/outputs/aar/core-storage-release.aar \
-            ./core-device/build/outputs/aar/core-device-release.aar \
-            ./core-network/build/outputs/aar/core-network-release.aar \
-            ./core-ui/build/outputs/aar/core-ui-release.aar \
-            ./core-database/build/outputs/aar/core-database-release.aar \
-            ./core-location/build/outputs/aar/core-location-release.aar \
-            ./core-camera/build/outputs/aar/core-camera-release.aar \
-            ./core-analytics/build/outputs/aar/core-analytics-release.aar
+            ./modules/core/build/outputs/aar/core-release.aar \
+            ./modules/core-common/build/outputs/aar/core-common-release.aar \
+            ./modules/core-storage/build/outputs/aar/core-storage-release.aar \
+            ./modules/core-device/build/outputs/aar/core-device-release.aar \
+            ./modules/core-network/build/outputs/aar/core-network-release.aar \
+            ./modules/core-ui/build/outputs/aar/core-ui-release.aar \
+            ./modules/core-database/build/outputs/aar/core-database-release.aar \
+            ./modules/core-location/build/outputs/aar/core-location-release.aar \
+            ./modules/core-camera/build/outputs/aar/core-camera-release.aar \
+            ./modules/core-analytics/build/outputs/aar/core-analytics-release.aar
