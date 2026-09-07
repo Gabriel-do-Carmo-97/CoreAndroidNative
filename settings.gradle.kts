@@ -30,14 +30,20 @@ dependencyResolutionManagement {
 
 rootProject.name = "CoreAndroidNative"
 include(":app")
-include(":core")
-include(":core-common")
-include(":core-storage")
-include(":core-device")
-include(":core-ui")
-include(":core-network")
-include(":core-database")
-include(":core-location")
-include(":core-camera")
-include(":core-analytics")
 
+fun registerModule(name: String, path: String) {
+    include(":$name")
+    project(":$name").projectDir = file("modules/$path")
+}
+
+// 📦 Core Umbrella & Submódulos organizados dentro de modules/
+registerModule("core", "core")
+registerModule("core-common", "common")
+registerModule("core-storage", "storage")
+registerModule("core-device", "device")
+registerModule("core-network", "network")
+registerModule("core-ui", "ui")
+registerModule("core-database", "database")
+registerModule("core-location", "location")
+registerModule("core-camera", "camera")
+registerModule("core-analytics", "analytics")

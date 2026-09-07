@@ -29,16 +29,7 @@ jobs:
         uses: tj-actions/changed-files@v47
         with:
           files: |
-            core/**
-            core-common/**
-            core-storage/**
-            core-device/**
-            core-network/**
-            core-ui/**
-            core-database/**
-            core-location/**
-            core-camera/**
-            core-analytics/**
+            modules/**
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -70,16 +61,14 @@ jobs:
         with:
           name: debugs-aars
           path: |
-            ./core/build/outputs/aar/*-debug.aar
-            ./core-*/build/outputs/aar/*-debug.aar
+            ./modules/**/build/outputs/aar/*-debug.aar
 
       - name: ⬆️ Upload Release AARs as Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: release-aars
           path: |
-            ./core/build/outputs/aar/*-release.aar
-            ./core-*/build/outputs/aar/*-release.aar
+            ./modules/**/build/outputs/aar/*-release.aar
 
       # ─── Publicação dos Módulos ─────────────────────────────────────────────
 
@@ -128,13 +117,4 @@ jobs:
             - br.com.wgc:core-analytics
             - br.com.wgc:core-android-native (guarda-chuva)
             Mudanças detectadas em: ${{ steps.changed_modules.outputs.all_changed_files }}." \
-            ./core/build/outputs/aar/core-release.aar \
-            ./core-common/build/outputs/aar/core-common-release.aar \
-            ./core-storage/build/outputs/aar/core-storage-release.aar \
-            ./core-device/build/outputs/aar/core-device-release.aar \
-            ./core-network/build/outputs/aar/core-network-release.aar \
-            ./core-ui/build/outputs/aar/core-ui-release.aar \
-            ./core-database/build/outputs/aar/core-database-release.aar \
-            ./core-location/build/outputs/aar/core-location-release.aar \
-            ./core-camera/build/outputs/aar/core-camera-release.aar \
-            ./core-analytics/build/outputs/aar/core-analytics-release.aar
+            ./modules/**/build/outputs/aar/*-release.aar
