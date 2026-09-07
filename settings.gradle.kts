@@ -47,4 +47,14 @@ registerModule("core-location")
 registerModule("core-camera")
 registerModule("core-analytics")
 
+fun registerBundle(name: String) {
+    include(":bundle:$name")
+    project(":bundle:$name").projectDir = file("bundle/$name")
+}
+
+registerBundle("persistence")
+registerBundle("networking")
+registerBundle("presentation")
+registerBundle("hardware")
+
 
