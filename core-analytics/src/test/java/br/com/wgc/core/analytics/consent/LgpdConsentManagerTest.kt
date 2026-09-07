@@ -2,7 +2,7 @@ package br.com.wgc.core.analytics.consent
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import br.com.wgc.core.security.EncryptedSharedPreferencesCore
+import br.com.wgc.core.sharedPreferences.SharedPreferencesCore
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -20,8 +20,8 @@ class LgpdConsentManagerTest {
     @Before
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        val encryptedStorage = EncryptedSharedPreferencesCore(context, "test_consent_${System.currentTimeMillis()}")
-        consentManager = LgpdConsentManager(encryptedStorage)
+        val storage = SharedPreferencesCore(context, "test_consent_${System.currentTimeMillis()}")
+        consentManager = LgpdConsentManager(storage)
     }
 
     @Test

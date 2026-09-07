@@ -4,8 +4,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Update
-import androidx.room.Upsert
 
+@JvmSuppressWildcards
 interface BaseDao<T> {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -19,7 +19,4 @@ interface BaseDao<T> {
 
     @Delete
     suspend fun delete(entity: T): Int
-
-    @Upsert
-    suspend fun upsert(entity: T)
 }

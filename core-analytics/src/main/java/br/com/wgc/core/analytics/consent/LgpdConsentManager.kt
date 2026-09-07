@@ -1,6 +1,6 @@
 package br.com.wgc.core.analytics.consent
 
-import br.com.wgc.core.security.EncryptedSharedPreferencesCore
+import br.com.wgc.core.sharedPreferences.KeyValueStorage
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,14 +13,14 @@ enum class ConsentType {
 
 @Singleton
 class LgpdConsentManager @Inject constructor(
-    private val encryptedStorage: EncryptedSharedPreferencesCore
+    private val storage: KeyValueStorage
 ) {
     fun setConsent(type: ConsentType, granted: Boolean) {
-        encryptedStorage.saveBoolean("consent_${type.name}", granted)
+        storage.saveBoolean("consent_${type.name}", granted)
     }
 
     fun isConsentGranted(type: ConsentType): Boolean {
-        return encryptedStorage.getBoolean("consent_${type.name}", false)
+        return storage.getBoolean("consent_${type.name}", false)
     }
 
     fun revokeAllConsents() {

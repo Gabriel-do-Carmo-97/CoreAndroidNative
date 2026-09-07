@@ -27,6 +27,7 @@ data class TestItemEntity(
 )
 
 @Dao
+@JvmSuppressWildcards
 interface TestItemDao : BaseDao<TestItemEntity> {
     @Query("SELECT * FROM test_items WHERE id = :id")
     suspend fun getById(id: Long): TestItemEntity?

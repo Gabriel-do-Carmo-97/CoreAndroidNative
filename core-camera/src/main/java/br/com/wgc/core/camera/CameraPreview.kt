@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 
 @Composable
 @RequiresPermission(Manifest.permission.CAMERA)
+@Suppress("TooGenericExceptionCaught")
 fun CameraPreview(
     modifier: Modifier = Modifier,
     cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA,

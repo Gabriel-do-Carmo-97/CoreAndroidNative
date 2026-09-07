@@ -8,9 +8,7 @@ plugins {
 
 android {
     namespace = "br.com.wgc.coreandroidnative"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "br.com.wgc.coreandroidnative"
