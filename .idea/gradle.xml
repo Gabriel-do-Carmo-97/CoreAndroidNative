@@ -23,16 +23,16 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/build-logic" />
-            <option value="$PROJECT_DIR$/modules/core" />
-            <option value="$PROJECT_DIR$/modules/core-analytics" />
-            <option value="$PROJECT_DIR$/modules/core-camera" />
-            <option value="$PROJECT_DIR$/modules/core-common" />
-            <option value="$PROJECT_DIR$/modules/core-database" />
-            <option value="$PROJECT_DIR$/modules/core-device" />
-            <option value="$PROJECT_DIR$/modules/core-location" />
-            <option value="$PROJECT_DIR$/modules/core-network" />
-            <option value="$PROJECT_DIR$/modules/core-storage" />
-            <option value="$PROJECT_DIR$/modules/core-ui" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core-analytics" />
+            <option value="$PROJECT_DIR$/core-camera" />
+            <option value="$PROJECT_DIR$/core-common" />
+            <option value="$PROJECT_DIR$/core-database" />
+            <option value="$PROJECT_DIR$/core-device" />
+            <option value="$PROJECT_DIR$/core-location" />
+            <option value="$PROJECT_DIR$/core-network" />
+            <option value="$PROJECT_DIR$/core-storage" />
+            <option value="$PROJECT_DIR$/core-ui" />
           </set>
         </option>
       </GradleProjectSettings>
