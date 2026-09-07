@@ -4,6 +4,17 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/build-logic" name="build-logic">
+                <projects>
+                  <project path="$PROJECT_DIR$/build-logic" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
@@ -11,7 +22,17 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/build-logic" />
+            <option value="$PROJECT_DIR$/modules/core" />
+            <option value="$PROJECT_DIR$/modules/core-analytics" />
+            <option value="$PROJECT_DIR$/modules/core-camera" />
+            <option value="$PROJECT_DIR$/modules/core-common" />
+            <option value="$PROJECT_DIR$/modules/core-database" />
+            <option value="$PROJECT_DIR$/modules/core-device" />
+            <option value="$PROJECT_DIR$/modules/core-location" />
+            <option value="$PROJECT_DIR$/modules/core-network" />
+            <option value="$PROJECT_DIR$/modules/core-storage" />
+            <option value="$PROJECT_DIR$/modules/core-ui" />
           </set>
         </option>
       </GradleProjectSettings>

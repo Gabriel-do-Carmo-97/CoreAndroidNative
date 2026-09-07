@@ -30,14 +30,21 @@ dependencyResolutionManagement {
 
 rootProject.name = "CoreAndroidNative"
 include(":app")
-include(":core")
-include(":core-common")
-include(":core-storage")
-include(":core-device")
-include(":core-ui")
-include(":core-network")
-include(":core-database")
-include(":core-location")
-include(":core-camera")
-include(":core-analytics")
+
+fun registerModule(name: String) {
+    include(":$name")
+    project(":$name").projectDir = file("modules/$name")
+}
+
+registerModule("core")
+registerModule("core-common")
+registerModule("core-storage")
+registerModule("core-device")
+registerModule("core-ui")
+registerModule("core-network")
+registerModule("core-database")
+registerModule("core-location")
+registerModule("core-camera")
+registerModule("core-analytics")
+
 
