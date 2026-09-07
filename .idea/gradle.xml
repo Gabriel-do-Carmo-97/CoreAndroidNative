@@ -23,16 +23,22 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/build-logic" />
-            <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/core-analytics" />
-            <option value="$PROJECT_DIR$/core-camera" />
-            <option value="$PROJECT_DIR$/core-common" />
-            <option value="$PROJECT_DIR$/core-database" />
-            <option value="$PROJECT_DIR$/core-device" />
-            <option value="$PROJECT_DIR$/core-location" />
-            <option value="$PROJECT_DIR$/core-network" />
-            <option value="$PROJECT_DIR$/core-storage" />
-            <option value="$PROJECT_DIR$/core-ui" />
+            <option value="$PROJECT_DIR$/bundle" />
+            <option value="$PROJECT_DIR$/bundle/hardware" />
+            <option value="$PROJECT_DIR$/bundle/networking" />
+            <option value="$PROJECT_DIR$/bundle/persistence" />
+            <option value="$PROJECT_DIR$/bundle/presentation" />
+            <option value="$PROJECT_DIR$/infra" />
+            <option value="$PROJECT_DIR$/infra/core" />
+            <option value="$PROJECT_DIR$/infra/core-analytics" />
+            <option value="$PROJECT_DIR$/infra/core-camera" />
+            <option value="$PROJECT_DIR$/infra/core-common" />
+            <option value="$PROJECT_DIR$/infra/core-database" />
+            <option value="$PROJECT_DIR$/infra/core-device" />
+            <option value="$PROJECT_DIR$/infra/core-location" />
+            <option value="$PROJECT_DIR$/infra/core-network" />
+            <option value="$PROJECT_DIR$/infra/core-storage" />
+            <option value="$PROJECT_DIR$/infra/core-ui" />
           </set>
         </option>
       </GradleProjectSettings>

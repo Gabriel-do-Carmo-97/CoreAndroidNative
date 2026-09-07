@@ -29,7 +29,9 @@ jobs:
         uses: tj-actions/changed-files@v47
         with:
           files: |
-            core*/**
+            infra/**
+            bundle/**
+            app/**
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -61,14 +63,16 @@ jobs:
         with:
           name: debugs-aars
           path: |
-            ./*/build/outputs/aar/*-debug.aar
+            ./infra/*/build/outputs/aar/*-debug.aar
+            ./bundle/*/build/outputs/aar/*-debug.aar
 
       - name: ⬆️ Upload Release AARs as Artifacts
         uses: actions/upload-artifact@v7
         with:
           name: release-aars
           path: |
-            ./*/build/outputs/aar/*-release.aar
+            ./infra/*/build/outputs/aar/*-release.aar
+            ./bundle/*/build/outputs/aar/*-release.aar
 
       # ─── Publicação dos Módulos ─────────────────────────────────────────────
 
@@ -116,14 +120,22 @@ jobs:
             - br.com.wgc:core-camera
             - br.com.wgc:core-analytics
             - br.com.wgc:core-android-native (guarda-chuva)
+            - br.com.wgc:bundle-persistence
+            - br.com.wgc:bundle-networking
+            - br.com.wgc:bundle-presentation
+            - br.com.wgc:bundle-hardware
             Mudanças detectadas em: ${{ steps.changed_modules.outputs.all_changed_files }}." \
-            ./core/build/outputs/aar/core-release.aar \
-            ./core-common/build/outputs/aar/core-common-release.aar \
-            ./core-storage/build/outputs/aar/core-storage-release.aar \
-            ./core-device/build/outputs/aar/core-device-release.aar \
-            ./core-network/build/outputs/aar/core-network-release.aar \
-            ./core-ui/build/outputs/aar/core-ui-release.aar \
-            ./core-database/build/outputs/aar/core-database-release.aar \
-            ./core-location/build/outputs/aar/core-location-release.aar \
-            ./core-camera/build/outputs/aar/core-camera-release.aar \
-            ./core-analytics/build/outputs/aar/core-analytics-release.aar
+            ./infra/core/build/outputs/aar/core-release.aar \
+            ./infra/core-common/build/outputs/aar/core-common-release.aar \
+            ./infra/core-storage/build/outputs/aar/core-storage-release.aar \
+            ./infra/core-device/build/outputs/aar/core-device-release.aar \
+            ./infra/core-network/build/outputs/aar/core-network-release.aar \
+            ./infra/core-ui/build/outputs/aar/core-ui-release.aar \
+            ./infra/core-database/build/outputs/aar/core-database-release.aar \
+            ./infra/core-location/build/outputs/aar/core-location-release.aar \
+            ./infra/core-camera/build/outputs/aar/core-camera-release.aar \
+            ./infra/core-analytics/build/outputs/aar/core-analytics-release.aar \
+            ./bundle/persistence/build/outputs/aar/bundle-persistence-release.aar \
+            ./bundle/networking/build/outputs/aar/bundle-networking-release.aar \
+            ./bundle/presentation/build/outputs/aar/bundle-presentation-release.aar \
+            ./bundle/hardware/build/outputs/aar/bundle-hardware-release.aar
