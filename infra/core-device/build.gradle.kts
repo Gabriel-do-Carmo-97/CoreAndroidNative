@@ -5,14 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "br.com.wgc.core.analytics"
+    namespace = "br.com.wgc.core.device"
 }
 
 dependencies {
-    api(project(":core-common"))
-    api(project(":core-storage"))
-
+    api(project(":infra:core-common"))
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
 
     testImplementation(libs.junit)
     testImplementation(libs.androidx.test.core)

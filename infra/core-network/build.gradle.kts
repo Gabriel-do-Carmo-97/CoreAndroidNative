@@ -5,18 +5,19 @@ plugins {
 }
 
 android {
-    namespace = "br.com.wgc.core.device"
+    namespace = "br.com.wgc.core.network"
 }
 
 dependencies {
-    api(project(":core-common"))
+    api(project(":infra:core-common"))
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
+    api(libs.okhttp)
+    implementation(libs.okhttp.logging)
 
     testImplementation(libs.junit)
     testImplementation(libs.androidx.test.core)
-    testImplementation(libs.robolectric)
     testImplementation(libs.turbine)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk)
+    testImplementation(libs.okhttp.mockwebserver)
 }

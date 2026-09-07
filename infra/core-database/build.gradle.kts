@@ -5,18 +5,21 @@ plugins {
 }
 
 android {
-    namespace = "br.com.wgc.core.location"
+    namespace = "br.com.wgc.core.database"
 }
 
 dependencies {
-    api(project(":core-common"))
-    implementation(libs.play.services.location)
-    implementation(libs.androidx.core.ktx)
+    api(project(":infra:core-common"))
+    api(project(":infra:core-storage"))
+
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.sqlcipher)
 
     testImplementation(libs.junit)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.robolectric)
     testImplementation(libs.turbine)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.mockk)
 }
