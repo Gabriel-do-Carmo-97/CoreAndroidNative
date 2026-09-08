@@ -1,15 +1,93 @@
-name: Android Publish Lib CoreAndroidNative
+name: Android CI/CD Pipeline
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "feature/**" ]
   pull_request:
     branches: [ "master" ]
 
 jobs:
-  build_Test_and_Publish:
+  build:
+    name: 🏗️ Build All Modules (Parallel)
+    runs-on: ubuntu-latest
 
-    name: Build, Test and Publish
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v6
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: 🤖 Setup Android SDK
+        uses: android-actions/setup-android@v4
+
+      - name: Build Debug Variants in Parallel
+        run: ./gradlew assembleDebug --parallel --configure-on-demand --stacktrace
+
+  quality:
+    name: 🔍 Static Analysis (Detekt & Lint)
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v6
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: 🤖 Setup Android SDK
+        uses: android-actions/setup-android@v4
+
+      - name: Run Detekt & Lint
+        run: ./gradlew detekt lintDebug --parallel --stacktrace
+
+  test:
+    name: 🧪 Run Unit Tests (Parallel)
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v6
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: 🤖 Setup Android SDK
+        uses: android-actions/setup-android@v4
+
+      - name: Run Unit Tests in Parallel
+        run: ./gradlew testDebugUnitTest --parallel --stacktrace
+
+  publish:
+    name: 📦 Publish & Release
+    needs: [quality, test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
 
     permissions:
@@ -18,105 +96,63 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           lfs: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Detect changed modules
-        id: changed_modules
-        uses: tj-actions/changed-files@v47
-        with:
-          files: |
-            core/**
-            core-common/**
-            core-storage/**
-            core-device/**
-            core-network/**
-            core-ui/**
-            core-database/**
-            core-location/**
-            core-camera/**
-            core-analytics/**
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
 
       - name: 🤖 Setup Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
 
-      - name: 🔍 Run Detekt Static Analysis
-        run: ./gradlew detekt
-
-      - name: 🔎 Run Android Lint
-        run: ./gradlew lintDebug
-
-      - name: 🧪 Run Unit Tests
-        run: ./gradlew testDebugUnitTest
-
-      - name: Build with Gradle
-        run: ./gradlew build
-
-      - name: ⬆️ Upload Debug AARs as Artifacts
-        uses: actions/upload-artifact@v4
+      - name: Upload Debug AARs as Artifacts
+        uses: actions/upload-artifact@v7
         with:
           name: debugs-aars
           path: |
-            ./core/build/outputs/aar/*-debug.aar
-            ./core-*/build/outputs/aar/*-debug.aar
+            ./infra/*/build/outputs/aar/*-debug.aar
+            ./bundle/*/build/outputs/aar/*-debug.aar
 
-      - name: ⬆️ Upload Release AARs as Artifacts
-        uses: actions/upload-artifact@v4
+      - name: Upload Release AARs as Artifacts
+        uses: actions/upload-artifact@v7
         with:
           name: release-aars
           path: |
-            ./core/build/outputs/aar/*-release.aar
-            ./core-*/build/outputs/aar/*-release.aar
+            ./infra/*/build/outputs/aar/*-release.aar
+            ./bundle/*/build/outputs/aar/*-release.aar
 
-      # ─── Publicação dos Módulos ─────────────────────────────────────────────
-
-      - name: 📦 Publish all modules to GitHub Packages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
+      - name: Publish all modules to GitHub Packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew publish
-
-      # ─── Tag e Release ─────────────────────────────────────────────────────
+        run: ./gradlew publish --parallel
 
       - name: Configure GitHub Access
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
 
-      - name: Create Git Tag
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
+      - name: Create Git Tag & Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG_NAME="v0.0.${{ github.run_number }}"
           git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
           git push origin "$TAG_NAME"
-
-      - name: Create Release
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.changed_modules.outputs.any_changed == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          TAG_NAME="v0.0.${{ github.run_number }}"
+          
           gh release create "$TAG_NAME" \
             --title "Release $TAG_NAME" \
-            --notes "Release automático. Artefatos publicados individualmente:
+            --notes "Release automático da fábrica de software. Artefatos publicados:
             - br.com.wgc:core-common
             - br.com.wgc:core-storage
             - br.com.wgc:core-device
@@ -127,14 +163,21 @@ jobs:
             - br.com.wgc:core-camera
             - br.com.wgc:core-analytics
             - br.com.wgc:core-android-native (guarda-chuva)
-            Mudanças detectadas em: ${{ steps.changed_modules.outputs.all_changed_files }}." \
-            ./core/build/outputs/aar/core-release.aar \
-            ./core-common/build/outputs/aar/core-common-release.aar \
-            ./core-storage/build/outputs/aar/core-storage-release.aar \
-            ./core-device/build/outputs/aar/core-device-release.aar \
-            ./core-network/build/outputs/aar/core-network-release.aar \
-            ./core-ui/build/outputs/aar/core-ui-release.aar \
-            ./core-database/build/outputs/aar/core-database-release.aar \
-            ./core-location/build/outputs/aar/core-location-release.aar \
-            ./core-camera/build/outputs/aar/core-camera-release.aar \
-            ./core-analytics/build/outputs/aar/core-analytics-release.aar
+            - br.com.wgc:bundle-persistence
+            - br.com.wgc:bundle-networking
+            - br.com.wgc:bundle-presentation
+            - br.com.wgc:bundle-hardware" \
+            ./infra/core/build/outputs/aar/core-release.aar \
+            ./infra/core-common/build/outputs/aar/core-common-release.aar \
+            ./infra/core-storage/build/outputs/aar/core-storage-release.aar \
+            ./infra/core-device/build/outputs/aar/core-device-release.aar \
+            ./infra/core-network/build/outputs/aar/core-network-release.aar \
+            ./infra/core-ui/build/outputs/aar/core-ui-release.aar \
+            ./infra/core-database/build/outputs/aar/core-database-release.aar \
+            ./infra/core-location/build/outputs/aar/core-location-release.aar \
+            ./infra/core-camera/build/outputs/aar/core-camera-release.aar \
+            ./infra/core-analytics/build/outputs/aar/core-analytics-release.aar \
+            ./bundle/persistence/build/outputs/aar/bundle-persistence-release.aar \
+            ./bundle/networking/build/outputs/aar/bundle-networking-release.aar \
+            ./bundle/presentation/build/outputs/aar/bundle-presentation-release.aar \
+            ./bundle/hardware/build/outputs/aar/bundle-hardware-release.aar
