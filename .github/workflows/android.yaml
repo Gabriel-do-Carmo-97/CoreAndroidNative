@@ -2,7 +2,7 @@ name: Android Publish Lib CoreAndroidNative
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "feat/**" ]
   pull_request:
     branches: [ "master" ]
 
@@ -11,80 +11,600 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 
 jobs:
-  validate_and_build:
-    name: Validate and Build
+  # ═════════════════════════════════════════════════════════════════════════════
+  # NÍVEL 1: FUNDAÇÃO
+  # ═════════════════════════════════════════════════════════════════════════════
+
+  core-common:
+    name: "infra: core-common"
     runs-on: ubuntu-latest
     permissions:
       contents: read
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          lfs: true
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: gradle
-
-      - name: 🤖 Setup Android SDK
-        uses: android-actions/setup-android@v4
-
-      - name: 🔍 Run Detekt Static Analysis
-        run: ./gradlew detekt
-
-      - name: 🔎 Run Android Lint
-        run: ./gradlew lintDebug
-
-      - name: 🧪 Run Unit Tests
-        run: ./gradlew testDebugUnitTest
-
-      - name: 🔨 Assemble AARs and APKs
-        run: ./gradlew assembleDebug assembleRelease
-
-      - name: 📊 Upload Test & Lint Reports
+        with: { fetch-depth: 0, lfs: true }
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+      - name: 🔍 Detekt, Lint, Testes e Build
+        run: ./gradlew :infra:core-common:detekt :infra:core-common:lintDebug :infra:core-common:testDebugUnitTest :infra:core-common:assembleRelease :infra:core-common:assembleDebug
+      - name: 📊 Upload Reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: verification-reports
+          name: reports-core-common
           path: |
-            **/build/reports/tests/
-            **/build/reports/detekt/
-            **/build/reports/lint-results*.html
+            infra/core-common/build/reports/tests/
+            infra/core-common/build/reports/detekt/
+            infra/core-common/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: ⬆️ Upload Release AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aar-core-common
+          path: infra/core-common/build/outputs/aar/*-release.aar
+          if-no-files-found: error
+      - name: ⬆️ Upload Debug AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-aar-core-common
+          path: infra/core-common/build/outputs/aar/*-debug.aar
           if-no-files-found: ignore
 
-      - name: ⬆️ Upload Debug AARs as Artifacts
+  # ═════════════════════════════════════════════════════════════════════════════
+  # NÍVEL 2: INFRA BÁSICA (Depende de core-common)
+  # ═════════════════════════════════════════════════════════════════════════════
+
+  core-storage:
+    name: "infra: core-storage"
+    needs: [core-common]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0, lfs: true }
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+      - name: 🔍 Detekt, Lint, Testes e Build
+        run: ./gradlew :infra:core-storage:detekt :infra:core-storage:lintDebug :infra:core-storage:testDebugUnitTest :infra:core-storage:assembleRelease :infra:core-storage:assembleDebug
+      - name: 📊 Upload Reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: debug-aars
+          name: reports-core-storage
           path: |
-            ./infra/*/build/outputs/aar/*-debug.aar
-            ./bundle/*/build/outputs/aar/*-debug.aar
-
-      - name: ⬆️ Upload Release AARs as Artifacts
+            infra/core-storage/build/reports/tests/
+            infra/core-storage/build/reports/detekt/
+            infra/core-storage/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: ⬆️ Upload Release AAR
         uses: actions/upload-artifact@v4
         with:
-          name: release-aars
-          path: |
-            ./infra/*/build/outputs/aar/*-release.aar
-            ./bundle/*/build/outputs/aar/*-release.aar
+          name: release-aar-core-storage
+          path: infra/core-storage/build/outputs/aar/*-release.aar
+          if-no-files-found: error
+      - name: ⬆️ Upload Debug AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-aar-core-storage
+          path: infra/core-storage/build/outputs/aar/*-debug.aar
+          if-no-files-found: ignore
 
-  publish_and_release:
-    name: Publish and Release
-    needs: validate_and_build
+  core-device:
+    name: "infra: core-device"
+    needs: [core-common]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0, lfs: true }
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+      - name: 🔍 Detekt, Lint, Testes e Build
+        run: ./gradlew :infra:core-device:detekt :infra:core-device:lintDebug :infra:core-device:testDebugUnitTest :infra:core-device:assembleRelease :infra:core-device:assembleDebug
+      - name: 📊 Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-core-device
+          path: |
+            infra/core-device/build/reports/tests/
+            infra/core-device/build/reports/detekt/
+            infra/core-device/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: ⬆️ Upload Release AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aar-core-device
+          path: infra/core-device/build/outputs/aar/*-release.aar
+          if-no-files-found: error
+      - name: ⬆️ Upload Debug AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-aar-core-device
+          path: infra/core-device/build/outputs/aar/*-debug.aar
+          if-no-files-found: ignore
+
+  core-network:
+    name: "infra: core-network"
+    needs: [core-common]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0, lfs: true }
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+      - name: 🔍 Detekt, Lint, Testes e Build
+        run: ./gradlew :infra:core-network:detekt :infra:core-network:lintDebug :infra:core-network:testDebugUnitTest :infra:core-network:assembleRelease :infra:core-network:assembleDebug
+      - name: 📊 Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-core-network
+          path: |
+            infra/core-network/build/reports/tests/
+            infra/core-network/build/reports/detekt/
+            infra/core-network/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: ⬆️ Upload Release AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aar-core-network
+          path: infra/core-network/build/outputs/aar/*-release.aar
+          if-no-files-found: error
+      - name: ⬆️ Upload Debug AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-aar-core-network
+          path: infra/core-network/build/outputs/aar/*-debug.aar
+          if-no-files-found: ignore
+
+  core-ui:
+    name: "infra: core-ui"
+    needs: [core-common]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0, lfs: true }
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+      - name: 🔍 Detekt, Lint, Testes e Build
+        run: ./gradlew :infra:core-ui:detekt :infra:core-ui:lintDebug :infra:core-ui:testDebugUnitTest :infra:core-ui:assembleRelease :infra:core-ui:assembleDebug
+      - name: 📊 Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-core-ui
+          path: |
+            infra/core-ui/build/reports/tests/
+            infra/core-ui/build/reports/detekt/
+            infra/core-ui/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: ⬆️ Upload Release AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aar-core-ui
+          path: infra/core-ui/build/outputs/aar/*-release.aar
+          if-no-files-found: error
+      - name: ⬆️ Upload Debug AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-aar-core-ui
+          path: infra/core-ui/build/outputs/aar/*-debug.aar
+          if-no-files-found: ignore
+
+  core-location:
+    name: "infra: core-location"
+    needs: [core-common]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0, lfs: true }
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+      - name: 🔍 Detekt, Lint, Testes e Build
+        run: ./gradlew :infra:core-location:detekt :infra:core-location:lintDebug :infra:core-location:testDebugUnitTest :infra:core-location:assembleRelease :infra:core-location:assembleDebug
+      - name: 📊 Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-core-location
+          path: |
+            infra/core-location/build/reports/tests/
+            infra/core-location/build/reports/detekt/
+            infra/core-location/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: ⬆️ Upload Release AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aar-core-location
+          path: infra/core-location/build/outputs/aar/*-release.aar
+          if-no-files-found: error
+      - name: ⬆️ Upload Debug AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-aar-core-location
+          path: infra/core-location/build/outputs/aar/*-debug.aar
+          if-no-files-found: ignore
+
+  core-camera:
+    name: "infra: core-camera"
+    needs: [core-common]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0, lfs: true }
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+      - name: 🔍 Detekt, Lint, Testes e Build
+        run: ./gradlew :infra:core-camera:detekt :infra:core-camera:lintDebug :infra:core-camera:testDebugUnitTest :infra:core-camera:assembleRelease :infra:core-camera:assembleDebug
+      - name: 📊 Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-core-camera
+          path: |
+            infra/core-camera/build/reports/tests/
+            infra/core-camera/build/reports/detekt/
+            infra/core-camera/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: ⬆️ Upload Release AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aar-core-camera
+          path: infra/core-camera/build/outputs/aar/*-release.aar
+          if-no-files-found: error
+      - name: ⬆️ Upload Debug AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-aar-core-camera
+          path: infra/core-camera/build/outputs/aar/*-debug.aar
+          if-no-files-found: ignore
+
+  # ═════════════════════════════════════════════════════════════════════════════
+  # NÍVEL 3: INFRA COMPOSTA (Depende de core-storage)
+  # ═════════════════════════════════════════════════════════════════════════════
+
+  core-database:
+    name: "infra: core-database"
+    needs: [core-common, core-storage]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0, lfs: true }
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+      - name: 🔍 Detekt, Lint, Testes e Build
+        run: ./gradlew :infra:core-database:detekt :infra:core-database:lintDebug :infra:core-database:testDebugUnitTest :infra:core-database:assembleRelease :infra:core-database:assembleDebug
+      - name: 📊 Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-core-database
+          path: |
+            infra/core-database/build/reports/tests/
+            infra/core-database/build/reports/detekt/
+            infra/core-database/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: ⬆️ Upload Release AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aar-core-database
+          path: infra/core-database/build/outputs/aar/*-release.aar
+          if-no-files-found: error
+      - name: ⬆️ Upload Debug AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-aar-core-database
+          path: infra/core-database/build/outputs/aar/*-debug.aar
+          if-no-files-found: ignore
+
+  core-analytics:
+    name: "infra: core-analytics"
+    needs: [core-common, core-storage]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0, lfs: true }
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+      - name: 🔍 Detekt, Lint, Testes e Build
+        run: ./gradlew :infra:core-analytics:detekt :infra:core-analytics:lintDebug :infra:core-analytics:testDebugUnitTest :infra:core-analytics:assembleRelease :infra:core-analytics:assembleDebug
+      - name: 📊 Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-core-analytics
+          path: |
+            infra/core-analytics/build/reports/tests/
+            infra/core-analytics/build/reports/detekt/
+            infra/core-analytics/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: ⬆️ Upload Release AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aar-core-analytics
+          path: infra/core-analytics/build/outputs/aar/*-release.aar
+          if-no-files-found: error
+      - name: ⬆️ Upload Debug AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-aar-core-analytics
+          path: infra/core-analytics/build/outputs/aar/*-debug.aar
+          if-no-files-found: ignore
+
+  # ═════════════════════════════════════════════════════════════════════════════
+  # NÍVEL 4: BUNDLES E GUARDA-CHUVA
+  # ═════════════════════════════════════════════════════════════════════════════
+
+  core-umbrella:
+    name: "infra: core (umbrella)"
+    needs:
+      - core-common
+      - core-storage
+      - core-device
+      - core-network
+      - core-ui
+      - core-location
+      - core-camera
+      - core-database
+      - core-analytics
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0, lfs: true }
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+      - name: 🔍 Detekt, Lint, Testes e Build
+        run: ./gradlew :infra:core:detekt :infra:core:lintDebug :infra:core:testDebugUnitTest :infra:core:assembleRelease :infra:core:assembleDebug
+      - name: 📊 Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-core-umbrella
+          path: |
+            infra/core/build/reports/tests/
+            infra/core/build/reports/detekt/
+            infra/core/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: ⬆️ Upload Release AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aar-core-umbrella
+          path: infra/core/build/outputs/aar/*-release.aar
+          if-no-files-found: error
+      - name: ⬆️ Upload Debug AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-aar-core-umbrella
+          path: infra/core/build/outputs/aar/*-debug.aar
+          if-no-files-found: ignore
+
+  bundle-persistence:
+    name: "bundle: persistence"
+    needs: [core-common, core-storage, core-database]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0, lfs: true }
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+      - name: 🔍 Detekt, Lint, Testes e Build
+        run: ./gradlew :bundle:persistence:detekt :bundle:persistence:lintDebug :bundle:persistence:testDebugUnitTest :bundle:persistence:assembleRelease :bundle:persistence:assembleDebug
+      - name: 📊 Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-bundle-persistence
+          path: |
+            bundle/persistence/build/reports/tests/
+            bundle/persistence/build/reports/detekt/
+            bundle/persistence/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: ⬆️ Upload Release AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aar-bundle-persistence
+          path: bundle/persistence/build/outputs/aar/*-release.aar
+          if-no-files-found: error
+      - name: ⬆️ Upload Debug AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-aar-bundle-persistence
+          path: bundle/persistence/build/outputs/aar/*-debug.aar
+          if-no-files-found: ignore
+
+  bundle-networking:
+    name: "bundle: networking"
+    needs: [core-common, core-device, core-network]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0, lfs: true }
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+      - name: 🔍 Detekt, Lint, Testes e Build
+        run: ./gradlew :bundle:networking:detekt :bundle:networking:lintDebug :bundle:networking:testDebugUnitTest :bundle:networking:assembleRelease :bundle:networking:assembleDebug
+      - name: 📊 Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-bundle-networking
+          path: |
+            bundle/networking/build/reports/tests/
+            bundle/networking/build/reports/detekt/
+            bundle/networking/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: ⬆️ Upload Release AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aar-bundle-networking
+          path: bundle/networking/build/outputs/aar/*-release.aar
+          if-no-files-found: error
+      - name: ⬆️ Upload Debug AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-aar-bundle-networking
+          path: bundle/networking/build/outputs/aar/*-debug.aar
+          if-no-files-found: ignore
+
+  bundle-presentation:
+    name: "bundle: presentation"
+    needs: [core-common, core-device, core-ui, core-camera]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0, lfs: true }
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+      - name: 🔍 Detekt, Lint, Testes e Build
+        run: ./gradlew :bundle:presentation:detekt :bundle:presentation:lintDebug :bundle:presentation:testDebugUnitTest :bundle:presentation:assembleRelease :bundle:presentation:assembleDebug
+      - name: 📊 Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-bundle-presentation
+          path: |
+            bundle/presentation/build/reports/tests/
+            bundle/presentation/build/reports/detekt/
+            bundle/presentation/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: ⬆️ Upload Release AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aar-bundle-presentation
+          path: bundle/presentation/build/outputs/aar/*-release.aar
+          if-no-files-found: error
+      - name: ⬆️ Upload Debug AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-aar-bundle-presentation
+          path: bundle/presentation/build/outputs/aar/*-debug.aar
+          if-no-files-found: ignore
+
+  bundle-hardware:
+    name: "bundle: hardware"
+    needs: [core-common, core-device, core-location]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0, lfs: true }
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+      - name: 🔍 Detekt, Lint, Testes e Build
+        run: ./gradlew :bundle:hardware:detekt :bundle:hardware:lintDebug :bundle:hardware:testDebugUnitTest :bundle:hardware:assembleRelease :bundle:hardware:assembleDebug
+      - name: 📊 Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-bundle-hardware
+          path: |
+            bundle/hardware/build/reports/tests/
+            bundle/hardware/build/reports/detekt/
+            bundle/hardware/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: ⬆️ Upload Release AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aar-bundle-hardware
+          path: bundle/hardware/build/outputs/aar/*-release.aar
+          if-no-files-found: error
+      - name: ⬆️ Upload Debug AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-aar-bundle-hardware
+          path: bundle/hardware/build/outputs/aar/*-debug.aar
+          if-no-files-found: ignore
+
+  # ═════════════════════════════════════════════════════════════════════════════
+  # NÍVEL 5: SAMPLE APP (Validação de Integração Completa)
+  # ═════════════════════════════════════════════════════════════════════════════
+
+  sample-app:
+    name: "app: sample-app"
+    needs: [core-umbrella]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0, lfs: true }
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+      - name: 🔍 Lint, Testes e Build do App
+        run: ./gradlew :app:lintDebug :app:testDebugUnitTest :app:assembleDebug :app:assembleRelease
+      - name: 📊 Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-sample-app
+          path: |
+            app/build/reports/tests/
+            app/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: ⬆️ Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: ignore
+
+  # ═════════════════════════════════════════════════════════════════════════════
+  # NÍVEL 6: PUBLICAÇÃO E RELEASE (Apenas em Push para Master)
+  # ═════════════════════════════════════════════════════════════════════════════
+
+  publish-and-release:
+    name: "🚀 Publish & Release"
+    needs:
+      - bundle-persistence
+      - bundle-networking
+      - bundle-presentation
+      - bundle-hardware
+      - core-umbrella
+      - sample-app
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     permissions:
       contents: write
       packages: write
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -101,23 +621,9 @@ jobs:
             infra/**
             bundle/**
 
-      - name: Grant execute permission for gradlew
+      - name: Setup Android & Java Environment
         if: steps.changed_modules.outputs.any_changed == 'true'
-        run: chmod +x gradlew
-
-      - name: Set up JDK 17
-        if: steps.changed_modules.outputs.any_changed == 'true'
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: gradle
-
-      - name: 🤖 Setup Android SDK
-        if: steps.changed_modules.outputs.any_changed == 'true'
-        uses: android-actions/setup-android@v4
-
-      # ─── Publicação dos Módulos ─────────────────────────────────────────────
+        uses: ./.github/actions/setup-android-env
 
       - name: 📦 Publish all modules to GitHub Packages
         if: steps.changed_modules.outputs.any_changed == 'true'
@@ -125,14 +631,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew publish
 
-      # ─── Tag e Release ─────────────────────────────────────────────────────
-
-      - name: ⬇️ Download Release AARs
+      - name: ⬇️ Download All Release AARs
         if: steps.changed_modules.outputs.any_changed == 'true'
         uses: actions/download-artifact@v4
         with:
-          name: release-aars
-          path: ./downloaded-release-aars
+          pattern: release-aar-*
+          merge-multiple: true
+          path: ./all-release-aars
 
       - name: Configure GitHub Access
         if: steps.changed_modules.outputs.any_changed == 'true'
@@ -157,11 +662,12 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG_NAME="v0.0.${{ github.run_number }}"
-          mapfile -t AAR_FILES < <(find ./downloaded-release-aars -type f -name "*-release.aar")
+          mapfile -t AAR_FILES < <(find ./all-release-aars -type f -name "*-release.aar")
           if [ ${#AAR_FILES[@]} -gt 0 ]; then
             gh release create "$TAG_NAME" \
               --title "Release $TAG_NAME" \
-              --notes "Release automático. Artefatos publicados individualmente no GitHub Packages:
+              --notes "Release automático gerado pela esteira CI/CD.
+              Artefatos publicados individualmente no GitHub Packages:
               - br.com.wgc:core-common
               - br.com.wgc:core-storage
               - br.com.wgc:core-device
