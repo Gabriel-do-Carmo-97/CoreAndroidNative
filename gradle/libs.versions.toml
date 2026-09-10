@@ -30,6 +30,7 @@ camerax = "1.4.1"
 barcodeScanning = "17.3.0"
 dokka = "2.2.0"
 ksp = "2.2.20-2.0.4"
+bcv = "0.17.0"
 
 
 [libraries]
@@ -98,3 +99,4 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 android-library = { id = "com.android.library", version.ref = "agp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "bcv" }
