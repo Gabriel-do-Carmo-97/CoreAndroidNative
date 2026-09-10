@@ -380,8 +380,8 @@ jobs:
         with: { fetch-depth: 0, lfs: true }
       - name: Setup Android & Java Environment
         uses: ./.github/actions/setup-android-env
-      - name: 🔍 Detekt, Lint, Testes e Build
-        run: ./gradlew :infra:core:detekt :infra:core:lintDebug :infra:core:testDebugUnitTest :infra:core:assembleRelease :infra:core:assembleDebug
+      - name: 🔍 Detekt, Lint, Testes, Build e Dokka
+        run: ./gradlew :infra:core:detekt :infra:core:lintDebug :infra:core:testDebugUnitTest :infra:core:assembleRelease :infra:core:assembleDebug dokkaHtml
       - name: 📊 Upload Reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -391,6 +391,13 @@ jobs:
             infra/core/build/reports/tests/
             infra/core/build/reports/detekt/
             infra/core/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: 📚 Upload Dokka Documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: dokka-api-documentation
+          path: |
+            **/build/dokka/html/
           if-no-files-found: ignore
       - name: ⬆️ Upload Release AAR
         uses: actions/upload-artifact@v4

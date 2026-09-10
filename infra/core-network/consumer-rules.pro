@@ -1,8 +1,9 @@
-# Consumer rules for :core:network
--keepattributes Signature
--keepattributes InnerClasses
--keepattributes EnclosingMethod
+# Consumer Proguard rules for :infra:core-network
 
-# Preserve OkHttp internals required for serialization and reflection
+-keepattributes Signature
+-keepattributes *Annotation*
+
+# OkHttp & Okio rules for consumers
 -dontwarn okhttp3.**
 -dontwarn okio.**
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
