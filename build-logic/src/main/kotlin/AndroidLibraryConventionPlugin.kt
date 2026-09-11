@@ -54,6 +54,11 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 testOptions {
                     unitTests {
                         isIncludeAndroidResources = true
+                        all { testTask ->
+                            testTask.systemProperty("robolectric.defaultSdk", "34")
+                            testTask.systemProperty("robolectric.logging", "stdout")
+                            testTask.filter.isFailOnNoMatchingTests = false
+                        }
                     }
                 }
 
@@ -75,6 +80,12 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 compilerOptions {
                     jvmTarget.set(JvmTarget.JVM_11)
                 }
+            }
+
+            tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach {
+                systemProperty("robolectric.defaultSdk", "34")
+                systemProperty("robolectric.logging", "stdout")
+                filter.isFailOnNoMatchingTests = false
             }
         }
     }
