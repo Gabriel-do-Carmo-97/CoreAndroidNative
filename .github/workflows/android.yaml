@@ -595,20 +595,19 @@ jobs:
           if-no-files-found: ignore
 
   # ═════════════════════════════════════════════════════════════════════════════
-  # NÍVEL 6: PUBLICAÇÃO E RELEASE (Apenas em Push para Master)
+  # NÍVEL 6: PUBLICAÇÃO E DEPLOY POR CAMADA (Apenas em Push para Master)
   # ═════════════════════════════════════════════════════════════════════════════
 
-  publish-and-release:
-    name: "🚀 Publish & Release"
+  publish-infra:
+    name: "🚀 Deploy Infra (Atomic Modules)"
     needs:
-      - bundle-persistence
-      - bundle-networking
-      - bundle-presentation
-      - bundle-hardware
       - core-umbrella
       - sample-app
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
+    environment:
+      name: production-infra
+      url: https://github.com/${{ github.repository }}/releases/tag/v0.0.${{ github.run_number }}
     permissions:
       contents: write
       packages: write
@@ -632,19 +631,19 @@ jobs:
         if: steps.changed_modules.outputs.any_changed == 'true'
         uses: ./.github/actions/setup-android-env
 
-      - name: 📦 Publish all modules to GitHub Packages
+      - name: 📦 Publish Infra modules to GitHub Packages
         if: steps.changed_modules.outputs.any_changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew publish
+        run: ./gradlew :infra:core-common:publish :infra:core-storage:publish :infra:core-device:publish :infra:core-network:publish :infra:core-ui:publish :infra:core-database:publish :infra:core-location:publish :infra:core-camera:publish :infra:core-analytics:publish :infra:core:publish
 
-      - name: ⬇️ Download All Release AARs
+      - name: ⬇️ Download Infra Release AARs
         if: steps.changed_modules.outputs.any_changed == 'true'
         uses: actions/download-artifact@v4
         with:
-          pattern: release-aar-*
+          pattern: release-aar-core-*
           merge-multiple: true
-          path: ./all-release-aars
+          path: ./infra-release-aars
 
       - name: Configure GitHub Access
         if: steps.changed_modules.outputs.any_changed == 'true'
@@ -663,18 +662,18 @@ jobs:
           git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
           git push origin "$TAG_NAME"
 
-      - name: Create Release
+      - name: Create Release with Infra Artifacts
         if: steps.changed_modules.outputs.any_changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG_NAME="v0.0.${{ github.run_number }}"
-          mapfile -t AAR_FILES < <(find ./all-release-aars -type f -name "*-release.aar")
+          mapfile -t AAR_FILES < <(find ./infra-release-aars -type f -name "*-release.aar")
           if [ ${#AAR_FILES[@]} -gt 0 ]; then
             gh release create "$TAG_NAME" \
               --title "Release $TAG_NAME" \
               --notes "Release automático gerado pela esteira CI/CD.
-              Artefatos publicados individualmente no GitHub Packages:
+              Artefatos de infraestrutura publicados no GitHub Packages:
               - br.com.wgc:core-common
               - br.com.wgc:core-storage
               - br.com.wgc:core-device
@@ -685,17 +684,74 @@ jobs:
               - br.com.wgc:core-camera
               - br.com.wgc:core-analytics
               - br.com.wgc:core-android-native (guarda-chuva)
-              - br.com.wgc:bundle-persistence
-              - br.com.wgc:bundle-networking
-              - br.com.wgc:bundle-presentation
-              - br.com.wgc:bundle-hardware
               Mudanças detectadas em: ${{ steps.changed_modules.outputs.all_changed_files }}." \
               "${AAR_FILES[@]}"
           else
             gh release create "$TAG_NAME" \
               --title "Release $TAG_NAME" \
-              --notes "Release automático. Módulos publicados no GitHub Packages.
+              --notes "Release automático. Módulos de infraestrutura publicados no GitHub Packages.
               Mudanças detectadas em: ${{ steps.changed_modules.outputs.all_changed_files }}."
+          fi
+
+  publish-bundles:
+    name: "🚀 Deploy Bundles"
+    needs:
+      - publish-infra
+      - bundle-persistence
+      - bundle-networking
+      - bundle-presentation
+      - bundle-hardware
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    environment:
+      name: production-bundles
+      url: https://github.com/${{ github.repository }}/releases/tag/v0.0.${{ github.run_number }}
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Detect changed library modules
+        id: changed_modules
+        uses: tj-actions/changed-files@v47
+        with:
+          files: |
+            infra/**
+            bundle/**
+
+      - name: Setup Android & Java Environment
+        if: steps.changed_modules.outputs.any_changed == 'true'
+        uses: ./.github/actions/setup-android-env
+
+      - name: 📦 Publish Bundles to GitHub Packages
+        if: steps.changed_modules.outputs.any_changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew :bundle:persistence:publish :bundle:networking:publish :bundle:presentation:publish :bundle:hardware:publish
+
+      - name: ⬇️ Download Bundle Release AARs
+        if: steps.changed_modules.outputs.any_changed == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          pattern: release-aar-bundle-*
+          merge-multiple: true
+          path: ./bundle-release-aars
+
+      - name: Attach Bundle AARs to Release
+        if: steps.changed_modules.outputs.any_changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME="v0.0.${{ github.run_number }}"
+          mapfile -t AAR_FILES < <(find ./bundle-release-aars -type f -name "*-release.aar")
+          if [ ${#AAR_FILES[@]} -gt 0 ]; then
+            gh release upload "$TAG_NAME" "${AAR_FILES[@]}" --clobber
           fi
 
   # ═════════════════════════════════════════════════════════════════════════════
@@ -704,7 +760,7 @@ jobs:
 
   deploy-docs:
     name: "🌐 Deploy Dokka Docs to GitHub Pages"
-    needs: [publish-and-release]
+    needs: [publish-bundles]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     permissions:

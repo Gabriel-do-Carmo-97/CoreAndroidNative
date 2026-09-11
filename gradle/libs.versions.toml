@@ -28,7 +28,7 @@ sqlcipher = "4.5.4"
 playServicesLocation = "21.4.0"
 camerax = "1.4.1"
 barcodeScanning = "17.3.0"
-dokka = "2.2.0"
+dokka = "1.9.20"
 ksp = "2.2.20-2.0.4"
 bcv = "0.17.0"
 
