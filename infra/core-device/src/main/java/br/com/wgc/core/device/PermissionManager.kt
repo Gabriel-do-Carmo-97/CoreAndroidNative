@@ -21,7 +21,9 @@ sealed interface PermissionState {
      *
      * @param shouldShowRationale True if UI should display explanatory rationale to the user.
      */
-    data class Denied(val shouldShowRationale: Boolean) : PermissionState
+    data class Denied(
+        val shouldShowRationale: Boolean,
+    ) : PermissionState
 }
 
 /**
@@ -43,7 +45,10 @@ interface PermissionManager {
      * @param permission Manifest permission string.
      * @return [PermissionState] indicating status.
      */
-    fun checkPermissionState(activity: Activity, permission: String): PermissionState
+    fun checkPermissionState(
+        activity: Activity,
+        permission: String,
+    ): PermissionState
 
     /**
      * Directs the user to this application's system App Settings screen to grant revoked permissions.
@@ -57,33 +62,35 @@ interface PermissionManager {
  * @param context Android context used for checking permissions and launching settings.
  */
 class DefaultPermissionManager(
-    private val context: Context
+    private val context: Context,
 ) : PermissionManager {
-
-    override fun isGranted(permission: String): Boolean {
-        return ContextCompat.checkSelfPermission(
+    override fun isGranted(permission: String): Boolean =
+        ContextCompat.checkSelfPermission(
             context,
-            permission
+            permission,
         ) == PackageManager.PERMISSION_GRANTED
-    }
 
-    override fun checkPermissionState(activity: Activity, permission: String): PermissionState {
-        return if (isGranted(permission)) {
+    override fun checkPermissionState(
+        activity: Activity,
+        permission: String,
+    ): PermissionState =
+        if (isGranted(permission)) {
             PermissionState.Granted
         } else {
-            val shouldShowRationale = ActivityCompat.shouldShowRequestPermissionRationale(
-                activity,
-                permission
-            )
+            val shouldShowRationale =
+                ActivityCompat.shouldShowRequestPermissionRationale(
+                    activity,
+                    permission,
+                )
             PermissionState.Denied(shouldShowRationale = shouldShowRationale)
         }
-    }
 
     override fun openAppSettings() {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-            data = Uri.fromParts("package", context.packageName, null)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
+        val intent =
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.fromParts("package", context.packageName, null)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
         context.startActivity(intent)
     }
 }

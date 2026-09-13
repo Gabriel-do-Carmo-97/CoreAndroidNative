@@ -16,13 +16,13 @@ private const val DDD_DIGITS = 2
  * Inclui cálculo adaptativo de [OffsetMapping] para manter o cursor sincronizado durante a digitação.
  */
 class PhoneVisualTransformation : VisualTransformation {
-
     override fun filter(text: AnnotatedString): TransformedText {
-        val trimmed = if (text.text.length > PHONE_MAX_DIGITS) {
-            text.text.substring(0, PHONE_MAX_DIGITS)
-        } else {
-            text.text
-        }
+        val trimmed =
+            if (text.text.length > PHONE_MAX_DIGITS) {
+                text.text.substring(0, PHONE_MAX_DIGITS)
+            } else {
+                text.text
+            }
 
         val isMobile = trimmed.length == PHONE_MOBILE_DIGITS
         val out = StringBuilder()
@@ -37,30 +37,32 @@ class PhoneVisualTransformation : VisualTransformation {
             }
         }
 
-        val offsetMapping = object : OffsetMapping {
-            override fun originalToTransformed(offset: Int): Int {
-                val clampedOffset = offset.coerceAtMost(trimmed.length)
-                val dashIndex = if (isMobile) 7 else 6
-                return when {
-                    clampedOffset <= 0 -> 0
-                    clampedOffset <= DDD_DIGITS -> clampedOffset + 1
-                    clampedOffset <= dashIndex -> clampedOffset + 3
-                    else -> (clampedOffset + 4).coerceAtMost(out.length)
+        val offsetMapping =
+            object : OffsetMapping {
+                override fun originalToTransformed(offset: Int): Int {
+                    val clampedOffset = offset.coerceAtMost(trimmed.length)
+                    val dashIndex = if (isMobile) 7 else 6
+                    return when {
+                        clampedOffset <= 0 -> 0
+                        clampedOffset <= DDD_DIGITS -> clampedOffset + 1
+                        clampedOffset <= dashIndex -> clampedOffset + 3
+                        else -> (clampedOffset + 4).coerceAtMost(out.length)
+                    }
                 }
-            }
 
-            override fun transformedToOriginal(offset: Int): Int {
-                val clampedOffset = offset.coerceAtMost(out.length)
-                val dashTransformedIndex = if (isMobile) 11 else 10
-                val originalOffset = when {
-                    clampedOffset <= 1 -> 0
-                    clampedOffset <= 4 -> clampedOffset - 1
-                    clampedOffset <= dashTransformedIndex -> clampedOffset - 3
-                    else -> clampedOffset - 4
+                override fun transformedToOriginal(offset: Int): Int {
+                    val clampedOffset = offset.coerceAtMost(out.length)
+                    val dashTransformedIndex = if (isMobile) 11 else 10
+                    val originalOffset =
+                        when {
+                            clampedOffset <= 1 -> 0
+                            clampedOffset <= 4 -> clampedOffset - 1
+                            clampedOffset <= dashTransformedIndex -> clampedOffset - 3
+                            else -> clampedOffset - 4
+                        }
+                    return originalOffset.coerceIn(0, trimmed.length)
                 }
-                return originalOffset.coerceIn(0, trimmed.length)
             }
-        }
 
         return TransformedText(AnnotatedString(out.toString()), offsetMapping)
     }

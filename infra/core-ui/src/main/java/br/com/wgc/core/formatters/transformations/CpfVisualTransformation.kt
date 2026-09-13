@@ -26,13 +26,13 @@ private const val CPF_MAX_TRANSFORMED_LENGTH = 14
  * naturais do usuário sem alterar o valor bruto retido no estado subjacente.
  */
 class CpfVisualTransformation : VisualTransformation {
-
     override fun filter(text: AnnotatedString): TransformedText {
-        val trimmed = if (text.text.length > CPF_MAX_ORIGINAL_LENGTH) {
-            text.text.substring(0, CPF_MAX_ORIGINAL_LENGTH)
-        } else {
-            text.text
-        }
+        val trimmed =
+            if (text.text.length > CPF_MAX_ORIGINAL_LENGTH) {
+                text.text.substring(0, CPF_MAX_ORIGINAL_LENGTH)
+            } else {
+                text.text
+            }
 
         val out = StringBuilder()
         for (i in trimmed.indices) {
@@ -44,29 +44,31 @@ class CpfVisualTransformation : VisualTransformation {
             }
         }
 
-        val offsetMapping = object : OffsetMapping {
-            override fun originalToTransformed(offset: Int): Int {
-                val clampedOffset = offset.coerceAtMost(trimmed.length)
-                return when {
-                    clampedOffset <= CPF_FIRST_DOT_ORIGINAL -> clampedOffset
-                    clampedOffset <= CPF_SECOND_DOT_ORIGINAL -> clampedOffset + 1
-                    clampedOffset <= CPF_DASH_ORIGINAL -> clampedOffset + 2
-                    clampedOffset <= CPF_MAX_ORIGINAL_LENGTH -> clampedOffset + 3
-                    else -> CPF_MAX_TRANSFORMED_LENGTH
+        val offsetMapping =
+            object : OffsetMapping {
+                override fun originalToTransformed(offset: Int): Int {
+                    val clampedOffset = offset.coerceAtMost(trimmed.length)
+                    return when {
+                        clampedOffset <= CPF_FIRST_DOT_ORIGINAL -> clampedOffset
+                        clampedOffset <= CPF_SECOND_DOT_ORIGINAL -> clampedOffset + 1
+                        clampedOffset <= CPF_DASH_ORIGINAL -> clampedOffset + 2
+                        clampedOffset <= CPF_MAX_ORIGINAL_LENGTH -> clampedOffset + 3
+                        else -> CPF_MAX_TRANSFORMED_LENGTH
+                    }
                 }
-            }
 
-            override fun transformedToOriginal(offset: Int): Int {
-                val clampedOffset = offset.coerceAtMost(out.length)
-                val originalOffset = when {
-                    clampedOffset <= CPF_FIRST_DOT_TRANSFORMED - 1 -> clampedOffset
-                    clampedOffset <= CPF_SECOND_DOT_TRANSFORMED - 1 -> clampedOffset - 1
-                    clampedOffset <= CPF_DASH_TRANSFORMED - 1 -> clampedOffset - 2
-                    else -> clampedOffset - 3
+                override fun transformedToOriginal(offset: Int): Int {
+                    val clampedOffset = offset.coerceAtMost(out.length)
+                    val originalOffset =
+                        when {
+                            clampedOffset <= CPF_FIRST_DOT_TRANSFORMED - 1 -> clampedOffset
+                            clampedOffset <= CPF_SECOND_DOT_TRANSFORMED - 1 -> clampedOffset - 1
+                            clampedOffset <= CPF_DASH_TRANSFORMED - 1 -> clampedOffset - 2
+                            else -> clampedOffset - 3
+                        }
+                    return originalOffset.coerceIn(0, trimmed.length)
                 }
-                return originalOffset.coerceIn(0, trimmed.length)
             }
-        }
 
         return TransformedText(AnnotatedString(out.toString()), offsetMapping)
     }

@@ -1,0 +1,355 @@
+public final class br/com/wgc/core/dataStorePreferences/DataStorePreferencesCore : br/com/wgc/core/dataStorePreferences/KeyValueDataStore {
+	public static final field Companion Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore$Companion;
+	public static final field DEFAULT_DATASTORE_NAME Ljava/lang/String;
+	public fun <init> (Landroid/content/Context;Ljava/lang/String;)V
+	public synthetic fun <init> (Landroid/content/Context;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun clear (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun contains (Landroidx/datastore/preferences/core/Preferences$Key;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun containsKey (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getBooleanFlow (Ljava/lang/String;Z)Lkotlinx/coroutines/flow/Flow;
+	public fun getFloatFlow (Ljava/lang/String;F)Lkotlinx/coroutines/flow/Flow;
+	public fun getIntFlow (Ljava/lang/String;I)Lkotlinx/coroutines/flow/Flow;
+	public fun getLongFlow (Ljava/lang/String;J)Lkotlinx/coroutines/flow/Flow;
+	public fun getStringFlow (Ljava/lang/String;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public fun getStringSetFlow (Ljava/lang/String;Ljava/util/Set;)Lkotlinx/coroutines/flow/Flow;
+	public fun remove (Landroidx/datastore/preferences/core/Preferences$Key;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun removeKey (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun saveAny (Ljava/lang/String;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun saveBoolean (Ljava/lang/String;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun saveFloat (Ljava/lang/String;FLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun saveInt (Ljava/lang/String;ILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun saveLong (Ljava/lang/String;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun saveString (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun saveStringSet (Ljava/lang/String;Ljava/util/Set;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class br/com/wgc/core/dataStorePreferences/DataStorePreferencesCore$Companion {
+}
+
+public final class br/com/wgc/core/dataStorePreferences/DataStorePreferencesCore_Factory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;)Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore_Factory;
+	public fun get ()Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun newInstance (Landroid/content/Context;Ljava/lang/String;)Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore;
+}
+
+public abstract interface class br/com/wgc/core/dataStorePreferences/KeyValueDataStore {
+	public abstract fun clear (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun contains (Landroidx/datastore/preferences/core/Preferences$Key;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun containsKey (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getBooleanFlow (Ljava/lang/String;Z)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getBooleanFlow$default (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Ljava/lang/String;ZILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getFloatFlow (Ljava/lang/String;F)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getFloatFlow$default (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Ljava/lang/String;FILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getIntFlow (Ljava/lang/String;I)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getIntFlow$default (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Ljava/lang/String;IILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getLongFlow (Ljava/lang/String;J)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getLongFlow$default (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Ljava/lang/String;JILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getStringFlow (Ljava/lang/String;Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getStringFlow$default (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getStringSetFlow (Ljava/lang/String;Ljava/util/Set;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getStringSetFlow$default (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Ljava/lang/String;Ljava/util/Set;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun remove (Landroidx/datastore/preferences/core/Preferences$Key;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun removeKey (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun saveAny (Ljava/lang/String;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun saveBoolean (Ljava/lang/String;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun saveFloat (Ljava/lang/String;FLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun saveInt (Ljava/lang/String;ILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun saveLong (Ljava/lang/String;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun saveString (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun saveStringSet (Ljava/lang/String;Ljava/util/Set;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class br/com/wgc/core/dataStorePreferences/KeyValueDataStore$DefaultImpls {
+	public static synthetic fun getBooleanFlow$default (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Ljava/lang/String;ZILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getFloatFlow$default (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Ljava/lang/String;FILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getIntFlow$default (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Ljava/lang/String;IILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getLongFlow$default (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Ljava/lang/String;JILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getStringFlow$default (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getStringSetFlow$default (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Ljava/lang/String;Ljava/util/Set;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public abstract class br/com/wgc/core/exceptions/StorageException : java/lang/Exception {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class br/com/wgc/core/exceptions/StorageException$EncryptionException : br/com/wgc/core/exceptions/StorageException {
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class br/com/wgc/core/exceptions/StorageException$StorageIOException : br/com/wgc/core/exceptions/StorageException {
+	public fun <init> (Ljava/lang/String;Ljava/io/IOException;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/io/IOException;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class br/com/wgc/core/exceptions/StorageException$UnsupportedTypeException : br/com/wgc/core/exceptions/StorageException {
+	public fun <init> (Ljava/lang/String;)V
+}
+
+public final class br/com/wgc/core/file/DefaultFileManager : br/com/wgc/core/file/FileManager {
+	public fun <init> (Landroid/content/Context;)V
+	public fun clearCache ()Z
+	public fun createTempFile (Ljava/lang/String;Ljava/lang/String;)Ljava/io/File;
+	public fun deleteFile (Ljava/io/File;)Z
+	public fun getCacheSizeBytes ()J
+}
+
+public abstract interface class br/com/wgc/core/file/FileManager {
+	public abstract fun clearCache ()Z
+	public abstract fun createTempFile (Ljava/lang/String;Ljava/lang/String;)Ljava/io/File;
+	public static synthetic fun createTempFile$default (Lbr/com/wgc/core/file/FileManager;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/io/File;
+	public abstract fun deleteFile (Ljava/io/File;)Z
+	public abstract fun getCacheSizeBytes ()J
+}
+
+public final class br/com/wgc/core/file/FileManager$DefaultImpls {
+	public static synthetic fun createTempFile$default (Lbr/com/wgc/core/file/FileManager;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/io/File;
+}
+
+public final class br/com/wgc/core/security/EncryptedSharedPreferencesCore : br/com/wgc/core/sharedPreferences/KeyValueStorage {
+	public static final field Companion Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore$Companion;
+	public static final field DEFAULT_ENCRYPTED_PREFS_FILE Ljava/lang/String;
+	public fun <init> (Landroid/content/Context;Ljava/lang/String;)V
+	public synthetic fun <init> (Landroid/content/Context;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun clear ()V
+	public fun contains (Ljava/lang/String;)Z
+	public fun getAll ()Ljava/util/Map;
+	public fun getBoolean (Ljava/lang/String;Z)Z
+	public fun getFloat (Ljava/lang/String;F)F
+	public fun getInt (Ljava/lang/String;I)I
+	public fun getLong (Ljava/lang/String;J)J
+	public fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public fun getStringSet (Ljava/lang/String;Ljava/util/Set;)Ljava/util/Set;
+	public fun remove (Ljava/lang/String;)V
+	public fun saveBoolean (Ljava/lang/String;Z)V
+	public fun saveFloat (Ljava/lang/String;F)V
+	public fun saveInt (Ljava/lang/String;I)V
+	public fun saveLong (Ljava/lang/String;J)V
+	public fun saveString (Ljava/lang/String;Ljava/lang/String;)V
+	public fun saveStringSet (Ljava/lang/String;Ljava/util/Set;)V
+}
+
+public final class br/com/wgc/core/security/EncryptedSharedPreferencesCore$Companion {
+}
+
+public final class br/com/wgc/core/security/EncryptedSharedPreferencesCore_Factory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;)Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore_Factory;
+	public fun get ()Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun newInstance (Landroid/content/Context;Ljava/lang/String;)Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;
+}
+
+public abstract interface class br/com/wgc/core/security/biometric/BiometricAuthHelper {
+	public abstract fun authenticate (Landroidx/fragment/app/FragmentActivity;Lbr/com/wgc/core/security/biometric/BiometricPromptConfig;Landroidx/biometric/BiometricPrompt$CryptoObject;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun authenticate$default (Lbr/com/wgc/core/security/biometric/BiometricAuthHelper;Landroidx/fragment/app/FragmentActivity;Lbr/com/wgc/core/security/biometric/BiometricPromptConfig;Landroidx/biometric/BiometricPrompt$CryptoObject;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public abstract fun canAuthenticate (I)Lbr/com/wgc/core/security/biometric/BiometricAuthStatus;
+	public static synthetic fun canAuthenticate$default (Lbr/com/wgc/core/security/biometric/BiometricAuthHelper;IILjava/lang/Object;)Lbr/com/wgc/core/security/biometric/BiometricAuthStatus;
+}
+
+public final class br/com/wgc/core/security/biometric/BiometricAuthHelper$DefaultImpls {
+	public static synthetic fun authenticate$default (Lbr/com/wgc/core/security/biometric/BiometricAuthHelper;Landroidx/fragment/app/FragmentActivity;Lbr/com/wgc/core/security/biometric/BiometricPromptConfig;Landroidx/biometric/BiometricPrompt$CryptoObject;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static synthetic fun canAuthenticate$default (Lbr/com/wgc/core/security/biometric/BiometricAuthHelper;IILjava/lang/Object;)Lbr/com/wgc/core/security/biometric/BiometricAuthStatus;
+}
+
+public abstract interface class br/com/wgc/core/security/biometric/BiometricAuthResult {
+}
+
+public final class br/com/wgc/core/security/biometric/BiometricAuthResult$Cancelled : br/com/wgc/core/security/biometric/BiometricAuthResult {
+	public static final field INSTANCE Lbr/com/wgc/core/security/biometric/BiometricAuthResult$Cancelled;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/security/biometric/BiometricAuthResult$Error : br/com/wgc/core/security/biometric/BiometricAuthResult {
+	public fun <init> (ILjava/lang/CharSequence;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/lang/CharSequence;
+	public final fun copy (ILjava/lang/CharSequence;)Lbr/com/wgc/core/security/biometric/BiometricAuthResult$Error;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/security/biometric/BiometricAuthResult$Error;ILjava/lang/CharSequence;ILjava/lang/Object;)Lbr/com/wgc/core/security/biometric/BiometricAuthResult$Error;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getErrorCode ()I
+	public final fun getErrorMessage ()Ljava/lang/CharSequence;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/security/biometric/BiometricAuthResult$Failed : br/com/wgc/core/security/biometric/BiometricAuthResult {
+	public static final field INSTANCE Lbr/com/wgc/core/security/biometric/BiometricAuthResult$Failed;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/security/biometric/BiometricAuthResult$Success : br/com/wgc/core/security/biometric/BiometricAuthResult {
+	public fun <init> ()V
+	public fun <init> (Landroidx/biometric/BiometricPrompt$CryptoObject;)V
+	public synthetic fun <init> (Landroidx/biometric/BiometricPrompt$CryptoObject;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Landroidx/biometric/BiometricPrompt$CryptoObject;
+	public final fun copy (Landroidx/biometric/BiometricPrompt$CryptoObject;)Lbr/com/wgc/core/security/biometric/BiometricAuthResult$Success;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/security/biometric/BiometricAuthResult$Success;Landroidx/biometric/BiometricPrompt$CryptoObject;ILjava/lang/Object;)Lbr/com/wgc/core/security/biometric/BiometricAuthResult$Success;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCryptoObject ()Landroidx/biometric/BiometricPrompt$CryptoObject;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class br/com/wgc/core/security/biometric/BiometricAuthStatus {
+}
+
+public final class br/com/wgc/core/security/biometric/BiometricAuthStatus$HardwareUnavailable : br/com/wgc/core/security/biometric/BiometricAuthStatus {
+	public static final field INSTANCE Lbr/com/wgc/core/security/biometric/BiometricAuthStatus$HardwareUnavailable;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/security/biometric/BiometricAuthStatus$NoneEnrolled : br/com/wgc/core/security/biometric/BiometricAuthStatus {
+	public static final field INSTANCE Lbr/com/wgc/core/security/biometric/BiometricAuthStatus$NoneEnrolled;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/security/biometric/BiometricAuthStatus$NotAvailable : br/com/wgc/core/security/biometric/BiometricAuthStatus {
+	public static final field INSTANCE Lbr/com/wgc/core/security/biometric/BiometricAuthStatus$NotAvailable;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/security/biometric/BiometricAuthStatus$Ready : br/com/wgc/core/security/biometric/BiometricAuthStatus {
+	public static final field INSTANCE Lbr/com/wgc/core/security/biometric/BiometricAuthStatus$Ready;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/security/biometric/BiometricAuthStatus$SecurityUpdateRequired : br/com/wgc/core/security/biometric/BiometricAuthStatus {
+	public static final field INSTANCE Lbr/com/wgc/core/security/biometric/BiometricAuthStatus$SecurityUpdateRequired;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/security/biometric/BiometricAuthStatus$Unknown : br/com/wgc/core/security/biometric/BiometricAuthStatus {
+	public static final field INSTANCE Lbr/com/wgc/core/security/biometric/BiometricAuthStatus$Unknown;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/security/biometric/BiometricPromptConfig {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZI)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Z
+	public final fun component6 ()I
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZI)Lbr/com/wgc/core/security/biometric/BiometricPromptConfig;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/security/biometric/BiometricPromptConfig;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZIILjava/lang/Object;)Lbr/com/wgc/core/security/biometric/BiometricPromptConfig;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAuthenticators ()I
+	public final fun getConfirmationRequired ()Z
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getNegativeButtonText ()Ljava/lang/String;
+	public final fun getSubtitle ()Ljava/lang/String;
+	public final fun getTitle ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/security/biometric/DefaultBiometricAuthHelper : br/com/wgc/core/security/biometric/BiometricAuthHelper {
+	public fun <init> (Landroid/content/Context;)V
+	public fun authenticate (Landroidx/fragment/app/FragmentActivity;Lbr/com/wgc/core/security/biometric/BiometricPromptConfig;Landroidx/biometric/BiometricPrompt$CryptoObject;Lkotlin/jvm/functions/Function1;)V
+	public fun canAuthenticate (I)Lbr/com/wgc/core/security/biometric/BiometricAuthStatus;
+}
+
+public final class br/com/wgc/core/session/DefaultSessionManager : br/com/wgc/core/session/SessionManager {
+	public fun <init> (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/file/FileManager;Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)V
+	public synthetic fun <init> (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/file/FileManager;Lbr/com/wgc/core/coroutines/CoroutineDispatchers;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun clearSession (ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class br/com/wgc/core/session/SessionManager {
+	public abstract fun clearSession (ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun clearSession$default (Lbr/com/wgc/core/session/SessionManager;ZLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class br/com/wgc/core/session/SessionManager$DefaultImpls {
+	public static synthetic fun clearSession$default (Lbr/com/wgc/core/session/SessionManager;ZLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public abstract interface class br/com/wgc/core/sharedPreferences/KeyValueStorage {
+	public abstract fun clear ()V
+	public abstract fun contains (Ljava/lang/String;)Z
+	public abstract fun getAll ()Ljava/util/Map;
+	public abstract fun getBoolean (Ljava/lang/String;Z)Z
+	public static synthetic fun getBoolean$default (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Ljava/lang/String;ZILjava/lang/Object;)Z
+	public abstract fun getFloat (Ljava/lang/String;F)F
+	public static synthetic fun getFloat$default (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Ljava/lang/String;FILjava/lang/Object;)F
+	public abstract fun getInt (Ljava/lang/String;I)I
+	public static synthetic fun getInt$default (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Ljava/lang/String;IILjava/lang/Object;)I
+	public abstract fun getLong (Ljava/lang/String;J)J
+	public static synthetic fun getLong$default (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Ljava/lang/String;JILjava/lang/Object;)J
+	public abstract fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static synthetic fun getString$default (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
+	public abstract fun getStringSet (Ljava/lang/String;Ljava/util/Set;)Ljava/util/Set;
+	public static synthetic fun getStringSet$default (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Ljava/lang/String;Ljava/util/Set;ILjava/lang/Object;)Ljava/util/Set;
+	public abstract fun remove (Ljava/lang/String;)V
+	public abstract fun saveBoolean (Ljava/lang/String;Z)V
+	public abstract fun saveFloat (Ljava/lang/String;F)V
+	public abstract fun saveInt (Ljava/lang/String;I)V
+	public abstract fun saveLong (Ljava/lang/String;J)V
+	public abstract fun saveString (Ljava/lang/String;Ljava/lang/String;)V
+	public abstract fun saveStringSet (Ljava/lang/String;Ljava/util/Set;)V
+}
+
+public final class br/com/wgc/core/sharedPreferences/KeyValueStorage$DefaultImpls {
+	public static synthetic fun getBoolean$default (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Ljava/lang/String;ZILjava/lang/Object;)Z
+	public static synthetic fun getFloat$default (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Ljava/lang/String;FILjava/lang/Object;)F
+	public static synthetic fun getInt$default (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Ljava/lang/String;IILjava/lang/Object;)I
+	public static synthetic fun getLong$default (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Ljava/lang/String;JILjava/lang/Object;)J
+	public static synthetic fun getString$default (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
+	public static synthetic fun getStringSet$default (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Ljava/lang/String;Ljava/util/Set;ILjava/lang/Object;)Ljava/util/Set;
+}
+
+public final class br/com/wgc/core/sharedPreferences/SharedPreferencesCore : br/com/wgc/core/sharedPreferences/KeyValueStorage {
+	public static final field Companion Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore$Companion;
+	public static final field DEFAULT_SHARED_PREFERENCES_NAME Ljava/lang/String;
+	public fun <init> (Landroid/content/Context;Ljava/lang/String;)V
+	public synthetic fun <init> (Landroid/content/Context;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun clear ()V
+	public fun contains (Ljava/lang/String;)Z
+	public fun getAll ()Ljava/util/Map;
+	public fun getBoolean (Ljava/lang/String;Z)Z
+	public fun getFloat (Ljava/lang/String;F)F
+	public fun getInt (Ljava/lang/String;I)I
+	public fun getLong (Ljava/lang/String;J)J
+	public fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public fun getStringSet (Ljava/lang/String;Ljava/util/Set;)Ljava/util/Set;
+	public fun remove (Ljava/lang/String;)V
+	public fun saveBoolean (Ljava/lang/String;Z)V
+	public fun saveFloat (Ljava/lang/String;F)V
+	public fun saveInt (Ljava/lang/String;I)V
+	public fun saveLong (Ljava/lang/String;J)V
+	public fun saveString (Ljava/lang/String;Ljava/lang/String;)V
+	public fun saveStringSet (Ljava/lang/String;Ljava/util/Set;)V
+}
+
+public final class br/com/wgc/core/sharedPreferences/SharedPreferencesCore$Companion {
+}
+
+public final class br/com/wgc/core/sharedPreferences/SharedPreferencesCore_Factory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;)Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore_Factory;
+	public fun get ()Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun newInstance (Landroid/content/Context;Ljava/lang/String;)Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;
+}
+

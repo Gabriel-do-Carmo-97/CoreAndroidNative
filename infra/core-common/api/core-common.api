@@ -1,0 +1,175 @@
+public abstract interface class br/com/wgc/core/analytics/AnalyticsTracker {
+	public abstract fun logEvent (Ljava/lang/String;Ljava/util/Map;)V
+	public static synthetic fun logEvent$default (Lbr/com/wgc/core/analytics/AnalyticsTracker;Ljava/lang/String;Ljava/util/Map;ILjava/lang/Object;)V
+	public abstract fun setUserId (Ljava/lang/String;)V
+	public abstract fun setUserProperty (Ljava/lang/String;Ljava/lang/String;)V
+}
+
+public final class br/com/wgc/core/analytics/AnalyticsTracker$DefaultImpls {
+	public static synthetic fun logEvent$default (Lbr/com/wgc/core/analytics/AnalyticsTracker;Ljava/lang/String;Ljava/util/Map;ILjava/lang/Object;)V
+}
+
+public final class br/com/wgc/core/analytics/CompositeAnalyticsTracker : br/com/wgc/core/analytics/AnalyticsTracker {
+	public static final field Companion Lbr/com/wgc/core/analytics/CompositeAnalyticsTracker$Companion;
+	public fun <init> (Ljava/util/List;Z)V
+	public synthetic fun <init> (Ljava/util/List;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun logEvent (Ljava/lang/String;Ljava/util/Map;)V
+	public final fun maskPii (Ljava/lang/String;)Ljava/lang/String;
+	public fun setUserId (Ljava/lang/String;)V
+	public fun setUserProperty (Ljava/lang/String;Ljava/lang/String;)V
+}
+
+public final class br/com/wgc/core/analytics/CompositeAnalyticsTracker$Companion {
+}
+
+public abstract interface class br/com/wgc/core/coroutines/CoroutineDispatchers {
+	public abstract fun getDefault ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public abstract fun getIo ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public abstract fun getMain ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public abstract fun getUnconfined ()Lkotlinx/coroutines/CoroutineDispatcher;
+}
+
+public final class br/com/wgc/core/coroutines/CoroutineExtensionsKt {
+	public static final fun retryWithBackoff (IJDJLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun retryWithBackoff$default (IJDJLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class br/com/wgc/core/coroutines/DefaultCoroutineDispatchers : br/com/wgc/core/coroutines/CoroutineDispatchers {
+	public fun <init> ()V
+	public fun getDefault ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public fun getIo ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public fun getMain ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public fun getUnconfined ()Lkotlinx/coroutines/CoroutineDispatcher;
+}
+
+public final class br/com/wgc/core/formatters/FormattersKt {
+	public static final fun formatCep (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun formatCnpj (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun formatCpf (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun formatPhone (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun toCurrencyFormatted (DLjava/util/Locale;)Ljava/lang/String;
+	public static final fun toCurrencyFormatted (Ljava/math/BigDecimal;Ljava/util/Locale;)Ljava/lang/String;
+	public static synthetic fun toCurrencyFormatted$default (DLjava/util/Locale;ILjava/lang/Object;)Ljava/lang/String;
+	public static synthetic fun toCurrencyFormatted$default (Ljava/math/BigDecimal;Ljava/util/Locale;ILjava/lang/Object;)Ljava/lang/String;
+	public static final fun toFormattedDate (JLjava/lang/String;Ljava/time/ZoneId;)Ljava/lang/String;
+	public static synthetic fun toFormattedDate$default (JLjava/lang/String;Ljava/time/ZoneId;ILjava/lang/Object;)Ljava/lang/String;
+	public static final fun unmask (Ljava/lang/String;)Ljava/lang/String;
+}
+
+public abstract interface class br/com/wgc/core/logging/CoreLogger {
+	public abstract fun d (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
+	public static synthetic fun d$default (Lbr/com/wgc/core/logging/CoreLogger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;ILjava/lang/Object;)V
+	public abstract fun e (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
+	public static synthetic fun e$default (Lbr/com/wgc/core/logging/CoreLogger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;ILjava/lang/Object;)V
+	public abstract fun i (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
+	public static synthetic fun i$default (Lbr/com/wgc/core/logging/CoreLogger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;ILjava/lang/Object;)V
+	public abstract fun maskPii (Ljava/lang/String;)Ljava/lang/String;
+	public abstract fun v (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
+	public static synthetic fun v$default (Lbr/com/wgc/core/logging/CoreLogger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;ILjava/lang/Object;)V
+	public abstract fun w (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
+	public static synthetic fun w$default (Lbr/com/wgc/core/logging/CoreLogger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;ILjava/lang/Object;)V
+}
+
+public final class br/com/wgc/core/logging/CoreLogger$DefaultImpls {
+	public static synthetic fun d$default (Lbr/com/wgc/core/logging/CoreLogger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;ILjava/lang/Object;)V
+	public static synthetic fun e$default (Lbr/com/wgc/core/logging/CoreLogger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;ILjava/lang/Object;)V
+	public static synthetic fun i$default (Lbr/com/wgc/core/logging/CoreLogger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;ILjava/lang/Object;)V
+	public static synthetic fun v$default (Lbr/com/wgc/core/logging/CoreLogger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;ILjava/lang/Object;)V
+	public static synthetic fun w$default (Lbr/com/wgc/core/logging/CoreLogger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;ILjava/lang/Object;)V
+}
+
+public final class br/com/wgc/core/logging/DefaultCoreLogger : br/com/wgc/core/logging/CoreLogger {
+	public static final field Companion Lbr/com/wgc/core/logging/DefaultCoreLogger$Companion;
+	public fun <init> ()V
+	public fun <init> (Lbr/com/wgc/core/logging/LogLevel;ZLkotlin/jvm/functions/Function4;)V
+	public synthetic fun <init> (Lbr/com/wgc/core/logging/LogLevel;ZLkotlin/jvm/functions/Function4;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun d (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
+	public fun e (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
+	public fun i (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
+	public fun maskPii (Ljava/lang/String;)Ljava/lang/String;
+	public fun v (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
+	public fun w (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
+}
+
+public final class br/com/wgc/core/logging/DefaultCoreLogger$Companion {
+	public final fun defaultAndroidLogWriter (ILjava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
+}
+
+public final class br/com/wgc/core/logging/LogLevel : java/lang/Enum {
+	public static final field DEBUG Lbr/com/wgc/core/logging/LogLevel;
+	public static final field ERROR Lbr/com/wgc/core/logging/LogLevel;
+	public static final field INFO Lbr/com/wgc/core/logging/LogLevel;
+	public static final field NONE Lbr/com/wgc/core/logging/LogLevel;
+	public static final field VERBOSE Lbr/com/wgc/core/logging/LogLevel;
+	public static final field WARN Lbr/com/wgc/core/logging/LogLevel;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getPriority ()I
+	public static fun valueOf (Ljava/lang/String;)Lbr/com/wgc/core/logging/LogLevel;
+	public static fun values ()[Lbr/com/wgc/core/logging/LogLevel;
+}
+
+public abstract interface class br/com/wgc/core/result/ResultState {
+}
+
+public final class br/com/wgc/core/result/ResultState$Error : br/com/wgc/core/result/ResultState {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Throwable;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/Throwable;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Throwable;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/Throwable;Ljava/lang/String;)Lbr/com/wgc/core/result/ResultState$Error;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/result/ResultState$Error;Ljava/lang/Throwable;Ljava/lang/String;ILjava/lang/Object;)Lbr/com/wgc/core/result/ResultState$Error;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Ljava/lang/String;
+	public final fun getThrowable ()Ljava/lang/Throwable;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/result/ResultState$Idle : br/com/wgc/core/result/ResultState {
+	public static final field INSTANCE Lbr/com/wgc/core/result/ResultState$Idle;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/result/ResultState$Loading : br/com/wgc/core/result/ResultState {
+	public static final field INSTANCE Lbr/com/wgc/core/result/ResultState$Loading;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/result/ResultState$Success : br/com/wgc/core/result/ResultState {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lbr/com/wgc/core/result/ResultState$Success;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/result/ResultState$Success;Ljava/lang/Object;ILjava/lang/Object;)Lbr/com/wgc/core/result/ResultState$Success;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getData ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/result/ResultStateKt {
+	public static final fun asResultState (Lkotlinx/coroutines/flow/Flow;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun getOrNull (Lbr/com/wgc/core/result/ResultState;)Ljava/lang/Object;
+	public static final fun isError (Lbr/com/wgc/core/result/ResultState;)Z
+	public static final fun isLoading (Lbr/com/wgc/core/result/ResultState;)Z
+	public static final fun isSuccess (Lbr/com/wgc/core/result/ResultState;)Z
+	public static final fun map (Lbr/com/wgc/core/result/ResultState;Lkotlin/jvm/functions/Function1;)Lbr/com/wgc/core/result/ResultState;
+}
+
+public final class br/com/wgc/core/utils/ConstantsDefault {
+	public static final field EMPTY Ljava/lang/String;
+	public static final field INSTANCE Lbr/com/wgc/core/utils/ConstantsDefault;
+}
+
+public final class br/com/wgc/core/validators/ValidatorsKt {
+	public static final fun isValidCep (Ljava/lang/String;)Z
+	public static final fun isValidCnpj (Ljava/lang/String;)Z
+	public static final fun isValidCpf (Ljava/lang/String;)Z
+	public static final fun isValidEmail (Ljava/lang/String;)Z
+	public static final fun isValidPhone (Ljava/lang/String;)Z
+}
+

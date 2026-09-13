@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
  * @param T Tipo do evento de efeito colateral.
  */
 interface UiEffectChannel<T> {
-
     /**
      * Fluxo frio ([Flow]) observável que emite os efeitos enviados ao canal.
      * Consumidores na UI devem coletar este fluxo utilizando operadores adequados de ciclo de vida.
@@ -47,13 +46,13 @@ interface UiEffectChannel<T> {
  */
 class DefaultUiEffectChannel<T>(
     capacity: Int = Channel.BUFFERED,
-    onBufferOverflow: BufferOverflow = BufferOverflow.SUSPEND
+    onBufferOverflow: BufferOverflow = BufferOverflow.SUSPEND,
 ) : UiEffectChannel<T> {
-
-    private val channel = Channel<T>(
-        capacity = capacity,
-        onBufferOverflow = onBufferOverflow
-    )
+    private val channel =
+        Channel<T>(
+            capacity = capacity,
+            onBufferOverflow = onBufferOverflow,
+        )
 
     override val effects: Flow<T> = channel.receiveAsFlow()
 
@@ -61,7 +60,5 @@ class DefaultUiEffectChannel<T>(
         channel.send(effect)
     }
 
-    override fun trySendEffect(effect: T): Boolean {
-        return channel.trySend(effect).isSuccess
-    }
+    override fun trySendEffect(effect: T): Boolean = channel.trySend(effect).isSuccess
 }

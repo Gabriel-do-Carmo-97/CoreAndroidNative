@@ -26,41 +26,42 @@ import javax.inject.Singleton
  * @property encryptedStorage Instância segura de armazenamento criptografado baseada em hardware.
  */
 @Singleton
-class DatabaseEncrypter @Inject constructor(
-    private val encryptedStorage: EncryptedSharedPreferencesCore
-) {
-
-    /**
-     * Cria e retorna uma [SupportFactory] configurada com a chave criptográfica segura.
-     *
-     * Se uma chave já tiver sido criada para este dispositivo, ela será recuperada; caso contrário,
-     * uma nova chave pseudoaleatória de 256 bits criptograficamente segura será gerada e salva.
-     *
-     * @return Instância de [SupportFactory] pronta para ser passada ao Room `openHelperFactory`.
-     */
-    fun getSupportFactory(): SupportFactory {
-        val passphrase = getOrCreatePassphrase()
-        return SupportFactory(passphrase)
-    }
-
-    /**
-     * Recupera a passphrase existente do armazenamento seguro ou gera uma nova de 256 bits com [SecureRandom].
-     */
-    private fun getOrCreatePassphrase(): ByteArray {
-        val existing = encryptedStorage.getString(KEY_PASSPHRASE)
-        if (existing != null) {
-            return existing.toByteArray(Charsets.UTF_8)
+class DatabaseEncrypter
+    @Inject
+    constructor(
+        private val encryptedStorage: EncryptedSharedPreferencesCore,
+    ) {
+        /**
+         * Cria e retorna uma [SupportFactory] configurada com a chave criptográfica segura.
+         *
+         * Se uma chave já tiver sido criada para este dispositivo, ela será recuperada; caso contrário,
+         * uma nova chave pseudoaleatória de 256 bits criptograficamente segura será gerada e salva.
+         *
+         * @return Instância de [SupportFactory] pronta para ser passada ao Room `openHelperFactory`.
+         */
+        fun getSupportFactory(): SupportFactory {
+            val passphrase = getOrCreatePassphrase()
+            return SupportFactory(passphrase)
         }
 
-        val randomBytes = ByteArray(32)
-        SecureRandom().nextBytes(randomBytes)
-        val newPassphrase = Base64.encodeToString(randomBytes, Base64.NO_WRAP)
-        encryptedStorage.saveString(KEY_PASSPHRASE, newPassphrase)
-        return newPassphrase.toByteArray(Charsets.UTF_8)
-    }
+        /**
+         * Recupera a passphrase existente do armazenamento seguro ou gera uma nova de 256 bits com [SecureRandom].
+         */
+        private fun getOrCreatePassphrase(): ByteArray {
+            val existing = encryptedStorage.getString(KEY_PASSPHRASE)
+            if (existing != null) {
+                return existing.toByteArray(Charsets.UTF_8)
+            }
 
-    companion object {
-        /** Chave utilizada no armazenamento seguro para salvar a passphrase do banco. */
-        private const val KEY_PASSPHRASE = "wgc_db_passphrase"
+            val randomBytes = ByteArray(32)
+            SecureRandom().nextBytes(randomBytes)
+            val newPassphrase = Base64.encodeToString(randomBytes, Base64.NO_WRAP)
+            encryptedStorage.saveString(KEY_PASSPHRASE, newPassphrase)
+            return newPassphrase.toByteArray(Charsets.UTF_8)
+        }
+
+        companion object {
+            /** Chave utilizada no armazenamento seguro para salvar a passphrase do banco. */
+            private const val KEY_PASSPHRASE = "wgc_db_passphrase"
+        }
     }
-}

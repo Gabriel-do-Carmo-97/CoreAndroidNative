@@ -11,18 +11,15 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object HardwareInitializer {
-
     @Provides
     @Singleton
     fun provideHardwareFacade(
-        @ApplicationContext context: Context
-    ): HardwareFacade {
-        return HardwareFacade(context)
-    }
+        @ApplicationContext context: Context,
+    ): HardwareFacade = HardwareFacade(context)
 }
 
 class HardwareFacade(
-    private val context: Context
+    private val context: Context,
 ) {
     fun getStatus(): String = "Hardware Bundle initialized successfully for package ${context.packageName}"
 }

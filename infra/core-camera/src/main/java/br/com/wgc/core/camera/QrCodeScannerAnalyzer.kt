@@ -36,9 +36,8 @@ import kotlinx.coroutines.flow.asSharedFlow
  * ```
  */
 class QrCodeScannerAnalyzer(
-    private val scanner: BarcodeScanner = BarcodeScanning.getClient()
+    private val scanner: BarcodeScanner = BarcodeScanning.getClient(),
 ) : ImageAnalysis.Analyzer {
-
     private val _scannedCodes = MutableSharedFlow<String>(extraBufferCapacity = 1)
 
     /**
@@ -51,7 +50,8 @@ class QrCodeScannerAnalyzer(
         val mediaImage = imageProxy.image
         if (mediaImage != null) {
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-            scanner.process(image)
+            scanner
+                .process(image)
                 .addOnSuccessListener { barcodes ->
                     for (barcode in barcodes) {
                         if (barcode.format == Barcode.FORMAT_QR_CODE || barcode.valueType == Barcode.TYPE_TEXT) {
@@ -60,8 +60,7 @@ class QrCodeScannerAnalyzer(
                             }
                         }
                     }
-                }
-                .addOnCompleteListener {
+                }.addOnCompleteListener {
                     imageProxy.close()
                 }
         } else {

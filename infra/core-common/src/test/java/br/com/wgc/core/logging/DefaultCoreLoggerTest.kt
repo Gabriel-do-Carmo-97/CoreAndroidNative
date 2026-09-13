@@ -5,23 +5,23 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class DefaultCoreLoggerTest {
-
     private data class LogEntry(
         val priority: Int,
         val tag: String,
         val message: String,
-        val throwable: Throwable?
+        val throwable: Throwable?,
     )
 
     @Test
     fun log_whenLevelIsBelowMinLevel_shouldNotEmitLog() {
         val emittedLogs = mutableListOf<LogEntry>()
-        val logger = DefaultCoreLogger(
-            minLogLevel = LogLevel.INFO,
-            logWriter = { priority, tag, msg, throwable ->
-                emittedLogs.add(LogEntry(priority, tag, msg, throwable))
-            }
-        )
+        val logger =
+            DefaultCoreLogger(
+                minLogLevel = LogLevel.INFO,
+                logWriter = { priority, tag, msg, throwable ->
+                    emittedLogs.add(LogEntry(priority, tag, msg, throwable))
+                },
+            )
 
         logger.v("TAG", "Verbose log")
         logger.d("TAG", "Debug log")
@@ -32,12 +32,13 @@ class DefaultCoreLoggerTest {
     @Test
     fun log_whenLevelIsAtOrAboveMinLevel_shouldEmitLog() {
         val emittedLogs = mutableListOf<LogEntry>()
-        val logger = DefaultCoreLogger(
-            minLogLevel = LogLevel.INFO,
-            logWriter = { priority, tag, msg, throwable ->
-                emittedLogs.add(LogEntry(priority, tag, msg, throwable))
-            }
-        )
+        val logger =
+            DefaultCoreLogger(
+                minLogLevel = LogLevel.INFO,
+                logWriter = { priority, tag, msg, throwable ->
+                    emittedLogs.add(LogEntry(priority, tag, msg, throwable))
+                },
+            )
 
         logger.i("TAG", "Info log")
         logger.w("TAG", "Warn log")
@@ -52,13 +53,14 @@ class DefaultCoreLoggerTest {
     @Test
     fun maskPii_shouldMaskCpfCreditCardAndBearerToken() {
         val emittedLogs = mutableListOf<LogEntry>()
-        val logger = DefaultCoreLogger(
-            minLogLevel = LogLevel.DEBUG,
-            enablePiiMasking = true,
-            logWriter = { priority, tag, msg, throwable ->
-                emittedLogs.add(LogEntry(priority, tag, msg, throwable))
-            }
-        )
+        val logger =
+            DefaultCoreLogger(
+                minLogLevel = LogLevel.DEBUG,
+                enablePiiMasking = true,
+                logWriter = { priority, tag, msg, throwable ->
+                    emittedLogs.add(LogEntry(priority, tag, msg, throwable))
+                },
+            )
 
         logger.d("AUTH", "User with CPF 123.456.789-01 logged in with Bearer token_secret_12345")
         logger.d("PAYMENT", "Charged card 4111 2222 3333 4444")
@@ -70,10 +72,11 @@ class DefaultCoreLoggerTest {
 
     @Test
     fun maskPii_whenDisabled_shouldNotAlterMessage() {
-        val logger = DefaultCoreLogger(
-            minLogLevel = LogLevel.DEBUG,
-            enablePiiMasking = false
-        )
+        val logger =
+            DefaultCoreLogger(
+                minLogLevel = LogLevel.DEBUG,
+                enablePiiMasking = false,
+            )
         val rawMessage = "User 123.456.789-01"
         assertEquals(rawMessage, logger.maskPii(rawMessage))
     }

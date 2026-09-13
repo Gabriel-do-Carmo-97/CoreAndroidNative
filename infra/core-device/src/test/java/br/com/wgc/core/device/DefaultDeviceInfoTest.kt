@@ -13,7 +13,6 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [33])
 class DefaultDeviceInfoTest {
-
     private lateinit var context: Context
     private lateinit var deviceInfo: DefaultDeviceInfo
 

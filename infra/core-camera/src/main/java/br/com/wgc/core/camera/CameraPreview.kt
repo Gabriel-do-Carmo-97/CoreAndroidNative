@@ -43,7 +43,7 @@ import androidx.core.content.ContextCompat
 fun CameraPreview(
     modifier: Modifier = Modifier,
     cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA,
-    onPreviewViewCreated: (PreviewView) -> Unit = {}
+    onPreviewViewCreated: (PreviewView) -> Unit = {},
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -56,16 +56,17 @@ fun CameraPreview(
             val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
             cameraProviderFuture.addListener({
                 val cameraProvider = cameraProviderFuture.get()
-                val preview = Preview.Builder().build().also {
-                    it.surfaceProvider = previewView.surfaceProvider
-                }
+                val preview =
+                    Preview.Builder().build().also {
+                        it.surfaceProvider = previewView.surfaceProvider
+                    }
 
                 try {
                     cameraProvider.unbindAll()
                     cameraProvider.bindToLifecycle(
                         lifecycleOwner,
                         cameraSelector,
-                        preview
+                        preview,
                     )
                 } catch (_: Exception) {
                 }
@@ -73,6 +74,6 @@ fun CameraPreview(
 
             previewView
         },
-        modifier = modifier
+        modifier = modifier,
     )
 }

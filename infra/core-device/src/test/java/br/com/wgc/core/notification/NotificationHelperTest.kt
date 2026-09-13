@@ -14,7 +14,6 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [33])
 class NotificationHelperTest {
-
     private lateinit var context: Context
     private lateinit var notificationManager: NotificationManager
     private lateinit var notificationHelper: NotificationHelper
@@ -31,18 +30,22 @@ class NotificationHelperTest {
         val appName = "TestApp"
         notificationHelper.createNotificationChannelsDefault(appName)
 
-        val urgentChannel = notificationManager.getNotificationChannel(
-            "${NotificationHelper.URGENT_CHANNEL_ID}-$appName"
-        )
-        val defaultChannel = notificationManager.getNotificationChannel(
-            "${NotificationHelper.DEFAULT_CHANNEL_ID}-$appName"
-        )
-        val lowChannel = notificationManager.getNotificationChannel(
-            "${NotificationHelper.LOW_PRIORITY_CHANNEL_ID}-$appName"
-        )
-        val downloadChannel = notificationManager.getNotificationChannel(
-            "${NotificationHelper.DOWNLOAD_CHANNEL_ID}-$appName"
-        )
+        val urgentChannel =
+            notificationManager.getNotificationChannel(
+                "${NotificationHelper.URGENT_CHANNEL_ID}-$appName",
+            )
+        val defaultChannel =
+            notificationManager.getNotificationChannel(
+                "${NotificationHelper.DEFAULT_CHANNEL_ID}-$appName",
+            )
+        val lowChannel =
+            notificationManager.getNotificationChannel(
+                "${NotificationHelper.LOW_PRIORITY_CHANNEL_ID}-$appName",
+            )
+        val downloadChannel =
+            notificationManager.getNotificationChannel(
+                "${NotificationHelper.DOWNLOAD_CHANNEL_ID}-$appName",
+            )
 
         assertNotNull(urgentChannel)
         assertEquals(NotificationManager.IMPORTANCE_HIGH, urgentChannel.importance)
@@ -59,11 +62,12 @@ class NotificationHelperTest {
 
     @Test
     fun createNotification_buildsValidNotification() {
-        val notification = CreateNotification(context)
-            .with(channelId = "test_channel", textTitle = "Título Teste")
-            .withContent(android.R.drawable.ic_dialog_info, "Conteúdo da notificação")
-            .autoCancel(true)
-            .build()
+        val notification =
+            CreateNotification(context)
+                .with(channelId = "test_channel", textTitle = "Título Teste")
+                .withContent(android.R.drawable.ic_dialog_info, "Conteúdo da notificação")
+                .autoCancel(true)
+                .build()
 
         assertNotNull(notification)
         assertEquals("test_channel", notification.channelId)

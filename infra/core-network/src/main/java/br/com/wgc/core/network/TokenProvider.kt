@@ -4,7 +4,6 @@ package br.com.wgc.core.network
  * Contrato corporativo para obtenção e renovação automática de tokens de autenticação (OAuth2 / JWT).
  */
 interface TokenProvider {
-
     /**
      * Retorna o token de acesso atual retido em armazenamento seguro.
      *

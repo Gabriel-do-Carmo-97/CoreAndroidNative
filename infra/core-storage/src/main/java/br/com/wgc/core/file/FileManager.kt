@@ -8,7 +8,6 @@ import java.io.IOException
  * Contrato corporativo para operações de gerenciamento de arquivos temporários e manutenção do cache local da aplicação.
  */
 interface FileManager {
-
     /**
      * Cria um arquivo temporário no diretório de cache da aplicação.
      *
@@ -18,7 +17,10 @@ interface FileManager {
      * @throws IOException Caso ocorra falha de I/O na criação do arquivo.
      */
     @Throws(IOException::class)
-    fun createTempFile(prefix: String = "temp_", suffix: String = ".tmp"): File
+    fun createTempFile(
+        prefix: String = "temp_",
+        suffix: String = ".tmp",
+    ): File
 
     /**
      * Calcula o volume total em bytes consumido pelo cache interno e externo da aplicação.
@@ -48,9 +50,13 @@ interface FileManager {
  *
  * @property context Contexto da aplicação utilizado para localizar os diretórios de cache.
  */
-class DefaultFileManager(private val context: Context) : FileManager {
-
-    override fun createTempFile(prefix: String, suffix: String): File {
+class DefaultFileManager(
+    private val context: Context,
+) : FileManager {
+    override fun createTempFile(
+        prefix: String,
+        suffix: String,
+    ): File {
         val cacheDirectory = context.cacheDir
         if (!cacheDirectory.exists()) {
             cacheDirectory.mkdirs()
@@ -74,24 +80,24 @@ class DefaultFileManager(private val context: Context) : FileManager {
         return success
     }
 
-    override fun deleteFile(file: File): Boolean {
-        return if (file.isDirectory) {
+    override fun deleteFile(file: File): Boolean =
+        if (file.isDirectory) {
             file.deleteRecursively()
         } else {
             file.delete()
         }
-    }
 
     private fun calculateDirectorySize(directory: File?): Long {
         if (directory == null || !directory.exists()) return 0L
         var length = 0L
         val files = directory.listFiles() ?: return 0L
         for (file in files) {
-            length += if (file.isFile) {
-                file.length()
-            } else {
-                calculateDirectorySize(file)
-            }
+            length +=
+                if (file.isFile) {
+                    file.length()
+                } else {
+                    calculateDirectorySize(file)
+                }
         }
         return length
     }

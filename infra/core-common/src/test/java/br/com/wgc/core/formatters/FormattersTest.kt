@@ -8,7 +8,6 @@ import java.time.ZoneId
 import java.util.Locale
 
 class FormattersTest {
-
     @Test
     fun unmask_shouldRemoveNonDigits() {
         assertEquals("12345678901", "123.456.789-01".unmask())

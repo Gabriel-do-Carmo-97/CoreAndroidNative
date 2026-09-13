@@ -18,20 +18,24 @@ import kotlin.reflect.KClass
  * Utiliza o padrão Builder para permitir a criação passo a passo
  * de diferentes tipos de notificações (Padrão, BigText, BigPicture, Progress, etc.).
  */
-class CreateNotification(private val context: Context) {
-
+class CreateNotification(
+    private val context: Context,
+) {
     /**
      * Inicia a construção de uma nova notificação.
      *
      * @param channelId O ID do canal de notificação onde ela será exibida.
      * @param textTitle O título principal da notificação.
      */
-    fun with(channelId: String, textTitle: String): Builder {
-        return Builder(channelId, textTitle)
-    }
+    fun with(
+        channelId: String,
+        textTitle: String,
+    ): Builder = Builder(channelId, textTitle)
 
-    inner class Builder(channelId: String, textTitle: String) {
-
+    inner class Builder(
+        channelId: String,
+        textTitle: String,
+    ) {
         private val notificationBuilder: NotificationCompat.Builder =
             NotificationCompat.Builder(context, channelId).setContentTitle(textTitle)
 
@@ -41,8 +45,12 @@ class CreateNotification(private val context: Context) {
          * @param icon O ícone pequeno que aparece na barra de status.
          * @param textContent O texto principal do corpo da notificação.
          */
-        fun withContent(@DrawableRes icon: Int, textContent: String): Builder {
-            notificationBuilder.setSmallIcon(icon)
+        fun withContent(
+            @DrawableRes icon: Int,
+            textContent: String,
+        ): Builder {
+            notificationBuilder
+                .setSmallIcon(icon)
                 .setContentText(textContent)
             return this
         }
@@ -87,12 +95,14 @@ class CreateNotification(private val context: Context) {
             imageTitle: String? = null,
             imageDescription: String? = null,
         ): Builder {
-            notificationBuilder.setLargeIcon(largeImage)
+            notificationBuilder
+                .setLargeIcon(largeImage)
                 .setStyle(
-                    NotificationCompat.BigPictureStyle()
+                    NotificationCompat
+                        .BigPictureStyle()
                         .bigPicture(largeImage)
                         .setBigContentTitle(imageTitle)
-                        .setSummaryText(imageDescription)
+                        .setSummaryText(imageDescription),
                 )
             return this
         }
@@ -105,8 +115,14 @@ class CreateNotification(private val context: Context) {
          * @param indeterminate Se o progresso é indeterminado (animação contínua).
          * @param isOngoing Se a notificação não pode ser dispensada pelo usuário.
          */
-        fun withProgressStyle(max: Int, progress: Int, indeterminate: Boolean, isOngoing: Boolean = true): Builder {
-            notificationBuilder.setProgress(max, progress, indeterminate)
+        fun withProgressStyle(
+            max: Int,
+            progress: Int,
+            indeterminate: Boolean,
+            isOngoing: Boolean = true,
+        ): Builder {
+            notificationBuilder
+                .setProgress(max, progress, indeterminate)
                 .setOngoing(isOngoing)
             return this
         }
@@ -132,7 +148,11 @@ class CreateNotification(private val context: Context) {
          * @param text Título da ação (ex: "Cancelar").
          * @param pendingIntent A ação a ser executada quando o botão for tocado.
          */
-        fun withAction(@DrawableRes icon: Int, text: String, pendingIntent: PendingIntent): Builder {
+        fun withAction(
+            @DrawableRes icon: Int,
+            text: String,
+            pendingIntent: PendingIntent,
+        ): Builder {
             notificationBuilder.addAction(icon, text, pendingIntent)
             return this
         }
@@ -151,7 +171,7 @@ class CreateNotification(private val context: Context) {
         fun withTapAction(
             intent: Intent,
             requestCode: Int = 0,
-            flags: Int = PendingIntent.FLAG_IMMUTABLE
+            flags: Int = PendingIntent.FLAG_IMMUTABLE,
         ): Builder {
             val pendingIntent = PendingIntent.getActivity(context, requestCode, intent, flags)
             return withTapAction(pendingIntent)
@@ -164,9 +184,10 @@ class CreateNotification(private val context: Context) {
          * @param kClass A classe da Activity a ser aberta.
          */
         fun withTapAction(kClass: KClass<*>): Builder {
-            val intent = Intent(context, kClass.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            }
+            val intent =
+                Intent(context, kClass.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
             return withTapAction(intent)
         }
 
@@ -174,9 +195,7 @@ class CreateNotification(private val context: Context) {
          * Retorna a instância de [Notification] construída.
          * Útil para testes ou para uso em serviços de primeiro plano (Foreground Services).
          */
-        fun build(): Notification {
-            return notificationBuilder.build()
-        }
+        fun build(): Notification = notificationBuilder.build()
 
         /**
          * Constrói e exibe a notificação no sistema.

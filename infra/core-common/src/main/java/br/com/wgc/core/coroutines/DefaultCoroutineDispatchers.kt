@@ -9,17 +9,18 @@ import javax.inject.Singleton
  * Implementação padrão de [CoroutineDispatchers] que encapsula os despachantes reais de [Dispatchers].
  */
 @Singleton
-class DefaultCoroutineDispatchers @Inject constructor() : CoroutineDispatchers {
+class DefaultCoroutineDispatchers
+    @Inject
+    constructor() : CoroutineDispatchers {
+        override val main: CoroutineDispatcher
+            get() = Dispatchers.Main
 
-    override val main: CoroutineDispatcher
-        get() = Dispatchers.Main
+        override val io: CoroutineDispatcher
+            get() = Dispatchers.IO
 
-    override val io: CoroutineDispatcher
-        get() = Dispatchers.IO
+        override val default: CoroutineDispatcher
+            get() = Dispatchers.Default
 
-    override val default: CoroutineDispatcher
-        get() = Dispatchers.Default
-
-    override val unconfined: CoroutineDispatcher
-        get() = Dispatchers.Unconfined
-}
+        override val unconfined: CoroutineDispatcher
+            get() = Dispatchers.Unconfined
+    }

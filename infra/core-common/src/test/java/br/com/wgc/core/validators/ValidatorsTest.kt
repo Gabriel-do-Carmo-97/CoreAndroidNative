@@ -5,7 +5,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ValidatorsTest {
-
     @Test
     fun isValidCpf_whenGivenValidCpf_shouldReturnTrue() {
         assertTrue("52998224725".isValidCpf())

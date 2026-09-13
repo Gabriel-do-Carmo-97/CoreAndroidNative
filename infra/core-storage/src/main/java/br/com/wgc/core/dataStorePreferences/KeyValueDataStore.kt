@@ -13,14 +13,16 @@ import kotlinx.coroutines.flow.Flow
  * sempre que o valor no DataStore for modificado.
  */
 interface KeyValueDataStore {
-
     /**
      * Salva uma [String] de forma assíncrona no DataStore.
      *
      * @param key Identificador único da chave.
      * @param value O texto a ser persistido.
      */
-    suspend fun saveString(key: String, value: String)
+    suspend fun saveString(
+        key: String,
+        value: String,
+    )
 
     /**
      * Retorna um [Flow] com o valor da [String] associada à chave fornecida.
@@ -29,7 +31,10 @@ interface KeyValueDataStore {
      * @param defaultValue Valor retornado caso a chave ainda não exista no DataStore. Padrão: `null`.
      * @return [Flow] que emite a [String] atual e subsequentes alterações.
      */
-    fun getStringFlow(key: String, defaultValue: String? = null): Flow<String?>
+    fun getStringFlow(
+        key: String,
+        defaultValue: String? = null,
+    ): Flow<String?>
 
     /**
      * Salva um [Int] de forma assíncrona no DataStore.
@@ -37,7 +42,10 @@ interface KeyValueDataStore {
      * @param key Identificador único da chave.
      * @param value O número inteiro a ser persistido.
      */
-    suspend fun saveInt(key: String, value: Int)
+    suspend fun saveInt(
+        key: String,
+        value: Int,
+    )
 
     /**
      * Retorna um [Flow] com o valor de [Int] associado à chave fornecida.
@@ -46,7 +54,10 @@ interface KeyValueDataStore {
      * @param defaultValue Valor retornado caso a chave não exista no DataStore. Padrão: `0`.
      * @return [Flow] que emite o valor inteiro atual e subsequentes alterações.
      */
-    fun getIntFlow(key: String, defaultValue: Int = 0): Flow<Int>
+    fun getIntFlow(
+        key: String,
+        defaultValue: Int = 0,
+    ): Flow<Int>
 
     /**
      * Salva um [Boolean] de forma assíncrona no DataStore.
@@ -54,7 +65,10 @@ interface KeyValueDataStore {
      * @param key Identificador único da chave.
      * @param value O valor booleano a ser persistido.
      */
-    suspend fun saveBoolean(key: String, value: Boolean)
+    suspend fun saveBoolean(
+        key: String,
+        value: Boolean,
+    )
 
     /**
      * Retorna um [Flow] com o valor booleano associado à chave fornecida.
@@ -63,7 +77,10 @@ interface KeyValueDataStore {
      * @param defaultValue Valor retornado caso a chave não exista no DataStore. Padrão: `false`.
      * @return [Flow] que emite o [Boolean] atual e subsequentes alterações.
      */
-    fun getBooleanFlow(key: String, defaultValue: Boolean = false): Flow<Boolean>
+    fun getBooleanFlow(
+        key: String,
+        defaultValue: Boolean = false,
+    ): Flow<Boolean>
 
     /**
      * Salva um [Float] de forma assíncrona no DataStore.
@@ -71,7 +88,10 @@ interface KeyValueDataStore {
      * @param key Identificador único da chave.
      * @param value O número de ponto flutuante a ser persistido.
      */
-    suspend fun saveFloat(key: String, value: Float)
+    suspend fun saveFloat(
+        key: String,
+        value: Float,
+    )
 
     /**
      * Retorna um [Flow] com o valor de [Float] associado à chave fornecida.
@@ -80,7 +100,10 @@ interface KeyValueDataStore {
      * @param defaultValue Valor retornado caso a chave não exista no DataStore. Padrão: `0f`.
      * @return [Flow] que emite o valor de ponto flutuante atual e alterações subsequentes.
      */
-    fun getFloatFlow(key: String, defaultValue: Float = 0f): Flow<Float>
+    fun getFloatFlow(
+        key: String,
+        defaultValue: Float = 0f,
+    ): Flow<Float>
 
     /**
      * Salva um [Long] de forma assíncrona no DataStore.
@@ -88,7 +111,10 @@ interface KeyValueDataStore {
      * @param key Identificador único da chave.
      * @param value O valor inteiro longo a ser persistido.
      */
-    suspend fun saveLong(key: String, value: Long)
+    suspend fun saveLong(
+        key: String,
+        value: Long,
+    )
 
     /**
      * Retorna um [Flow] com o valor de [Long] associado à chave fornecida.
@@ -97,7 +123,10 @@ interface KeyValueDataStore {
      * @param defaultValue Valor retornado caso a chave não exista no DataStore. Padrão: `0L`.
      * @return [Flow] que emite o [Long] atual e alterações subsequentes.
      */
-    fun getLongFlow(key: String, defaultValue: Long = 0L): Flow<Long>
+    fun getLongFlow(
+        key: String,
+        defaultValue: Long = 0L,
+    ): Flow<Long>
 
     /**
      * Salva um conjunto de Strings ([Set]<[String]>) de forma assíncrona no DataStore.
@@ -105,7 +134,10 @@ interface KeyValueDataStore {
      * @param key Identificador único da chave.
      * @param value O conjunto de textos a ser persistido.
      */
-    suspend fun saveStringSet(key: String, value: Set<String>)
+    suspend fun saveStringSet(
+        key: String,
+        value: Set<String>,
+    )
 
     /**
      * Retorna um [Flow] com o conjunto de Strings associado à chave fornecida.
@@ -114,7 +146,10 @@ interface KeyValueDataStore {
      * @param defaultValue Conjunto retornado caso a chave não exista. Padrão: conjunto vazio.
      * @return [Flow] que emite o [Set]<[String]> atual e alterações subsequentes.
      */
-    fun getStringSetFlow(key: String, defaultValue: Set<String> = emptySet()): Flow<Set<String>>
+    fun getStringSetFlow(
+        key: String,
+        defaultValue: Set<String> = emptySet(),
+    ): Flow<Set<String>>
 
     /**
      * Salva um valor de tipo genérico suportado no DataStore.
@@ -124,7 +159,10 @@ interface KeyValueDataStore {
      * @param value O valor polimórfico a ser persistido.
      * @throws StorageException.UnsupportedTypeException Caso o tipo fornecido não seja compatível.
      */
-    suspend fun saveAny(key: String, value: Any)
+    suspend fun saveAny(
+        key: String,
+        value: Any,
+    )
 
     /**
      * Retorna um mapa contendo todas as chaves e valores atualmente persistidos no DataStore.

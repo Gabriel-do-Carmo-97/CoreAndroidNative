@@ -1,0 +1,21 @@
+public final class br/com/wgc/bundle/hardware/HardwareFacade {
+	public fun <init> (Landroid/content/Context;)V
+	public final fun getStatus ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/bundle/hardware/HardwareInitializer {
+	public static final field INSTANCE Lbr/com/wgc/bundle/hardware/HardwareInitializer;
+	public final fun provideHardwareFacade (Landroid/content/Context;)Lbr/com/wgc/bundle/hardware/HardwareFacade;
+}
+
+public final class br/com/wgc/bundle/hardware/HardwareInitializer_ProvideHardwareFacadeFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/bundle/hardware/HardwareInitializer_ProvideHardwareFacadeFactory;
+	public fun get ()Lbr/com/wgc/bundle/hardware/HardwareFacade;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideHardwareFacade (Landroid/content/Context;)Lbr/com/wgc/bundle/hardware/HardwareFacade;
+}
+
+public class hilt_aggregated_deps/_br_com_wgc_bundle_hardware_HardwareInitializer {
+	public fun <init> ()V
+}
+

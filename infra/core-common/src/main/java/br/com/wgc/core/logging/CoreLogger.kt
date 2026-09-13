@@ -3,7 +3,9 @@ package br.com.wgc.core.logging
 /**
  * Níveis de severidade para filtragem e emissão de mensagens de log no [CoreLogger].
  */
-enum class LogLevel(val priority: Int) {
+enum class LogLevel(
+    val priority: Int,
+) {
     /** Detalhamento minucioso para diagnóstico profundo. */
     VERBOSE(2),
 
@@ -20,7 +22,7 @@ enum class LogLevel(val priority: Int) {
     ERROR(6),
 
     /** Desativa completamente a emissão de logs. */
-    NONE(Int.MAX_VALUE)
+    NONE(Int.MAX_VALUE),
 }
 
 /**
@@ -30,7 +32,6 @@ enum class LogLevel(val priority: Int) {
  * de dados sensíveis (PII - Personally Identifiable Information).
  */
 interface CoreLogger {
-
     /**
      * Registra mensagem no nível [LogLevel.VERBOSE].
      *
@@ -38,7 +39,11 @@ interface CoreLogger {
      * @param message Conteúdo da mensagem a ser registrada.
      * @param throwable Exceção opcional associada ao log.
      */
-    fun v(tag: String, message: String, throwable: Throwable? = null)
+    fun v(
+        tag: String,
+        message: String,
+        throwable: Throwable? = null,
+    )
 
     /**
      * Registra mensagem no nível [LogLevel.DEBUG].
@@ -47,7 +52,11 @@ interface CoreLogger {
      * @param message Conteúdo da mensagem a ser registrada.
      * @param throwable Exceção opcional associada ao log.
      */
-    fun d(tag: String, message: String, throwable: Throwable? = null)
+    fun d(
+        tag: String,
+        message: String,
+        throwable: Throwable? = null,
+    )
 
     /**
      * Registra mensagem no nível [LogLevel.INFO].
@@ -56,7 +65,11 @@ interface CoreLogger {
      * @param message Conteúdo da mensagem a ser registrada.
      * @param throwable Exceção opcional associada ao log.
      */
-    fun i(tag: String, message: String, throwable: Throwable? = null)
+    fun i(
+        tag: String,
+        message: String,
+        throwable: Throwable? = null,
+    )
 
     /**
      * Registra mensagem no nível [LogLevel.WARN].
@@ -65,7 +78,11 @@ interface CoreLogger {
      * @param message Conteúdo da mensagem a ser registrada.
      * @param throwable Exceção opcional associada ao log.
      */
-    fun w(tag: String, message: String, throwable: Throwable? = null)
+    fun w(
+        tag: String,
+        message: String,
+        throwable: Throwable? = null,
+    )
 
     /**
      * Registra mensagem no nível [LogLevel.ERROR].
@@ -74,7 +91,11 @@ interface CoreLogger {
      * @param message Conteúdo da mensagem a ser registrada.
      * @param throwable Exceção opcional associada ao log.
      */
-    fun e(tag: String, message: String, throwable: Throwable? = null)
+    fun e(
+        tag: String,
+        message: String,
+        throwable: Throwable? = null,
+    )
 
     /**
      * Aplica regras de sanitização em uma string, ocultando dados pessoais identificáveis (PII).

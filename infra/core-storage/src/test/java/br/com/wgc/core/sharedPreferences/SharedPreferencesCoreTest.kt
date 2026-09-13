@@ -15,17 +15,17 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [33])
 class SharedPreferencesCoreTest {
-
     private lateinit var context: Context
     private lateinit var sharedPreferencesCore: SharedPreferencesCore
 
     @Before
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
-        sharedPreferencesCore = SharedPreferencesCore(
-            context = context,
-            sharedPreferencesName = "test_prefs_${System.currentTimeMillis()}"
-        )
+        sharedPreferencesCore =
+            SharedPreferencesCore(
+                context = context,
+                sharedPreferencesName = "test_prefs_${System.currentTimeMillis()}",
+            )
     }
 
     @Test

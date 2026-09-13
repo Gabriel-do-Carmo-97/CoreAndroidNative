@@ -35,12 +35,13 @@ object DistanceUtils {
         startLat: Double,
         startLng: Double,
         endLat: Double,
-        endLng: Double
+        endLng: Double,
     ): Double {
         val dLat = Math.toRadians(endLat - startLat)
         val dLng = Math.toRadians(endLng - startLng)
 
-        val a = sin(dLat / 2) * sin(dLat / 2) +
+        val a =
+            sin(dLat / 2) * sin(dLat / 2) +
                 cos(Math.toRadians(startLat)) * cos(Math.toRadians(endLat)) *
                 sin(dLng / 2) * sin(dLng / 2)
 

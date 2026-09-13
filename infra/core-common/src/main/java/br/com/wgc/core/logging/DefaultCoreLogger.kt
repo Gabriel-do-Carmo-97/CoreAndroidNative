@@ -15,9 +15,8 @@ class DefaultCoreLogger(
     private val minLogLevel: LogLevel = LogLevel.DEBUG,
     private val enablePiiMasking: Boolean = true,
     private val logWriter: (priority: Int, tag: String, message: String, throwable: Throwable?) -> Unit =
-        ::defaultAndroidLogWriter
+        ::defaultAndroidLogWriter,
 ) : CoreLogger {
-
     companion object {
         private val CPF_REGEX = Regex("""\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b""")
         private val CARD_REGEX = Regex("""\b(?:\d{4}[ -]?){3}\d{4}\b""")
@@ -36,13 +35,14 @@ class DefaultCoreLogger(
             priority: Int,
             tag: String,
             message: String,
-            throwable: Throwable?
+            throwable: Throwable?,
         ) {
-            val formattedMsg = if (throwable != null) {
-                "$message\n${Log.getStackTraceString(throwable)}"
-            } else {
-                message
-            }
+            val formattedMsg =
+                if (throwable != null) {
+                    "$message\n${Log.getStackTraceString(throwable)}"
+                } else {
+                    message
+                }
             try {
                 Log.println(priority, tag, formattedMsg)
             } catch (e: RuntimeException) {
@@ -52,23 +52,43 @@ class DefaultCoreLogger(
         }
     }
 
-    override fun v(tag: String, message: String, throwable: Throwable?) {
+    override fun v(
+        tag: String,
+        message: String,
+        throwable: Throwable?,
+    ) {
         log(LogLevel.VERBOSE, tag, message, throwable)
     }
 
-    override fun d(tag: String, message: String, throwable: Throwable?) {
+    override fun d(
+        tag: String,
+        message: String,
+        throwable: Throwable?,
+    ) {
         log(LogLevel.DEBUG, tag, message, throwable)
     }
 
-    override fun i(tag: String, message: String, throwable: Throwable?) {
+    override fun i(
+        tag: String,
+        message: String,
+        throwable: Throwable?,
+    ) {
         log(LogLevel.INFO, tag, message, throwable)
     }
 
-    override fun w(tag: String, message: String, throwable: Throwable?) {
+    override fun w(
+        tag: String,
+        message: String,
+        throwable: Throwable?,
+    ) {
         log(LogLevel.WARN, tag, message, throwable)
     }
 
-    override fun e(tag: String, message: String, throwable: Throwable?) {
+    override fun e(
+        tag: String,
+        message: String,
+        throwable: Throwable?,
+    ) {
         log(LogLevel.ERROR, tag, message, throwable)
     }
 
@@ -80,7 +100,12 @@ class DefaultCoreLogger(
             .replace(BEARER_REGEX, BEARER_REPLACEMENT)
     }
 
-    private fun log(level: LogLevel, tag: String, message: String, throwable: Throwable?) {
+    private fun log(
+        level: LogLevel,
+        tag: String,
+        message: String,
+        throwable: Throwable?,
+    ) {
         if (level.priority < minLogLevel.priority || minLogLevel == LogLevel.NONE) {
             return
         }

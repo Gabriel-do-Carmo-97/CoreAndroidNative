@@ -19,23 +19,24 @@ fun LoadingButton(
     isLoading: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     Button(
         onClick = onClick,
         enabled = enabled && !isLoading,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(48.dp)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(48.dp),
     ) {
         Box(
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             if (isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                     color = MaterialTheme.colorScheme.onPrimary,
-                    strokeWidth = 2.dp
+                    strokeWidth = 2.dp,
                 )
             } else {
                 Text(text = text)

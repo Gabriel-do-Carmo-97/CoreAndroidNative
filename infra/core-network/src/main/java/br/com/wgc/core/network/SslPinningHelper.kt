@@ -8,7 +8,6 @@ import okhttp3.OkHttpClient
  * em instâncias de [OkHttpClient.Builder], prevenindo ataques Man-In-The-Middle (MITM).
  */
 object SslPinningHelper {
-
     /**
      * Aplica um mapa de regras de Certificate Pinning ao builder do [OkHttpClient].
      *
@@ -18,7 +17,7 @@ object SslPinningHelper {
      */
     fun configureCertificatePinner(
         builder: OkHttpClient.Builder,
-        pins: Map<String, List<String>>
+        pins: Map<String, List<String>>,
     ): OkHttpClient.Builder {
         val pinnerBuilder = CertificatePinner.Builder()
         for ((pattern, hashes) in pins) {

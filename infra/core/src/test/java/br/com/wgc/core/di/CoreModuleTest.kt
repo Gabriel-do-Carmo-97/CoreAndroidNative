@@ -5,7 +5,6 @@ import org.junit.Assert.assertNotNull
 import org.junit.Test
 
 class CoreModuleTest {
-
     @Test
     fun `default qualifiers and names should be initialized`() {
         assertEquals("wgc_core_datastore", CoreModule.provideDataStoreName())

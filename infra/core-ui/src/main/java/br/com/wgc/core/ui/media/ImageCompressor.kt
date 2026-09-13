@@ -32,7 +32,7 @@ interface ImageCompressor {
         maxWidth: Int = DEFAULT_MAX_WIDTH,
         maxHeight: Int = DEFAULT_MAX_HEIGHT,
         quality: Int = DEFAULT_QUALITY,
-        format: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG
+        format: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG,
     ): ByteArray
 
     /**
@@ -52,7 +52,7 @@ interface ImageCompressor {
         maxWidth: Int = DEFAULT_MAX_WIDTH,
         maxHeight: Int = DEFAULT_MAX_HEIGHT,
         quality: Int = DEFAULT_QUALITY,
-        format: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG
+        format: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG,
     ): File
 }
 
@@ -62,25 +62,25 @@ interface ImageCompressor {
  * @param dispatchers Coroutine dispatchers for offloading heavy image I/O to background threads.
  */
 class DefaultImageCompressor(
-    private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers()
+    private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers(),
 ) : ImageCompressor {
-
     override suspend fun compressBitmap(
         bitmap: Bitmap,
         maxWidth: Int,
         maxHeight: Int,
         quality: Int,
-        format: Bitmap.CompressFormat
-    ): ByteArray = withContext(dispatchers.default) {
-        val scaledBitmap = scaleBitmapIfNeeded(bitmap, maxWidth, maxHeight)
-        ByteArrayOutputStream().use { stream ->
-            scaledBitmap.compress(format, quality, stream)
-            if (scaledBitmap != bitmap) {
-                scaledBitmap.recycle()
+        format: Bitmap.CompressFormat,
+    ): ByteArray =
+        withContext(dispatchers.default) {
+            val scaledBitmap = scaleBitmapIfNeeded(bitmap, maxWidth, maxHeight)
+            ByteArrayOutputStream().use { stream ->
+                scaledBitmap.compress(format, quality, stream)
+                if (scaledBitmap != bitmap) {
+                    scaledBitmap.recycle()
+                }
+                stream.toByteArray()
             }
-            stream.toByteArray()
         }
-    }
 
     override suspend fun compressFile(
         sourceFile: File,
@@ -88,22 +88,28 @@ class DefaultImageCompressor(
         maxWidth: Int,
         maxHeight: Int,
         quality: Int,
-        format: Bitmap.CompressFormat
-    ): File = withContext(dispatchers.io) {
-        val bitmap = BitmapFactory.decodeFile(sourceFile.absolutePath)
-            ?: error("Unable to decode source image file: ${sourceFile.path}")
+        format: Bitmap.CompressFormat,
+    ): File =
+        withContext(dispatchers.io) {
+            val bitmap =
+                BitmapFactory.decodeFile(sourceFile.absolutePath)
+                    ?: error("Unable to decode source image file: ${sourceFile.path}")
 
-        val compressedBytes = compressBitmap(bitmap, maxWidth, maxHeight, quality, format)
-        bitmap.recycle()
+            val compressedBytes = compressBitmap(bitmap, maxWidth, maxHeight, quality, format)
+            bitmap.recycle()
 
-        FileOutputStream(destinationFile).use { output ->
-            output.write(compressedBytes)
-            output.flush()
+            FileOutputStream(destinationFile).use { output ->
+                output.write(compressedBytes)
+                output.flush()
+            }
+            destinationFile
         }
-        destinationFile
-    }
 
-    private fun scaleBitmapIfNeeded(bitmap: Bitmap, maxWidth: Int, maxHeight: Int): Bitmap {
+    private fun scaleBitmapIfNeeded(
+        bitmap: Bitmap,
+        maxWidth: Int,
+        maxHeight: Int,
+    ): Bitmap {
         val width = bitmap.width
         val height = bitmap.height
 

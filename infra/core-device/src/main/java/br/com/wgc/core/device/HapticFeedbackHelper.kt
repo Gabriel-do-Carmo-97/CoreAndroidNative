@@ -21,7 +21,6 @@ private const val ERROR_DURATION_2_MS = 50L
  * Contrato de utilitário para disparo de feedbacks hápticos (vibração tátil) na interface do usuário.
  */
 interface HapticFeedbackHelper {
-
     /** Dispara uma vibração sutil simulando o clique ou toque em botão. */
     fun vibrateClick()
 
@@ -40,8 +39,9 @@ interface HapticFeedbackHelper {
  *
  * @property context Contexto da aplicação utilizado para acessar o serviço de vibração.
  */
-class DefaultHapticFeedbackHelper(private val context: Context) : HapticFeedbackHelper {
-
+class DefaultHapticFeedbackHelper(
+    private val context: Context,
+) : HapticFeedbackHelper {
     private val vibrator: Vibrator? by lazy {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -51,7 +51,9 @@ class DefaultHapticFeedbackHelper(private val context: Context) : HapticFeedback
                 @Suppress("DEPRECATION")
                 context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
             }
-        } catch (@Suppress("SwallowedException", "TooGenericExceptionCaught") e: Exception) {
+        } catch (
+            @Suppress("SwallowedException", "TooGenericExceptionCaught") e: Exception,
+        ) {
             null
         }
     }
@@ -59,7 +61,7 @@ class DefaultHapticFeedbackHelper(private val context: Context) : HapticFeedback
     override fun vibrateClick() {
         performVibration(
             effect = { VibrationEffect.createOneShot(CLICK_DURATION_MS, CLICK_AMPLITUDE) },
-            fallbackDuration = CLICK_DURATION_MS
+            fallbackDuration = CLICK_DURATION_MS,
         )
     }
 
@@ -68,7 +70,7 @@ class DefaultHapticFeedbackHelper(private val context: Context) : HapticFeedback
         val amplitudes = intArrayOf(0, 100, 0, 180)
         performVibration(
             effect = { VibrationEffect.createWaveform(timings, amplitudes, -1) },
-            fallbackDuration = SUCCESS_DURATION_1_MS + SUCCESS_DURATION_2_MS
+            fallbackDuration = SUCCESS_DURATION_1_MS + SUCCESS_DURATION_2_MS,
         )
     }
 
@@ -77,14 +79,14 @@ class DefaultHapticFeedbackHelper(private val context: Context) : HapticFeedback
         val amplitudes = intArrayOf(0, 255, 0, 255)
         performVibration(
             effect = { VibrationEffect.createWaveform(timings, amplitudes, -1) },
-            fallbackDuration = ERROR_DURATION_1_MS + ERROR_DURATION_2_MS
+            fallbackDuration = ERROR_DURATION_1_MS + ERROR_DURATION_2_MS,
         )
     }
 
     @Suppress("SwallowedException", "TooGenericExceptionCaught")
     private fun performVibration(
         effect: () -> VibrationEffect,
-        fallbackDuration: Long
+        fallbackDuration: Long,
     ) {
         val activeVibrator = vibrator ?: return
         if (!activeVibrator.hasVibrator()) return

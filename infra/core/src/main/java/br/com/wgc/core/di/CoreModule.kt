@@ -47,7 +47,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object CoreModule {
-
     /** Qualifier [Named] para o nome do arquivo Preferences DataStore em disco. */
     const val DATASTORE_NAME_QUALIFIER = "DataStoreName"
 
@@ -87,21 +86,15 @@ object CoreModule {
     @Singleton
     fun provideDataStorePreferencesCore(
         @ApplicationContext context: Context,
-        @Named(DATASTORE_NAME_QUALIFIER) dataStoreName: String
-    ): DataStorePreferencesCore {
-        return DataStorePreferencesCore(context, dataStoreName)
-    }
+        @Named(DATASTORE_NAME_QUALIFIER) dataStoreName: String,
+    ): DataStorePreferencesCore = DataStorePreferencesCore(context, dataStoreName)
 
     /**
      * Provê o binding para a abstração [KeyValueDataStore].
      */
     @Provides
     @Singleton
-    fun provideKeyValueDataStore(
-        dataStorePreferencesCore: DataStorePreferencesCore
-    ): KeyValueDataStore {
-        return dataStorePreferencesCore
-    }
+    fun provideKeyValueDataStore(dataStorePreferencesCore: DataStorePreferencesCore): KeyValueDataStore = dataStorePreferencesCore
 
     /**
      * Provê a instância singleton de [SharedPreferencesCore].
@@ -110,10 +103,8 @@ object CoreModule {
     @Singleton
     fun provideSharedPreferencesCore(
         @ApplicationContext context: Context,
-        @Named(SHARED_PREFERENCES_NAME_QUALIFIER) sharedPreferencesName: String
-    ): SharedPreferencesCore {
-        return SharedPreferencesCore(context, sharedPreferencesName)
-    }
+        @Named(SHARED_PREFERENCES_NAME_QUALIFIER) sharedPreferencesName: String,
+    ): SharedPreferencesCore = SharedPreferencesCore(context, sharedPreferencesName)
 
     /**
      * Provê o binding de [KeyValueStorage] para a implementação de [SharedPreferencesCore].
@@ -121,11 +112,7 @@ object CoreModule {
     @Provides
     @Singleton
     @Named(STORAGE_DEFAULT_QUALIFIER)
-    fun provideDefaultKeyValueStorage(
-        sharedPreferencesCore: SharedPreferencesCore
-    ): KeyValueStorage {
-        return sharedPreferencesCore
-    }
+    fun provideDefaultKeyValueStorage(sharedPreferencesCore: SharedPreferencesCore): KeyValueStorage = sharedPreferencesCore
 
     /**
      * Provê a instância singleton de [EncryptedSharedPreferencesCore].
@@ -133,10 +120,8 @@ object CoreModule {
     @Provides
     @Singleton
     fun provideEncryptedSharedPreferencesCore(
-        @ApplicationContext context: Context
-    ): EncryptedSharedPreferencesCore {
-        return EncryptedSharedPreferencesCore(context)
-    }
+        @ApplicationContext context: Context,
+    ): EncryptedSharedPreferencesCore = EncryptedSharedPreferencesCore(context)
 
     /**
      * Provê o binding de [KeyValueStorage] para a implementação de [EncryptedSharedPreferencesCore].
@@ -144,11 +129,8 @@ object CoreModule {
     @Provides
     @Singleton
     @Named(STORAGE_ENCRYPTED_QUALIFIER)
-    fun provideEncryptedKeyValueStorage(
-        encryptedSharedPreferencesCore: EncryptedSharedPreferencesCore
-    ): KeyValueStorage {
-        return encryptedSharedPreferencesCore
-    }
+    fun provideEncryptedKeyValueStorage(encryptedSharedPreferencesCore: EncryptedSharedPreferencesCore): KeyValueStorage =
+        encryptedSharedPreferencesCore
 
     /**
      * Provê a instância singleton do monitor de conectividade de rede [NetworkMonitor].
@@ -156,28 +138,22 @@ object CoreModule {
     @Provides
     @Singleton
     fun provideNetworkMonitor(
-        @ApplicationContext context: Context
-    ): NetworkMonitor {
-        return NetworkMonitor(context)
-    }
+        @ApplicationContext context: Context,
+    ): NetworkMonitor = NetworkMonitor(context)
 
     /**
      * Provê a instância singleton de [CoroutineDispatchers] padrão.
      */
     @Provides
     @Singleton
-    fun provideCoroutineDispatchers(): CoroutineDispatchers {
-        return DefaultCoroutineDispatchers()
-    }
+    fun provideCoroutineDispatchers(): CoroutineDispatchers = DefaultCoroutineDispatchers()
 
     /**
      * Provê a instância singleton de [CoreLogger] com mascaramento de PII ativo.
      */
     @Provides
     @Singleton
-    fun provideCoreLogger(): CoreLogger {
-        return DefaultCoreLogger()
-    }
+    fun provideCoreLogger(): CoreLogger = DefaultCoreLogger()
 
     /**
      * Provê a instância singleton de [DeviceInfo] baseada no contexto da aplicação.
@@ -185,10 +161,8 @@ object CoreModule {
     @Provides
     @Singleton
     fun provideDeviceInfo(
-        @ApplicationContext context: Context
-    ): DeviceInfo {
-        return DefaultDeviceInfo(context)
-    }
+        @ApplicationContext context: Context,
+    ): DeviceInfo = DefaultDeviceInfo(context)
 
     /**
      * Provê a instância singleton de [HapticFeedbackHelper] para vibração tátil.
@@ -196,10 +170,8 @@ object CoreModule {
     @Provides
     @Singleton
     fun provideHapticFeedbackHelper(
-        @ApplicationContext context: Context
-    ): HapticFeedbackHelper {
-        return DefaultHapticFeedbackHelper(context)
-    }
+        @ApplicationContext context: Context,
+    ): HapticFeedbackHelper = DefaultHapticFeedbackHelper(context)
 
     /**
      * Provê a instância singleton de [FileManager] para manipulação de arquivos e cache.
@@ -207,10 +179,8 @@ object CoreModule {
     @Provides
     @Singleton
     fun provideFileManager(
-        @ApplicationContext context: Context
-    ): FileManager {
-        return DefaultFileManager(context)
-    }
+        @ApplicationContext context: Context,
+    ): FileManager = DefaultFileManager(context)
 
     /**
      * Provê a instância singleton de [SessionManager] orquestrando a limpeza atômica da sessão.
@@ -222,16 +192,15 @@ object CoreModule {
         @Named(STORAGE_DEFAULT_QUALIFIER) defaultStorage: KeyValueStorage,
         @Named(STORAGE_ENCRYPTED_QUALIFIER) encryptedStorage: KeyValueStorage,
         fileManager: FileManager,
-        dispatchers: CoroutineDispatchers
-    ): SessionManager {
-        return DefaultSessionManager(
+        dispatchers: CoroutineDispatchers,
+    ): SessionManager =
+        DefaultSessionManager(
             keyValueDataStore = keyValueDataStore,
             defaultStorage = defaultStorage,
             encryptedStorage = encryptedStorage,
             fileManager = fileManager,
-            dispatchers = dispatchers
+            dispatchers = dispatchers,
         )
-    }
 
     /**
      * Provê a instância singleton de [BiometricAuthHelper] para autenticação biométrica.
@@ -239,10 +208,8 @@ object CoreModule {
     @Provides
     @Singleton
     fun provideBiometricAuthHelper(
-        @ApplicationContext context: Context
-    ): BiometricAuthHelper {
-        return DefaultBiometricAuthHelper(context)
-    }
+        @ApplicationContext context: Context,
+    ): BiometricAuthHelper = DefaultBiometricAuthHelper(context)
 
     /**
      * Provê a instância singleton de [DeviceSecurityHelper] com detecção de root desabilitada por padrão.
@@ -250,10 +217,8 @@ object CoreModule {
     @Provides
     @Singleton
     fun provideDeviceSecurityHelper(
-        @ApplicationContext context: Context
-    ): DeviceSecurityHelper {
-        return DefaultDeviceSecurityHelper(context, isRootDetectionEnabled = false)
-    }
+        @ApplicationContext context: Context,
+    ): DeviceSecurityHelper = DefaultDeviceSecurityHelper(context, isRootDetectionEnabled = false)
 
     /**
      * Provê a instância singleton de [PermissionManager] para checagem e abertura de configurações de permissões.
@@ -261,29 +226,20 @@ object CoreModule {
     @Provides
     @Singleton
     fun providePermissionManager(
-        @ApplicationContext context: Context
-    ): PermissionManager {
-        return DefaultPermissionManager(context)
-    }
+        @ApplicationContext context: Context,
+    ): PermissionManager = DefaultPermissionManager(context)
 
     /**
      * Provê a instância singleton de [AnalyticsTracker] com sanitização de PII ativa.
      */
     @Provides
     @Singleton
-    fun provideAnalyticsTracker(): AnalyticsTracker {
-        return CompositeAnalyticsTracker(trackers = emptyList(), enablePiiMasking = true)
-    }
+    fun provideAnalyticsTracker(): AnalyticsTracker = CompositeAnalyticsTracker(trackers = emptyList(), enablePiiMasking = true)
 
     /**
      * Provê a instância singleton de [ImageCompressor] para processamento assíncrono de imagens.
      */
     @Provides
     @Singleton
-    fun provideImageCompressor(
-        dispatchers: CoroutineDispatchers
-    ): ImageCompressor {
-        return DefaultImageCompressor(dispatchers)
-    }
+    fun provideImageCompressor(dispatchers: CoroutineDispatchers): ImageCompressor = DefaultImageCompressor(dispatchers)
 }
-

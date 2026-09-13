@@ -10,13 +10,13 @@ import androidx.compose.ui.tooling.preview.Preview
     name = "Light Mode",
     group = "Themes",
     uiMode = Configuration.UI_MODE_NIGHT_NO,
-    showBackground = true
+    showBackground = true,
 )
 @Preview(
     name = "Dark Mode",
     group = "Themes",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
+    showBackground = true,
 )
 annotation class ThemePreviews
 
@@ -27,19 +27,19 @@ annotation class ThemePreviews
     name = "Phone",
     group = "Devices",
     device = "spec:width=411dp,height=891dp",
-    showSystemUi = true
+    showSystemUi = true,
 )
 @Preview(
     name = "Tablet",
     group = "Devices",
     device = "spec:width=1280dp,height=800dp,dpi=240",
-    showSystemUi = true
+    showSystemUi = true,
 )
 @Preview(
     name = "Foldable",
     group = "Devices",
     device = "spec:width=673dp,height=841dp",
-    showSystemUi = true
+    showSystemUi = true,
 )
 annotation class DevicePreviews
 
@@ -50,13 +50,13 @@ annotation class DevicePreviews
     name = "Font Normal (1.0x)",
     group = "Font Scale",
     fontScale = 1.0f,
-    showBackground = true
+    showBackground = true,
 )
 @Preview(
     name = "Font Large (1.5x)",
     group = "Font Scale",
     fontScale = 1.5f,
-    showBackground = true
+    showBackground = true,
 )
 annotation class FontScalePreviews
 

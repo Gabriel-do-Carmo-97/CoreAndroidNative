@@ -9,12 +9,12 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class QrCodeScannerAnalyzerTest {
-
     @Test
-    fun scannedCodes_initiallyHasNoEmissions() = runTest {
-        val mockScanner = mockk<BarcodeScanner>(relaxed = true)
-        val analyzer = QrCodeScannerAnalyzer(scanner = mockScanner)
-        assertNotNull(analyzer.scannedCodes)
-        assertNull(analyzer.scannedCodes.replayCache.firstOrNull())
-    }
+    fun scannedCodes_initiallyHasNoEmissions() =
+        runTest {
+            val mockScanner = mockk<BarcodeScanner>(relaxed = true)
+            val analyzer = QrCodeScannerAnalyzer(scanner = mockScanner)
+            assertNotNull(analyzer.scannedCodes)
+            assertNull(analyzer.scannedCodes.replayCache.firstOrNull())
+        }
 }

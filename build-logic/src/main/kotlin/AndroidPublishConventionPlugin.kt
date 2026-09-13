@@ -17,11 +17,12 @@ class AndroidPublishConventionPlugin : Plugin<Project> {
                     publications {
                         create<MavenPublication>("release") {
                             groupId = "br.com.wgc"
-                            artifactId = when {
-                                target.name == "core" -> "core-android-native"
-                                target.parent?.name == "bundle" -> "bundle-${target.name}"
-                                else -> target.name
-                            }
+                            artifactId =
+                                when {
+                                    target.name == "core" -> "core-android-native"
+                                    target.parent?.name == "bundle" -> "bundle-${target.name}"
+                                    else -> target.name
+                                }
                             version = "0.0.${System.getenv("GITHUB_RUN_NUMBER") ?: "0.0.1-SNAPSHOT"}"
 
                             val releaseComponent = components.findByName("release")

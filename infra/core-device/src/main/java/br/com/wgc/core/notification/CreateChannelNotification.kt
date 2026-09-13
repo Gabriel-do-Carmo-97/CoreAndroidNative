@@ -10,8 +10,9 @@ import android.content.Context
  * Utiliza o padrão Builder para simplificar e flexibilizar a criação de canais,
  * exigindo um Build.VERSION_CODES.O ou superior.
  */
-class CreateChannelNotification(private val context: Context) {
-
+class CreateChannelNotification(
+    private val context: Context,
+) {
     private val notificationManager: NotificationManager by lazy {
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
@@ -22,13 +23,14 @@ class CreateChannelNotification(private val context: Context) {
      * @param channelId O ID único para este canal.
      * @param name O nome do canal que será visível ao usuário nas configurações.
      */
-    fun with(channelId: String, name: String): Builder {
-        return Builder(channelId, name)
-    }
+    fun with(
+        channelId: String,
+        name: String,
+    ): Builder = Builder(channelId, name)
 
     inner class Builder(
         private val channelId: String,
-        private val name: String
+        private val name: String,
     ) {
         // Valores padrão para as configurações do canal
         private var description: String = ""
@@ -74,12 +76,13 @@ class CreateChannelNotification(private val context: Context) {
          * Este é o passo final da construção.
          */
         fun create() {
-            val channel = NotificationChannel(channelId, name, importance).apply {
-                this.description = this@Builder.description
-                this.enableLights(this@Builder.enableLight)
-                this.enableVibration(this@Builder.enableVibration)
-                // Outras configurações (como som) poderiam ser adicionadas aqui
-            }
+            val channel =
+                NotificationChannel(channelId, name, importance).apply {
+                    this.description = this@Builder.description
+                    this.enableLights(this@Builder.enableLight)
+                    this.enableVibration(this@Builder.enableVibration)
+                    // Outras configurações (como som) poderiam ser adicionadas aqui
+                }
             notificationManager.createNotificationChannel(channel)
         }
     }

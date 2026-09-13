@@ -1,0 +1,21 @@
+public final class br/com/wgc/bundle/persistence/PersistenceFacade {
+	public fun <init> (Landroid/content/Context;)V
+	public final fun getStatus ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/bundle/persistence/PersistenceInitializer {
+	public static final field INSTANCE Lbr/com/wgc/bundle/persistence/PersistenceInitializer;
+	public final fun providePersistenceFacade (Landroid/content/Context;)Lbr/com/wgc/bundle/persistence/PersistenceFacade;
+}
+
+public final class br/com/wgc/bundle/persistence/PersistenceInitializer_ProvidePersistenceFacadeFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/bundle/persistence/PersistenceInitializer_ProvidePersistenceFacadeFactory;
+	public fun get ()Lbr/com/wgc/bundle/persistence/PersistenceFacade;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun providePersistenceFacade (Landroid/content/Context;)Lbr/com/wgc/bundle/persistence/PersistenceFacade;
+}
+
+public class hilt_aggregated_deps/_br_com_wgc_bundle_persistence_PersistenceInitializer {
+	public fun <init> ()V
+}
+

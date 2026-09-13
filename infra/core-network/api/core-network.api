@@ -1,0 +1,92 @@
+public abstract interface class br/com/wgc/core/network/ApiResult {
+}
+
+public final class br/com/wgc/core/network/ApiResult$Failure : br/com/wgc/core/network/ApiResult {
+	public fun <init> (Lbr/com/wgc/core/network/NetworkException;)V
+	public final fun component1 ()Lbr/com/wgc/core/network/NetworkException;
+	public final fun copy (Lbr/com/wgc/core/network/NetworkException;)Lbr/com/wgc/core/network/ApiResult$Failure;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/network/ApiResult$Failure;Lbr/com/wgc/core/network/NetworkException;ILjava/lang/Object;)Lbr/com/wgc/core/network/ApiResult$Failure;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getException ()Lbr/com/wgc/core/network/NetworkException;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/network/ApiResult$Success : br/com/wgc/core/network/ApiResult {
+	public fun <init> (Ljava/lang/Object;I)V
+	public synthetic fun <init> (Ljava/lang/Object;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()I
+	public final fun copy (Ljava/lang/Object;I)Lbr/com/wgc/core/network/ApiResult$Success;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/network/ApiResult$Success;Ljava/lang/Object;IILjava/lang/Object;)Lbr/com/wgc/core/network/ApiResult$Success;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getData ()Ljava/lang/Object;
+	public final fun getStatusCode ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/network/AuthInterceptor : okhttp3/Interceptor {
+	public fun <init> (Lbr/com/wgc/core/network/TokenProvider;)V
+	public fun intercept (Lokhttp3/Interceptor$Chain;)Lokhttp3/Response;
+}
+
+public abstract class br/com/wgc/core/network/NetworkException : java/lang/Exception {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class br/com/wgc/core/network/NetworkException$ClientException : br/com/wgc/core/network/NetworkException {
+	public fun <init> (ILjava/lang/String;)V
+	public synthetic fun <init> (ILjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getCode ()I
+}
+
+public final class br/com/wgc/core/network/NetworkException$NoInternetException : br/com/wgc/core/network/NetworkException {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class br/com/wgc/core/network/NetworkException$ServerException : br/com/wgc/core/network/NetworkException {
+	public fun <init> (ILjava/lang/String;)V
+	public synthetic fun <init> (ILjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getCode ()I
+}
+
+public final class br/com/wgc/core/network/NetworkException$TimeoutException : br/com/wgc/core/network/NetworkException {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class br/com/wgc/core/network/NetworkException$UnauthorizedException : br/com/wgc/core/network/NetworkException {
+	public fun <init> ()V
+	public fun <init> (ILjava/lang/String;)V
+	public synthetic fun <init> (ILjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getCode ()I
+}
+
+public final class br/com/wgc/core/network/NetworkException$UnknownNetworkException : br/com/wgc/core/network/NetworkException {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class br/com/wgc/core/network/SslPinningHelper {
+	public static final field INSTANCE Lbr/com/wgc/core/network/SslPinningHelper;
+	public final fun configureCertificatePinner (Lokhttp3/OkHttpClient$Builder;Ljava/util/Map;)Lokhttp3/OkHttpClient$Builder;
+}
+
+public final class br/com/wgc/core/network/TokenAuthenticator : okhttp3/Authenticator {
+	public fun <init> (Lbr/com/wgc/core/network/TokenProvider;Lkotlinx/coroutines/sync/Mutex;)V
+	public synthetic fun <init> (Lbr/com/wgc/core/network/TokenProvider;Lkotlinx/coroutines/sync/Mutex;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun authenticate (Lokhttp3/Route;Lokhttp3/Response;)Lokhttp3/Request;
+}
+
+public abstract interface class br/com/wgc/core/network/TokenProvider {
+	public abstract fun getAccessToken (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun onSessionExpired (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun refreshToken (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+

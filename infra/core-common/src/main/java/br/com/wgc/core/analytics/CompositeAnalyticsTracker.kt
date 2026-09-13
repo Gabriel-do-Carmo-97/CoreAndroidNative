@@ -10,9 +10,8 @@ package br.com.wgc.core.analytics
  */
 class CompositeAnalyticsTracker(
     private val trackers: List<AnalyticsTracker>,
-    private val enablePiiMasking: Boolean = true
+    private val enablePiiMasking: Boolean = true,
 ) : AnalyticsTracker {
-
     companion object {
         private val CPF_REGEX = Regex("""\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b""")
         private val CARD_REGEX = Regex("""\b(?:\d{4}[ -]?){3}\d{4}\b""")
@@ -25,19 +24,26 @@ class CompositeAnalyticsTracker(
         private const val EMAIL_MASK = "***@***.***"
     }
 
-    override fun logEvent(name: String, params: Map<String, Any>) {
-        val sanitizedParams = if (enablePiiMasking) {
-            params.mapValues { (_, value) -> sanitizeValue(value) }
-        } else {
-            params
-        }
+    override fun logEvent(
+        name: String,
+        params: Map<String, Any>,
+    ) {
+        val sanitizedParams =
+            if (enablePiiMasking) {
+                params.mapValues { (_, value) -> sanitizeValue(value) }
+            } else {
+                params
+            }
 
         trackers.forEach { tracker ->
             tracker.logEvent(name, sanitizedParams)
         }
     }
 
-    override fun setUserProperty(name: String, value: String) {
+    override fun setUserProperty(
+        name: String,
+        value: String,
+    ) {
         val sanitizedValue = if (enablePiiMasking) maskPii(value) else value
         trackers.forEach { tracker ->
             tracker.setUserProperty(name, sanitizedValue)
@@ -65,14 +71,14 @@ class CompositeAnalyticsTracker(
             .replace(EMAIL_REGEX, EMAIL_MASK)
     }
 
-    private fun sanitizeValue(value: Any): Any {
-        return when (value) {
+    private fun sanitizeValue(value: Any): Any =
+        when (value) {
             is String -> maskPii(value)
-            is Map<*, *> -> value.entries.associate { (k, v) ->
-                (k?.toString() ?: "") to (v?.let { sanitizeValue(it) } ?: "")
-            }
+            is Map<*, *> ->
+                value.entries.associate { (k, v) ->
+                    (k?.toString() ?: "") to (v?.let { sanitizeValue(it) } ?: "")
+                }
             is Iterable<*> -> value.map { it?.let { elem -> sanitizeValue(elem) } ?: "" }
             else -> value
         }
-    }
 }

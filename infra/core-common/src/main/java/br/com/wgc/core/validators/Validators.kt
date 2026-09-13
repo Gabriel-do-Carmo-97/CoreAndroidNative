@@ -16,9 +16,7 @@ private const val CNPJ_SECOND_CHECK_INDEX = 13
 private val CNPJ_WEIGHTS_FIRST = intArrayOf(5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2)
 private val CNPJ_WEIGHTS_SECOND = intArrayOf(6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2)
 
-/**
- * Utilitários e extensões de validação de dados comuns em aplicações corporativas brasileiras.
- */
+// Utilitários e extensões de validação de dados comuns em aplicações corporativas brasileiras.
 
 /**
  * Valida se a string representa um Cadastro de Pessoas Físicas (CPF) matematicamente válido.

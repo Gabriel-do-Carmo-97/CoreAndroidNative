@@ -15,7 +15,14 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        google()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+                includeGroupByRegex("android\\.arch.*")
+            }
+        }
         mavenCentral()
         maven {
             name = "GitHubPackages"
@@ -56,5 +63,3 @@ registerBundle("persistence")
 registerBundle("networking")
 registerBundle("presentation")
 registerBundle("hardware")
-
-

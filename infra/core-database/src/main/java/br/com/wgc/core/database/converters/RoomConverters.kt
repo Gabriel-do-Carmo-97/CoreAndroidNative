@@ -18,7 +18,6 @@ import java.util.UUID
  * ```
  */
 class RoomConverters {
-
     /**
      * Converte um timestamp em milissegundos ([Long]) em um objeto [Date].
      *
@@ -26,9 +25,7 @@ class RoomConverters {
      * @return O objeto [Date] correspondente, ou `null` caso [value] seja nulo.
      */
     @TypeConverter
-    fun fromTimestamp(value: Long?): Date? {
-        return value?.let { Date(it) }
-    }
+    fun fromTimestamp(value: Long?): Date? = value?.let { Date(it) }
 
     /**
      * Converte um objeto [Date] em seu timestamp equivalente em milissegundos ([Long]).
@@ -37,9 +34,7 @@ class RoomConverters {
      * @return O valor em milissegundos, ou `null` caso [date] seja nulo.
      */
     @TypeConverter
-    fun dateToTimestamp(date: Date?): Long? {
-        return date?.time
-    }
+    fun dateToTimestamp(date: Date?): Long? = date?.time
 
     /**
      * Converte uma [String] formatada como UUID em uma instância de [UUID].
@@ -49,9 +44,7 @@ class RoomConverters {
      * @throws IllegalArgumentException Se a string não seguir o formato padrão de UUID.
      */
     @TypeConverter
-    fun fromUUID(value: String?): UUID? {
-        return value?.let { UUID.fromString(it) }
-    }
+    fun fromUUID(value: String?): UUID? = value?.let { UUID.fromString(it) }
 
     /**
      * Converte uma instância de [UUID] em sua representação canônica em [String].
@@ -60,9 +53,7 @@ class RoomConverters {
      * @return A string representativa do UUID, ou `null` caso [uuid] seja nulo.
      */
     @TypeConverter
-    fun uuidToString(uuid: UUID?): String? {
-        return uuid?.toString()
-    }
+    fun uuidToString(uuid: UUID?): String? = uuid?.toString()
 
     /**
      * Converte uma lista de strings delimitada por vírgula em uma [List] de [String].
@@ -71,9 +62,7 @@ class RoomConverters {
      * @return A lista de strings extraídas, ou lista vazia se [value] for nulo ou vazio.
      */
     @TypeConverter
-    fun fromStringList(value: String?): List<String> {
-        return value?.split(",")?.filter { it.isNotEmpty() } ?: emptyList()
-    }
+    fun fromStringList(value: String?): List<String> = value?.split(",")?.filter { it.isNotEmpty() } ?: emptyList()
 
     /**
      * Converte uma [List] de [String] em uma única string unificada delimitada por vírgula.
@@ -82,7 +71,5 @@ class RoomConverters {
      * @return A string delimitada, ou string vazia caso a lista seja nula.
      */
     @TypeConverter
-    fun stringListToString(list: List<String>?): String {
-        return list?.joinToString(",") ?: ""
-    }
+    fun stringListToString(list: List<String>?): String = list?.joinToString(",") ?: ""
 }

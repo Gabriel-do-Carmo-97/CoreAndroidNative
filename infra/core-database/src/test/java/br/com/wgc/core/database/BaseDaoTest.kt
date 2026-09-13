@@ -23,7 +23,7 @@ import org.robolectric.annotation.Config
 @Entity(tableName = "test_items")
 data class TestItemEntity(
     @PrimaryKey val id: Long,
-    val title: String
+    val title: String,
 )
 
 @Dao
@@ -41,16 +41,17 @@ abstract class TestDatabase : RoomDatabase() {
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [33])
 class BaseDaoTest {
-
     private lateinit var db: TestDatabase
     private lateinit var dao: TestItemDao
 
     @Before
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(context, TestDatabase::class.java)
-            .allowMainThreadQueries()
-            .build()
+        db =
+            Room
+                .inMemoryDatabaseBuilder(context, TestDatabase::class.java)
+                .allowMainThreadQueries()
+                .build()
         dao = db.testItemDao()
     }
 
@@ -60,22 +61,24 @@ class BaseDaoTest {
     }
 
     @Test
-    fun insertAndGetById_returnsInsertedEntity() = runTest {
-        val entity = TestItemEntity(id = 1L, title = "Item 1")
-        dao.insert(entity)
+    fun insertAndGetById_returnsInsertedEntity() =
+        runTest {
+            val entity = TestItemEntity(id = 1L, title = "Item 1")
+            dao.insert(entity)
 
-        val retrieved = dao.getById(1L)
-        assertEquals(entity, retrieved)
-    }
+            val retrieved = dao.getById(1L)
+            assertEquals(entity, retrieved)
+        }
 
     @Test
-    fun delete_removesEntity() = runTest {
-        val entity = TestItemEntity(id = 2L, title = "Item 2")
-        dao.insert(entity)
+    fun delete_removesEntity() =
+        runTest {
+            val entity = TestItemEntity(id = 2L, title = "Item 2")
+            dao.insert(entity)
 
-        dao.delete(entity)
+            dao.delete(entity)
 
-        val retrieved = dao.getById(2L)
-        assertNull(retrieved)
-    }
+            val retrieved = dao.getById(2L)
+            assertNull(retrieved)
+        }
 }

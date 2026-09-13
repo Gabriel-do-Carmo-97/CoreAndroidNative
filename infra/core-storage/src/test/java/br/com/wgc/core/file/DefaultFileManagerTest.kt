@@ -15,7 +15,6 @@ import java.io.File
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [33])
 class DefaultFileManagerTest {
-
     private lateinit var context: Context
     private lateinit var fileManager: DefaultFileManager
 

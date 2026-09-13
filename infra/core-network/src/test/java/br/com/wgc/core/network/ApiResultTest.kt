@@ -5,7 +5,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ApiResultTest {
-
     @Test
     fun apiResult_success_shouldHoldDataAndStatusCode() {
         val result: ApiResult<String> = ApiResult.Success("OK", 200)

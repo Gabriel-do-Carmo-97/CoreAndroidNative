@@ -34,34 +34,38 @@ private const val COLOR_HIGHLIGHT = 0xFFF5F5F5
  */
 fun Modifier.shimmerEffect(
     showShimmer: Boolean = true,
-    colors: List<Color> = listOf(
-        Color(COLOR_BASE),
-        Color(COLOR_HIGHLIGHT),
-        Color(COLOR_BASE)
-    ),
-    durationMillis: Int = DEFAULT_SHIMMER_DURATION_MS
-): Modifier = composed {
-    if (!showShimmer) return@composed this
-
-    var size by remember { mutableStateOf(IntSize.Zero) }
-    val transition = rememberInfiniteTransition(label = "ShimmerTransition")
-    val startOffsetX by transition.animateFloat(
-        initialValue = -SHIMMER_OFFSET_MULTIPLIER * size.width.toFloat(),
-        targetValue = SHIMMER_OFFSET_MULTIPLIER * size.width.toFloat(),
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = durationMillis, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Restart
+    colors: List<Color> =
+        listOf(
+            Color(COLOR_BASE),
+            Color(COLOR_HIGHLIGHT),
+            Color(COLOR_BASE),
         ),
-        label = "ShimmerOffsetAnimation"
-    )
+    durationMillis: Int = DEFAULT_SHIMMER_DURATION_MS,
+): Modifier =
+    composed {
+        if (!showShimmer) return@composed this
 
-    this
-        .onGloballyPositioned { size = it.size }
-        .background(
-            brush = Brush.linearGradient(
-                colors = colors,
-                start = Offset(startOffsetX, 0f),
-                end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat())
-            )
+        var size by remember { mutableStateOf(IntSize.Zero) }
+        val transition = rememberInfiniteTransition(label = "ShimmerTransition")
+        val startOffsetX by transition.animateFloat(
+            initialValue = -SHIMMER_OFFSET_MULTIPLIER * size.width.toFloat(),
+            targetValue = SHIMMER_OFFSET_MULTIPLIER * size.width.toFloat(),
+            animationSpec =
+                infiniteRepeatable(
+                    animation = tween(durationMillis = durationMillis, easing = FastOutSlowInEasing),
+                    repeatMode = RepeatMode.Restart,
+                ),
+            label = "ShimmerOffsetAnimation",
         )
-}
+
+        this
+            .onGloballyPositioned { size = it.size }
+            .background(
+                brush =
+                    Brush.linearGradient(
+                        colors = colors,
+                        start = Offset(startOffsetX, 0f),
+                        end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat()),
+                    ),
+            )
+    }

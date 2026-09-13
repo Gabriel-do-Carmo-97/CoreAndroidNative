@@ -5,7 +5,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class VisualTransformationsTest {
-
     @Test
     fun cpfVisualTransformation_shouldFormatTextAndMapOffsets() {
         val transformation = CpfVisualTransformation()

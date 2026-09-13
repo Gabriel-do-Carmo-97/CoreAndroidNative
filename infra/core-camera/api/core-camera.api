@@ -1,0 +1,13 @@
+public final class br/com/wgc/core/camera/CameraPreviewKt {
+	public static final fun CameraPreview (Landroidx/compose/ui/Modifier;Landroidx/camera/core/CameraSelector;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class br/com/wgc/core/camera/QrCodeScannerAnalyzer : androidx/camera/core/ImageAnalysis$Analyzer {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lcom/google/mlkit/vision/barcode/BarcodeScanner;)V
+	public synthetic fun <init> (Lcom/google/mlkit/vision/barcode/BarcodeScanner;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun analyze (Landroidx/camera/core/ImageProxy;)V
+	public final fun getScannedCodes ()Lkotlinx/coroutines/flow/SharedFlow;
+}
+

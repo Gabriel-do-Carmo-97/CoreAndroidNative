@@ -11,18 +11,15 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkingInitializer {
-
     @Provides
     @Singleton
     fun provideNetworkingFacade(
-        @ApplicationContext context: Context
-    ): NetworkingFacade {
-        return NetworkingFacade(context)
-    }
+        @ApplicationContext context: Context,
+    ): NetworkingFacade = NetworkingFacade(context)
 }
 
 class NetworkingFacade(
-    private val context: Context
+    private val context: Context,
 ) {
     fun getStatus(): String = "Networking Bundle initialized successfully for package ${context.packageName}"
 }

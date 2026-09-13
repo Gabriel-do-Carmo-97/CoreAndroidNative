@@ -31,6 +31,7 @@ barcodeScanning = "17.3.0"
 dokka = "1.9.20"
 ksp = "2.2.20-2.0.4"
 bcv = "0.17.0"
+spotless = "7.0.2"
 
 
 [libraries]
@@ -100,3 +101,4 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "bcv" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

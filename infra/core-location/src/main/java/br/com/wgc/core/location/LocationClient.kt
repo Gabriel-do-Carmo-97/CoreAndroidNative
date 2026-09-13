@@ -22,7 +22,6 @@ import javax.inject.Singleton
  * Contrato para fornecimento reativo de dados de localização geográfica do dispositivo.
  */
 interface LocationClient {
-
     /**
      * Retorna um [Flow] contínuo emitindo novas instâncias de [Location] conforme o dispositivo se desloca.
      *
@@ -46,33 +45,38 @@ interface LocationClient {
  * @property client Cliente do Google Play Services para provedor unificado de localização.
  */
 @Singleton
-class DefaultLocationClient @Inject constructor(
-    @param:ApplicationContext private val context: Context,
-    private val client: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
-) : LocationClient {
+class DefaultLocationClient
+    @Inject
+    constructor(
+        @param:ApplicationContext private val context: Context,
+        private val client: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context),
+    ) : LocationClient {
+        @RequiresPermission(anyOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
+        override fun getLocationUpdates(intervalMs: Long): Flow<Location> =
+            callbackFlow {
+                val request =
+                    LocationRequest
+                        .Builder(Priority.PRIORITY_HIGH_ACCURACY, intervalMs)
+                        .build()
 
-    @RequiresPermission(anyOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
-    override fun getLocationUpdates(intervalMs: Long): Flow<Location> = callbackFlow {
-        val request = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, intervalMs)
-            .build()
+                val locationCallback =
+                    object : LocationCallback() {
+                        override fun onLocationResult(result: LocationResult) {
+                            super.onLocationResult(result)
+                            result.locations.lastOrNull()?.let { location ->
+                                trySend(location)
+                            }
+                        }
+                    }
 
-        val locationCallback = object : LocationCallback() {
-            override fun onLocationResult(result: LocationResult) {
-                super.onLocationResult(result)
-                result.locations.lastOrNull()?.let { location ->
-                    trySend(location)
+                client.requestLocationUpdates(
+                    request,
+                    locationCallback,
+                    Looper.getMainLooper(),
+                )
+
+                awaitClose {
+                    client.removeLocationUpdates(locationCallback)
                 }
             }
-        }
-
-        client.requestLocationUpdates(
-            request,
-            locationCallback,
-            Looper.getMainLooper()
-        )
-
-        awaitClose {
-            client.removeLocationUpdates(locationCallback)
-        }
     }
-}

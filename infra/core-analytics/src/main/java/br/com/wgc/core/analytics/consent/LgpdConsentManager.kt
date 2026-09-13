@@ -19,7 +19,7 @@ enum class ConsentType {
     MARKETING,
 
     /** Customização de conteúdos, recomendações e preferências personalizadas. */
-    PERSONALIZATION
+    PERSONALIZATION,
 }
 
 /**
@@ -43,39 +43,41 @@ enum class ConsentType {
  * @property storage Instância de [KeyValueStorage] utilizada para persistir as escolhas do usuário.
  */
 @Singleton
-class LgpdConsentManager @Inject constructor(
-    private val storage: KeyValueStorage
-) {
+class LgpdConsentManager
+    @Inject
+    constructor(
+        private val storage: KeyValueStorage,
+    ) {
+        /**
+         * Define ou altera o consentimento do usuário para uma categoria específica.
+         *
+         * @param type A categoria de consentimento ([ConsentType]).
+         * @param granted `true` se o usuário concedeu permissão, `false` caso contrário.
+         */
+        fun setConsent(
+            type: ConsentType,
+            granted: Boolean,
+        ) {
+            storage.saveBoolean("consent_${type.name}", granted)
+        }
 
-    /**
-     * Define ou altera o consentimento do usuário para uma categoria específica.
-     *
-     * @param type A categoria de consentimento ([ConsentType]).
-     * @param granted `true` se o usuário concedeu permissão, `false` caso contrário.
-     */
-    fun setConsent(type: ConsentType, granted: Boolean) {
-        storage.saveBoolean("consent_${type.name}", granted)
-    }
+        /**
+         * Verifica se o consentimento para a categoria informada foi concedido pelo usuário.
+         *
+         * Por padrão de privacidade segura (Privacy by Default), retorna `false` caso o usuário
+         * ainda não tenha feito uma escolha expressa.
+         *
+         * @param type A categoria de consentimento ([ConsentType]).
+         * @return `true` se o consentimento estiver ativo; `false` se negado ou não definido.
+         */
+        fun isConsentGranted(type: ConsentType): Boolean = storage.getBoolean("consent_${type.name}", false)
 
-    /**
-     * Verifica se o consentimento para a categoria informada foi concedido pelo usuário.
-     *
-     * Por padrão de privacidade segura (Privacy by Default), retorna `false` caso o usuário
-     * ainda não tenha feito uma escolha expressa.
-     *
-     * @param type A categoria de consentimento ([ConsentType]).
-     * @return `true` se o consentimento estiver ativo; `false` se negado ou não definido.
-     */
-    fun isConsentGranted(type: ConsentType): Boolean {
-        return storage.getBoolean("consent_${type.name}", false)
-    }
-
-    /**
-     * Revoga imediatamente todos os consentimentos concedidos anteriormente (Opt-out total).
-     */
-    fun revokeAllConsents() {
-        ConsentType.entries.forEach { type ->
-            setConsent(type, false)
+        /**
+         * Revoga imediatamente todos os consentimentos concedidos anteriormente (Opt-out total).
+         */
+        fun revokeAllConsents() {
+            ConsentType.entries.forEach { type ->
+                setConsent(type, false)
+            }
         }
     }
-}

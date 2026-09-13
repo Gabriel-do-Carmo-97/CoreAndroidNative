@@ -18,13 +18,15 @@ suspend fun <T> retryWithBackoff(
     initialDelayMs: Long = 1000L,
     factor: Double = 2.0,
     maxDelayMs: Long = 10000L,
-    block: suspend () -> T
+    block: suspend () -> T,
 ): T {
     var currentDelay = initialDelayMs
     repeat(times - 1) {
         try {
             return block()
-        } catch (@Suppress("TooGenericExceptionCaught") exception: Throwable) {
+        } catch (
+            @Suppress("TooGenericExceptionCaught") exception: Throwable,
+        ) {
             delay(currentDelay)
             currentDelay = (currentDelay * factor).toLong().coerceAtMost(maxDelayMs)
         }

@@ -1,0 +1,179 @@
+public final class br/com/wgc/core/di/CoreModule {
+	public static final field DATASTORE_NAME_QUALIFIER Ljava/lang/String;
+	public static final field DEFAULT_DATASTORE_NAME Ljava/lang/String;
+	public static final field DEFAULT_SHARED_PREFERENCES_NAME Ljava/lang/String;
+	public static final field INSTANCE Lbr/com/wgc/core/di/CoreModule;
+	public static final field SHARED_PREFERENCES_NAME_QUALIFIER Ljava/lang/String;
+	public static final field STORAGE_DEFAULT_QUALIFIER Ljava/lang/String;
+	public static final field STORAGE_ENCRYPTED_QUALIFIER Ljava/lang/String;
+	public final fun provideAnalyticsTracker ()Lbr/com/wgc/core/analytics/AnalyticsTracker;
+	public final fun provideBiometricAuthHelper (Landroid/content/Context;)Lbr/com/wgc/core/security/biometric/BiometricAuthHelper;
+	public final fun provideCoreLogger ()Lbr/com/wgc/core/logging/CoreLogger;
+	public final fun provideCoroutineDispatchers ()Lbr/com/wgc/core/coroutines/CoroutineDispatchers;
+	public final fun provideDataStoreName ()Ljava/lang/String;
+	public final fun provideDataStorePreferencesCore (Landroid/content/Context;Ljava/lang/String;)Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore;
+	public final fun provideDefaultKeyValueStorage (Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;)Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;
+	public final fun provideDeviceInfo (Landroid/content/Context;)Lbr/com/wgc/core/device/DeviceInfo;
+	public final fun provideDeviceSecurityHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/DeviceSecurityHelper;
+	public final fun provideEncryptedKeyValueStorage (Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;)Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;
+	public final fun provideEncryptedSharedPreferencesCore (Landroid/content/Context;)Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;
+	public final fun provideFileManager (Landroid/content/Context;)Lbr/com/wgc/core/file/FileManager;
+	public final fun provideHapticFeedbackHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/HapticFeedbackHelper;
+	public final fun provideImageCompressor (Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)Lbr/com/wgc/core/ui/media/ImageCompressor;
+	public final fun provideKeyValueDataStore (Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore;)Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;
+	public final fun provideNetworkMonitor (Landroid/content/Context;)Lbr/com/wgc/core/network/NetworkMonitor;
+	public final fun providePermissionManager (Landroid/content/Context;)Lbr/com/wgc/core/device/PermissionManager;
+	public final fun provideSessionManager (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/file/FileManager;Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)Lbr/com/wgc/core/session/SessionManager;
+	public final fun provideSharedPreferencesCore (Landroid/content/Context;Ljava/lang/String;)Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;
+	public final fun provideSharedPreferencesName ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideAnalyticsTrackerFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideAnalyticsTrackerFactory;
+	public fun get ()Lbr/com/wgc/core/analytics/AnalyticsTracker;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideAnalyticsTracker ()Lbr/com/wgc/core/analytics/AnalyticsTracker;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideBiometricAuthHelperFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideBiometricAuthHelperFactory;
+	public fun get ()Lbr/com/wgc/core/security/biometric/BiometricAuthHelper;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideBiometricAuthHelper (Landroid/content/Context;)Lbr/com/wgc/core/security/biometric/BiometricAuthHelper;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideCoreLoggerFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideCoreLoggerFactory;
+	public fun get ()Lbr/com/wgc/core/logging/CoreLogger;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideCoreLogger ()Lbr/com/wgc/core/logging/CoreLogger;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideCoroutineDispatchersFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideCoroutineDispatchersFactory;
+	public fun get ()Lbr/com/wgc/core/coroutines/CoroutineDispatchers;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideCoroutineDispatchers ()Lbr/com/wgc/core/coroutines/CoroutineDispatchers;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideDataStoreNameFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideDataStoreNameFactory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Ljava/lang/String;
+	public static fun provideDataStoreName ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideDataStorePreferencesCoreFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideDataStorePreferencesCoreFactory;
+	public fun get ()Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideDataStorePreferencesCore (Landroid/content/Context;Ljava/lang/String;)Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideDefaultKeyValueStorageFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideDefaultKeyValueStorageFactory;
+	public fun get ()Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideDefaultKeyValueStorage (Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;)Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideDeviceInfoFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideDeviceInfoFactory;
+	public fun get ()Lbr/com/wgc/core/device/DeviceInfo;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideDeviceInfo (Landroid/content/Context;)Lbr/com/wgc/core/device/DeviceInfo;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideDeviceSecurityHelperFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideDeviceSecurityHelperFactory;
+	public fun get ()Lbr/com/wgc/core/device/DeviceSecurityHelper;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideDeviceSecurityHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/DeviceSecurityHelper;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideEncryptedKeyValueStorageFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideEncryptedKeyValueStorageFactory;
+	public fun get ()Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideEncryptedKeyValueStorage (Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;)Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideEncryptedSharedPreferencesCoreFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideEncryptedSharedPreferencesCoreFactory;
+	public fun get ()Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideEncryptedSharedPreferencesCore (Landroid/content/Context;)Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideFileManagerFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideFileManagerFactory;
+	public fun get ()Lbr/com/wgc/core/file/FileManager;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideFileManager (Landroid/content/Context;)Lbr/com/wgc/core/file/FileManager;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideHapticFeedbackHelperFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideHapticFeedbackHelperFactory;
+	public fun get ()Lbr/com/wgc/core/device/HapticFeedbackHelper;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideHapticFeedbackHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/HapticFeedbackHelper;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideImageCompressorFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideImageCompressorFactory;
+	public fun get ()Lbr/com/wgc/core/ui/media/ImageCompressor;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideImageCompressor (Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)Lbr/com/wgc/core/ui/media/ImageCompressor;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideKeyValueDataStoreFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideKeyValueDataStoreFactory;
+	public fun get ()Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideKeyValueDataStore (Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore;)Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideNetworkMonitorFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideNetworkMonitorFactory;
+	public fun get ()Lbr/com/wgc/core/network/NetworkMonitor;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideNetworkMonitor (Landroid/content/Context;)Lbr/com/wgc/core/network/NetworkMonitor;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvidePermissionManagerFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvidePermissionManagerFactory;
+	public fun get ()Lbr/com/wgc/core/device/PermissionManager;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun providePermissionManager (Landroid/content/Context;)Lbr/com/wgc/core/device/PermissionManager;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideSessionManagerFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideSessionManagerFactory;
+	public fun get ()Lbr/com/wgc/core/session/SessionManager;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideSessionManager (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/file/FileManager;Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)Lbr/com/wgc/core/session/SessionManager;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideSharedPreferencesCoreFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideSharedPreferencesCoreFactory;
+	public fun get ()Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideSharedPreferencesCore (Landroid/content/Context;Ljava/lang/String;)Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideSharedPreferencesNameFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideSharedPreferencesNameFactory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Ljava/lang/String;
+	public static fun provideSharedPreferencesName ()Ljava/lang/String;
+}
+
+public class hilt_aggregated_deps/_br_com_wgc_core_di_CoreModule {
+	public fun <init> ()V
+}
+

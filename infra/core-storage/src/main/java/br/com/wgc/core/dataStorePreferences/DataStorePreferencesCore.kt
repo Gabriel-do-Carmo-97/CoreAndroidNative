@@ -48,159 +48,198 @@ import javax.inject.Singleton
  * @param dataStoreName Nome do arquivo em disco do DataStore.
  */
 @Singleton
-class DataStorePreferencesCore @Inject constructor(
-    @param:ApplicationContext private val context: Context,
-    private val dataStoreName: String = DEFAULT_DATASTORE_NAME
-) : KeyValueDataStore {
+class DataStorePreferencesCore
+    @Inject
+    constructor(
+        @param:ApplicationContext private val context: Context,
+        private val dataStoreName: String = DEFAULT_DATASTORE_NAME,
+    ) : KeyValueDataStore {
+        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = dataStoreName)
 
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = dataStoreName)
-
-    /**
-     * Intercepta o fluxo de dados do DataStore para capturar [IOException]s
-     * de leitura em disco, emitindo [emptyPreferences] como fallback seguro.
-     */
-    private fun safeDataStore(): Flow<Preferences> {
-        return context.dataStore.data.catch { exception ->
-            if (exception is IOException) {
-                emit(emptyPreferences())
-            } else {
-                throw exception
-            }
-        }
-    }
-
-    override suspend fun saveString(key: String, value: String) {
-        context.dataStore.edit { preferences ->
-            preferences[stringPreferencesKey(key)] = value
-        }
-    }
-
-    override fun getStringFlow(key: String, defaultValue: String?): Flow<String?> {
-        val preferencesKey = stringPreferencesKey(key)
-        return safeDataStore().map { preferences ->
-            preferences[preferencesKey] ?: defaultValue
-        }
-    }
-
-    override suspend fun saveInt(key: String, value: Int) {
-        context.dataStore.edit { preferences ->
-            preferences[intPreferencesKey(key)] = value
-        }
-    }
-
-    override fun getIntFlow(key: String, defaultValue: Int): Flow<Int> {
-        val preferencesKey = intPreferencesKey(key)
-        return safeDataStore().map { preferences ->
-            preferences[preferencesKey] ?: defaultValue
-        }
-    }
-
-    override suspend fun saveBoolean(key: String, value: Boolean) {
-        context.dataStore.edit { preferences ->
-            preferences[booleanPreferencesKey(key)] = value
-        }
-    }
-
-    override fun getBooleanFlow(key: String, defaultValue: Boolean): Flow<Boolean> {
-        val preferencesKey = booleanPreferencesKey(key)
-        return safeDataStore().map { preferences ->
-            preferences[preferencesKey] ?: defaultValue
-        }
-    }
-
-    override suspend fun saveFloat(key: String, value: Float) {
-        context.dataStore.edit { preferences ->
-            preferences[floatPreferencesKey(key)] = value
-        }
-    }
-
-    override fun getFloatFlow(key: String, defaultValue: Float): Flow<Float> {
-        val preferencesKey = floatPreferencesKey(key)
-        return safeDataStore().map { preferences ->
-            preferences[preferencesKey] ?: defaultValue
-        }
-    }
-
-    override suspend fun saveLong(key: String, value: Long) {
-        context.dataStore.edit { preferences ->
-            preferences[longPreferencesKey(key)] = value
-        }
-    }
-
-    override fun getLongFlow(key: String, defaultValue: Long): Flow<Long> {
-        val preferencesKey = longPreferencesKey(key)
-        return safeDataStore().map { preferences ->
-            preferences[preferencesKey] ?: defaultValue
-        }
-    }
-
-    override suspend fun saveStringSet(key: String, value: Set<String>) {
-        context.dataStore.edit { preferences ->
-            preferences[stringSetPreferencesKey(key)] = value
-        }
-    }
-
-    override fun getStringSetFlow(key: String, defaultValue: Set<String>): Flow<Set<String>> {
-        val preferencesKey = stringSetPreferencesKey(key)
-        return safeDataStore().map { preferences ->
-            preferences[preferencesKey] ?: defaultValue
-        }
-    }
-
-    override suspend fun saveAny(key: String, value: Any) {
-        context.dataStore.edit { preferences ->
-            when (value) {
-                is String -> preferences[stringPreferencesKey(key)] = value
-                is Int -> preferences[intPreferencesKey(key)] = value
-                is Boolean -> preferences[booleanPreferencesKey(key)] = value
-                is Float -> preferences[floatPreferencesKey(key)] = value
-                is Long -> preferences[longPreferencesKey(key)] = value
-                is Set<*> -> {
-                    @Suppress("UNCHECKED_CAST")
-                    preferences[stringSetPreferencesKey(key)] = value as Set<String>
+        /**
+         * Intercepta o fluxo de dados do DataStore para capturar [IOException]s
+         * de leitura em disco, emitindo [emptyPreferences] como fallback seguro.
+         */
+        private fun safeDataStore(): Flow<Preferences> =
+            context.dataStore.data.catch { exception ->
+                if (exception is IOException) {
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
                 }
-                else -> throw StorageException.UnsupportedTypeException(value::class.java.name)
+            }
+
+        override suspend fun saveString(
+            key: String,
+            value: String,
+        ) {
+            context.dataStore.edit { preferences ->
+                preferences[stringPreferencesKey(key)] = value
             }
         }
-    }
 
-    override suspend fun getAll(): Map<Preferences.Key<*>, Any> {
-        val preferences = safeDataStore().first()
-        return preferences.asMap()
-    }
-
-    override suspend fun containsKey(key: String): Boolean {
-        val preferences = safeDataStore().first()
-        return preferences.asMap().keys.any { it.name == key }
-    }
-
-    override suspend fun <T> contains(key: Preferences.Key<T>): Boolean {
-        val preferences = safeDataStore().first()
-        return preferences.contains(key)
-    }
-
-    override suspend fun <T> remove(key: Preferences.Key<T>) {
-        context.dataStore.edit { preferences ->
-            preferences.remove(key)
-        }
-    }
-
-    override suspend fun removeKey(key: String) {
-        context.dataStore.edit { preferences ->
-            val targetKey = preferences.asMap().keys.firstOrNull { it.name == key }
-            if (targetKey != null) {
-                preferences.remove(targetKey)
+        override fun getStringFlow(
+            key: String,
+            defaultValue: String?,
+        ): Flow<String?> {
+            val preferencesKey = stringPreferencesKey(key)
+            return safeDataStore().map { preferences ->
+                preferences[preferencesKey] ?: defaultValue
             }
         }
-    }
 
-    override suspend fun clear() {
-        context.dataStore.edit { preferences ->
-            preferences.clear()
+        override suspend fun saveInt(
+            key: String,
+            value: Int,
+        ) {
+            context.dataStore.edit { preferences ->
+                preferences[intPreferencesKey(key)] = value
+            }
+        }
+
+        override fun getIntFlow(
+            key: String,
+            defaultValue: Int,
+        ): Flow<Int> {
+            val preferencesKey = intPreferencesKey(key)
+            return safeDataStore().map { preferences ->
+                preferences[preferencesKey] ?: defaultValue
+            }
+        }
+
+        override suspend fun saveBoolean(
+            key: String,
+            value: Boolean,
+        ) {
+            context.dataStore.edit { preferences ->
+                preferences[booleanPreferencesKey(key)] = value
+            }
+        }
+
+        override fun getBooleanFlow(
+            key: String,
+            defaultValue: Boolean,
+        ): Flow<Boolean> {
+            val preferencesKey = booleanPreferencesKey(key)
+            return safeDataStore().map { preferences ->
+                preferences[preferencesKey] ?: defaultValue
+            }
+        }
+
+        override suspend fun saveFloat(
+            key: String,
+            value: Float,
+        ) {
+            context.dataStore.edit { preferences ->
+                preferences[floatPreferencesKey(key)] = value
+            }
+        }
+
+        override fun getFloatFlow(
+            key: String,
+            defaultValue: Float,
+        ): Flow<Float> {
+            val preferencesKey = floatPreferencesKey(key)
+            return safeDataStore().map { preferences ->
+                preferences[preferencesKey] ?: defaultValue
+            }
+        }
+
+        override suspend fun saveLong(
+            key: String,
+            value: Long,
+        ) {
+            context.dataStore.edit { preferences ->
+                preferences[longPreferencesKey(key)] = value
+            }
+        }
+
+        override fun getLongFlow(
+            key: String,
+            defaultValue: Long,
+        ): Flow<Long> {
+            val preferencesKey = longPreferencesKey(key)
+            return safeDataStore().map { preferences ->
+                preferences[preferencesKey] ?: defaultValue
+            }
+        }
+
+        override suspend fun saveStringSet(
+            key: String,
+            value: Set<String>,
+        ) {
+            context.dataStore.edit { preferences ->
+                preferences[stringSetPreferencesKey(key)] = value
+            }
+        }
+
+        override fun getStringSetFlow(
+            key: String,
+            defaultValue: Set<String>,
+        ): Flow<Set<String>> {
+            val preferencesKey = stringSetPreferencesKey(key)
+            return safeDataStore().map { preferences ->
+                preferences[preferencesKey] ?: defaultValue
+            }
+        }
+
+        override suspend fun saveAny(
+            key: String,
+            value: Any,
+        ) {
+            context.dataStore.edit { preferences ->
+                when (value) {
+                    is String -> preferences[stringPreferencesKey(key)] = value
+                    is Int -> preferences[intPreferencesKey(key)] = value
+                    is Boolean -> preferences[booleanPreferencesKey(key)] = value
+                    is Float -> preferences[floatPreferencesKey(key)] = value
+                    is Long -> preferences[longPreferencesKey(key)] = value
+                    is Set<*> -> {
+                        @Suppress("UNCHECKED_CAST")
+                        preferences[stringSetPreferencesKey(key)] = value as Set<String>
+                    }
+                    else -> throw StorageException.UnsupportedTypeException(value::class.java.name)
+                }
+            }
+        }
+
+        override suspend fun getAll(): Map<Preferences.Key<*>, Any> {
+            val preferences = safeDataStore().first()
+            return preferences.asMap()
+        }
+
+        override suspend fun containsKey(key: String): Boolean {
+            val preferences = safeDataStore().first()
+            return preferences.asMap().keys.any { it.name == key }
+        }
+
+        override suspend fun <T> contains(key: Preferences.Key<T>): Boolean {
+            val preferences = safeDataStore().first()
+            return preferences.contains(key)
+        }
+
+        override suspend fun <T> remove(key: Preferences.Key<T>) {
+            context.dataStore.edit { preferences ->
+                preferences.remove(key)
+            }
+        }
+
+        override suspend fun removeKey(key: String) {
+            context.dataStore.edit { preferences ->
+                val targetKey = preferences.asMap().keys.firstOrNull { it.name == key }
+                if (targetKey != null) {
+                    preferences.remove(targetKey)
+                }
+            }
+        }
+
+        override suspend fun clear() {
+            context.dataStore.edit { preferences ->
+                preferences.clear()
+            }
+        }
+
+        companion object {
+            const val DEFAULT_DATASTORE_NAME = "wgc_core_datastore"
         }
     }
-
-    companion object {
-        const val DEFAULT_DATASTORE_NAME = "wgc_core_datastore"
-    }
-}

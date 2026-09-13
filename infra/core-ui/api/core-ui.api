@@ -1,0 +1,91 @@
+public final class br/com/wgc/core/extensions/ModifierExtensionsKt {
+	public static final fun debouncedClick-O2vRcR0 (Landroidx/compose/ui/Modifier;JZZLjava/lang/String;Landroidx/compose/ui/semantics/Role;Lkotlin/jvm/functions/Function0;)Landroidx/compose/ui/Modifier;
+	public static synthetic fun debouncedClick-O2vRcR0$default (Landroidx/compose/ui/Modifier;JZZLjava/lang/String;Landroidx/compose/ui/semantics/Role;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+	public static final fun debouncedClick-n0RszrM (Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/foundation/Indication;JZLjava/lang/String;Landroidx/compose/ui/semantics/Role;Lkotlin/jvm/functions/Function0;)Landroidx/compose/ui/Modifier;
+	public static synthetic fun debouncedClick-n0RszrM$default (Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/foundation/Indication;JZLjava/lang/String;Landroidx/compose/ui/semantics/Role;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+}
+
+public final class br/com/wgc/core/formatters/transformations/CepVisualTransformation : androidx/compose/ui/text/input/VisualTransformation {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun filter (Landroidx/compose/ui/text/AnnotatedString;)Landroidx/compose/ui/text/input/TransformedText;
+}
+
+public final class br/com/wgc/core/formatters/transformations/CpfVisualTransformation : androidx/compose/ui/text/input/VisualTransformation {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun filter (Landroidx/compose/ui/text/AnnotatedString;)Landroidx/compose/ui/text/input/TransformedText;
+}
+
+public final class br/com/wgc/core/formatters/transformations/PhoneVisualTransformation : androidx/compose/ui/text/input/VisualTransformation {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun filter (Landroidx/compose/ui/text/AnnotatedString;)Landroidx/compose/ui/text/input/TransformedText;
+}
+
+public final class br/com/wgc/core/result/DefaultUiEffectChannel : br/com/wgc/core/result/UiEffectChannel {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (ILkotlinx/coroutines/channels/BufferOverflow;)V
+	public synthetic fun <init> (ILkotlinx/coroutines/channels/BufferOverflow;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getEffects ()Lkotlinx/coroutines/flow/Flow;
+	public fun sendEffect (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun trySendEffect (Ljava/lang/Object;)Z
+}
+
+public abstract interface class br/com/wgc/core/result/UiEffectChannel {
+	public abstract fun getEffects ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun sendEffect (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun trySendEffect (Ljava/lang/Object;)Z
+}
+
+public final class br/com/wgc/core/ui/components/EmptyStateScreenKt {
+	public static final fun EmptyStateScreen (Ljava/lang/String;Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class br/com/wgc/core/ui/components/GenericErrorScreenKt {
+	public static final fun GenericErrorScreen (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class br/com/wgc/core/ui/components/LoadingButtonKt {
+	public static final fun LoadingButton (Ljava/lang/String;ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/runtime/Composer;II)V
+}
+
+public final class br/com/wgc/core/ui/media/DefaultImageCompressor : br/com/wgc/core/ui/media/ImageCompressor {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)V
+	public synthetic fun <init> (Lbr/com/wgc/core/coroutines/CoroutineDispatchers;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun compressBitmap (Landroid/graphics/Bitmap;IIILandroid/graphics/Bitmap$CompressFormat;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun compressFile (Ljava/io/File;Ljava/io/File;IIILandroid/graphics/Bitmap$CompressFormat;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class br/com/wgc/core/ui/media/ImageCompressor {
+	public abstract fun compressBitmap (Landroid/graphics/Bitmap;IIILandroid/graphics/Bitmap$CompressFormat;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun compressBitmap$default (Lbr/com/wgc/core/ui/media/ImageCompressor;Landroid/graphics/Bitmap;IIILandroid/graphics/Bitmap$CompressFormat;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public abstract fun compressFile (Ljava/io/File;Ljava/io/File;IIILandroid/graphics/Bitmap$CompressFormat;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun compressFile$default (Lbr/com/wgc/core/ui/media/ImageCompressor;Ljava/io/File;Ljava/io/File;IIILandroid/graphics/Bitmap$CompressFormat;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class br/com/wgc/core/ui/media/ImageCompressor$DefaultImpls {
+	public static synthetic fun compressBitmap$default (Lbr/com/wgc/core/ui/media/ImageCompressor;Landroid/graphics/Bitmap;IIILandroid/graphics/Bitmap$CompressFormat;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun compressFile$default (Lbr/com/wgc/core/ui/media/ImageCompressor;Ljava/io/File;Ljava/io/File;IIILandroid/graphics/Bitmap$CompressFormat;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public abstract interface annotation class br/com/wgc/core/ui/previews/CompletePreviews : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class br/com/wgc/core/ui/previews/DevicePreviews : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class br/com/wgc/core/ui/previews/FontScalePreviews : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class br/com/wgc/core/ui/previews/ThemePreviews : java/lang/annotation/Annotation {
+}
+
+public final class br/com/wgc/core/ui/shimmer/ShimmerModifierKt {
+	public static final fun shimmerEffect (Landroidx/compose/ui/Modifier;ZLjava/util/List;I)Landroidx/compose/ui/Modifier;
+	public static synthetic fun shimmerEffect$default (Landroidx/compose/ui/Modifier;ZLjava/util/List;IILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+}
+

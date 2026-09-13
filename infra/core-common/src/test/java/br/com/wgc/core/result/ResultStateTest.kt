@@ -12,7 +12,6 @@ import org.junit.Test
 import java.io.IOException
 
 class ResultStateTest {
-
     @Test
     fun successState_helpersReturnExpectedValues() {
         val state: ResultState<String> = ResultState.Success("Hello")
@@ -55,35 +54,38 @@ class ResultStateTest {
     }
 
     @Test
-    fun asResultState_whenFlowEmitsValue_emitsLoadingThenSuccess() = runTest {
-        val sourceFlow = flowOf("payload").asResultState()
-        sourceFlow.test {
-            val first = awaitItem()
-            assertTrue(first.isLoading())
+    fun asResultState_whenFlowEmitsValue_emitsLoadingThenSuccess() =
+        runTest {
+            val sourceFlow = flowOf("payload").asResultState()
+            sourceFlow.test {
+                val first = awaitItem()
+                assertTrue(first.isLoading())
 
-            val second = awaitItem()
-            assertTrue(second.isSuccess())
-            assertEquals("payload", second.getOrNull())
+                val second = awaitItem()
+                assertTrue(second.isSuccess())
+                assertEquals("payload", second.getOrNull())
 
-            awaitComplete()
+                awaitComplete()
+            }
         }
-    }
 
     @Test
-    fun asResultState_whenFlowThrows_emitsLoadingThenError() = runTest {
-        val failingFlow = flow<String> {
-            throw IOException("Stream failure")
-        }.asResultState()
+    fun asResultState_whenFlowThrows_emitsLoadingThenError() =
+        runTest {
+            val failingFlow =
+                flow<String> {
+                    throw IOException("Stream failure")
+                }.asResultState()
 
-        failingFlow.test {
-            val first = awaitItem()
-            assertTrue(first.isLoading())
+            failingFlow.test {
+                val first = awaitItem()
+                assertTrue(first.isLoading())
 
-            val second = awaitItem()
-            assertTrue(second.isError())
-            assertEquals("Stream failure", (second as ResultState.Error).message)
+                val second = awaitItem()
+                assertTrue(second.isError())
+                assertEquals("Stream failure", (second as ResultState.Error).message)
 
-            awaitComplete()
+                awaitComplete()
+            }
         }
-    }
 }

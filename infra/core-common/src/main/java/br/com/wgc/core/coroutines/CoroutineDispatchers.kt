@@ -9,7 +9,6 @@ import kotlinx.coroutines.CoroutineDispatcher
  * (como `StandardTestDispatcher`) em testes unitários, substituindo despachantes reais do runtime.
  */
 interface CoroutineDispatchers {
-
     /** Despachante associado à Main Thread do Android (atualizações de UI). */
     val main: CoroutineDispatcher
 

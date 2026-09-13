@@ -13,7 +13,6 @@ import org.junit.Before
 import org.junit.Test
 
 class TokenAuthenticatorTest {
-
     private lateinit var server: MockWebServer
     private val tokenProvider: TokenProvider = mockk(relaxed = true)
 
@@ -33,19 +32,23 @@ class TokenAuthenticatorTest {
         coEvery { tokenProvider.getAccessToken() } returns "old_token"
         coEvery { tokenProvider.refreshToken() } returns "refreshed_token"
 
-        val client = OkHttpClient.Builder()
-            .addInterceptor(AuthInterceptor(tokenProvider))
-            .authenticator(TokenAuthenticator(tokenProvider))
-            .build()
+        val client =
+            OkHttpClient
+                .Builder()
+                .addInterceptor(AuthInterceptor(tokenProvider))
+                .authenticator(TokenAuthenticator(tokenProvider))
+                .build()
 
         // 1st request -> 401 Unauthorized
         server.enqueue(MockResponse().setResponseCode(401))
         // 2nd request (retry) -> 200 OK
         server.enqueue(MockResponse().setResponseCode(200).setBody("Success"))
 
-        val request = Request.Builder()
-            .url(server.url("/secure"))
-            .build()
+        val request =
+            Request
+                .Builder()
+                .url(server.url("/secure"))
+                .build()
 
         val response = client.newCall(request).execute()
         assertEquals(200, response.code)
@@ -64,16 +67,20 @@ class TokenAuthenticatorTest {
         coEvery { tokenProvider.getAccessToken() } returns "expired_token"
         coEvery { tokenProvider.refreshToken() } returns null
 
-        val client = OkHttpClient.Builder()
-            .addInterceptor(AuthInterceptor(tokenProvider))
-            .authenticator(TokenAuthenticator(tokenProvider))
-            .build()
+        val client =
+            OkHttpClient
+                .Builder()
+                .addInterceptor(AuthInterceptor(tokenProvider))
+                .authenticator(TokenAuthenticator(tokenProvider))
+                .build()
 
         server.enqueue(MockResponse().setResponseCode(401))
 
-        val request = Request.Builder()
-            .url(server.url("/secure"))
-            .build()
+        val request =
+            Request
+                .Builder()
+                .url(server.url("/secure"))
+                .build()
 
         val response = client.newCall(request).execute()
         assertEquals(401, response.code)

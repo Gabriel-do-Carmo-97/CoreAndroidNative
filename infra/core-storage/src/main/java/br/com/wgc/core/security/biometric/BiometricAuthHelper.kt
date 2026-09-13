@@ -34,7 +34,9 @@ sealed interface BiometricAuthStatus {
  */
 sealed interface BiometricAuthResult {
     /** Authentication succeeded with optional authenticated [cryptoObject]. */
-    data class Success(val cryptoObject: BiometricPrompt.CryptoObject? = null) : BiometricAuthResult
+    data class Success(
+        val cryptoObject: BiometricPrompt.CryptoObject? = null,
+    ) : BiometricAuthResult
 
     /** Authentication failed because biometric data did not match enrolled credentials. */
     data object Failed : BiometricAuthResult
@@ -48,7 +50,10 @@ sealed interface BiometricAuthResult {
      * @param errorCode Raw error code from [BiometricPrompt].
      * @param errorMessage Human-readable description of the error.
      */
-    data class Error(val errorCode: Int, val errorMessage: CharSequence) : BiometricAuthResult
+    data class Error(
+        val errorCode: Int,
+        val errorMessage: CharSequence,
+    ) : BiometricAuthResult
 }
 
 /**
@@ -67,7 +72,7 @@ data class BiometricPromptConfig(
     val description: String? = null,
     val negativeButtonText: String = "Cancelar",
     val confirmationRequired: Boolean = true,
-    val authenticators: Int = BiometricManager.Authenticators.BIOMETRIC_STRONG
+    val authenticators: Int = BiometricManager.Authenticators.BIOMETRIC_STRONG,
 )
 
 /**
@@ -80,9 +85,7 @@ interface BiometricAuthHelper {
      * @param authenticators Bitmask of authenticators to verify against.
      * @return [BiometricAuthStatus] indicating device capability.
      */
-    fun canAuthenticate(
-        authenticators: Int = BiometricManager.Authenticators.BIOMETRIC_STRONG
-    ): BiometricAuthStatus
+    fun canAuthenticate(authenticators: Int = BiometricManager.Authenticators.BIOMETRIC_STRONG): BiometricAuthStatus
 
     /**
      * Displays the biometric prompt dialog and emits the authentication result.
@@ -96,7 +99,7 @@ interface BiometricAuthHelper {
         activity: FragmentActivity,
         config: BiometricPromptConfig,
         cryptoObject: BiometricPrompt.CryptoObject? = null,
-        callback: (BiometricAuthResult) -> Unit
+        callback: (BiometricAuthResult) -> Unit,
     )
 }
 
@@ -106,9 +109,8 @@ interface BiometricAuthHelper {
  * @param context Application context used for biometric manager queries.
  */
 class DefaultBiometricAuthHelper(
-    private val context: Context
+    private val context: Context,
 ) : BiometricAuthHelper {
-
     override fun canAuthenticate(authenticators: Int): BiometricAuthStatus {
         val manager = BiometricManager.from(context)
         return when (manager.canAuthenticate(authenticators)) {
@@ -125,33 +127,39 @@ class DefaultBiometricAuthHelper(
         activity: FragmentActivity,
         config: BiometricPromptConfig,
         cryptoObject: BiometricPrompt.CryptoObject?,
-        callback: (BiometricAuthResult) -> Unit
+        callback: (BiometricAuthResult) -> Unit,
     ) {
         val executor = ContextCompat.getMainExecutor(activity)
-        val promptCallback = object : BiometricPrompt.AuthenticationCallback() {
-            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                callback(BiometricAuthResult.Success(result.cryptoObject))
-            }
+        val promptCallback =
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                    callback(BiometricAuthResult.Success(result.cryptoObject))
+                }
 
-            override fun onAuthenticationFailed() {
-                callback(BiometricAuthResult.Failed)
-            }
+                override fun onAuthenticationFailed() {
+                    callback(BiometricAuthResult.Failed)
+                }
 
-            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                if (errorCode == BiometricPrompt.ERROR_USER_CANCELED ||
-                    errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON ||
-                    errorCode == BiometricPrompt.ERROR_CANCELED
+                override fun onAuthenticationError(
+                    errorCode: Int,
+                    errString: CharSequence,
                 ) {
-                    callback(BiometricAuthResult.Cancelled)
-                } else {
-                    callback(BiometricAuthResult.Error(errorCode, errString))
+                    if (errorCode == BiometricPrompt.ERROR_USER_CANCELED ||
+                        errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON ||
+                        errorCode == BiometricPrompt.ERROR_CANCELED
+                    ) {
+                        callback(BiometricAuthResult.Cancelled)
+                    } else {
+                        callback(BiometricAuthResult.Error(errorCode, errString))
+                    }
                 }
             }
-        }
 
-        val promptInfoBuilder = BiometricPrompt.PromptInfo.Builder()
-            .setTitle(config.title)
-            .setConfirmationRequired(config.confirmationRequired)
+        val promptInfoBuilder =
+            BiometricPrompt.PromptInfo
+                .Builder()
+                .setTitle(config.title)
+                .setConfirmationRequired(config.confirmationRequired)
 
         config.subtitle?.let { promptInfoBuilder.setSubtitle(it) }
         config.description?.let { promptInfoBuilder.setDescription(it) }

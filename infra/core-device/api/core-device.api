@@ -1,0 +1,208 @@
+public final class br/com/wgc/core/device/DefaultDeviceInfo : br/com/wgc/core/device/DeviceInfo {
+	public fun <init> (Landroid/content/Context;)V
+	public fun getDeviceModel ()Ljava/lang/String;
+	public fun getManufacturer ()Ljava/lang/String;
+	public fun getSdkInt ()I
+	public fun getVersionCode ()J
+	public fun getVersionName ()Ljava/lang/String;
+	public fun isEmulator ()Z
+}
+
+public final class br/com/wgc/core/device/DefaultDeviceSecurityHelper : br/com/wgc/core/device/DeviceSecurityHelper {
+	public fun <init> (Landroid/content/Context;Z)V
+	public synthetic fun <init> (Landroid/content/Context;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun checkSecurity ()Lbr/com/wgc/core/device/DeviceSecurityReport;
+	public fun isAdbEnabled ()Z
+	public fun isEmulator ()Z
+	public fun isRootDetectionEnabled ()Z
+	public fun isRooted ()Z
+}
+
+public final class br/com/wgc/core/device/DefaultHapticFeedbackHelper : br/com/wgc/core/device/HapticFeedbackHelper {
+	public fun <init> (Landroid/content/Context;)V
+	public fun vibrateClick ()V
+	public fun vibrateError ()V
+	public fun vibrateSuccess ()V
+}
+
+public final class br/com/wgc/core/device/DefaultPermissionManager : br/com/wgc/core/device/PermissionManager {
+	public fun <init> (Landroid/content/Context;)V
+	public fun checkPermissionState (Landroid/app/Activity;Ljava/lang/String;)Lbr/com/wgc/core/device/PermissionState;
+	public fun isGranted (Ljava/lang/String;)Z
+	public fun openAppSettings ()V
+}
+
+public abstract interface class br/com/wgc/core/device/DeviceInfo {
+	public abstract fun getDeviceModel ()Ljava/lang/String;
+	public abstract fun getManufacturer ()Ljava/lang/String;
+	public abstract fun getSdkInt ()I
+	public abstract fun getVersionCode ()J
+	public abstract fun getVersionName ()Ljava/lang/String;
+	public abstract fun isEmulator ()Z
+}
+
+public abstract interface class br/com/wgc/core/device/DeviceSecurityHelper {
+	public abstract fun checkSecurity ()Lbr/com/wgc/core/device/DeviceSecurityReport;
+	public abstract fun isAdbEnabled ()Z
+	public abstract fun isEmulator ()Z
+	public abstract fun isRootDetectionEnabled ()Z
+	public abstract fun isRooted ()Z
+}
+
+public final class br/com/wgc/core/device/DeviceSecurityReport {
+	public fun <init> (ZZZZZ)V
+	public final fun component1 ()Z
+	public final fun component2 ()Z
+	public final fun component3 ()Z
+	public final fun component4 ()Z
+	public final fun component5 ()Z
+	public final fun copy (ZZZZZ)Lbr/com/wgc/core/device/DeviceSecurityReport;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/device/DeviceSecurityReport;ZZZZZILjava/lang/Object;)Lbr/com/wgc/core/device/DeviceSecurityReport;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public final fun isAdbEnabled ()Z
+	public final fun isEmulator ()Z
+	public final fun isRootDetectionEnabled ()Z
+	public final fun isRooted ()Z
+	public final fun isSecure ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class br/com/wgc/core/device/HapticFeedbackHelper {
+	public abstract fun vibrateClick ()V
+	public abstract fun vibrateError ()V
+	public abstract fun vibrateSuccess ()V
+}
+
+public abstract interface class br/com/wgc/core/device/PermissionManager {
+	public abstract fun checkPermissionState (Landroid/app/Activity;Ljava/lang/String;)Lbr/com/wgc/core/device/PermissionState;
+	public abstract fun isGranted (Ljava/lang/String;)Z
+	public abstract fun openAppSettings ()V
+}
+
+public abstract interface class br/com/wgc/core/device/PermissionState {
+}
+
+public final class br/com/wgc/core/device/PermissionState$Denied : br/com/wgc/core/device/PermissionState {
+	public fun <init> (Z)V
+	public final fun component1 ()Z
+	public final fun copy (Z)Lbr/com/wgc/core/device/PermissionState$Denied;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/device/PermissionState$Denied;ZILjava/lang/Object;)Lbr/com/wgc/core/device/PermissionState$Denied;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getShouldShowRationale ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/device/PermissionState$Granted : br/com/wgc/core/device/PermissionState {
+	public static final field INSTANCE Lbr/com/wgc/core/device/PermissionState$Granted;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/extensions/ContextExtensionsKt {
+	public static final fun hasPermission (Landroid/content/Context;Ljava/lang/String;)Z
+	public static final fun showToast (Landroid/content/Context;Ljava/lang/String;I)V
+	public static synthetic fun showToast$default (Landroid/content/Context;Ljava/lang/String;IILjava/lang/Object;)V
+}
+
+public final class br/com/wgc/core/network/NetworkMonitor {
+	public fun <init> (Landroid/content/Context;)V
+	public final fun getStatus ()Lkotlinx/coroutines/flow/Flow;
+	public final fun isConnected ()Lkotlinx/coroutines/flow/Flow;
+	public final fun isCurrentlyConnected ()Z
+	public final fun isNetworkValidated ()Z
+}
+
+public final class br/com/wgc/core/network/NetworkMonitor_Factory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/network/NetworkMonitor_Factory;
+	public fun get ()Lbr/com/wgc/core/network/NetworkMonitor;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun newInstance (Landroid/content/Context;)Lbr/com/wgc/core/network/NetworkMonitor;
+}
+
+public abstract interface class br/com/wgc/core/network/NetworkStatus {
+}
+
+public final class br/com/wgc/core/network/NetworkStatus$Available : br/com/wgc/core/network/NetworkStatus {
+	public static final field INSTANCE Lbr/com/wgc/core/network/NetworkStatus$Available;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/network/NetworkStatus$Losing : br/com/wgc/core/network/NetworkStatus {
+	public static final field INSTANCE Lbr/com/wgc/core/network/NetworkStatus$Losing;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/network/NetworkStatus$Lost : br/com/wgc/core/network/NetworkStatus {
+	public static final field INSTANCE Lbr/com/wgc/core/network/NetworkStatus$Lost;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/network/NetworkStatus$Unavailable : br/com/wgc/core/network/NetworkStatus {
+	public static final field INSTANCE Lbr/com/wgc/core/network/NetworkStatus$Unavailable;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/notification/CreateChannelNotification {
+	public fun <init> (Landroid/content/Context;)V
+	public final fun with (Ljava/lang/String;Ljava/lang/String;)Lbr/com/wgc/core/notification/CreateChannelNotification$Builder;
+}
+
+public final class br/com/wgc/core/notification/CreateChannelNotification$Builder {
+	public fun <init> (Lbr/com/wgc/core/notification/CreateChannelNotification;Ljava/lang/String;Ljava/lang/String;)V
+	public final fun create ()V
+	public final fun withDescription (Ljava/lang/String;)Lbr/com/wgc/core/notification/CreateChannelNotification$Builder;
+	public final fun withImportance (I)Lbr/com/wgc/core/notification/CreateChannelNotification$Builder;
+	public final fun withLight (Z)Lbr/com/wgc/core/notification/CreateChannelNotification$Builder;
+	public final fun withVibration (Z)Lbr/com/wgc/core/notification/CreateChannelNotification$Builder;
+}
+
+public final class br/com/wgc/core/notification/CreateNotification {
+	public fun <init> (Landroid/content/Context;)V
+	public final fun with (Ljava/lang/String;Ljava/lang/String;)Lbr/com/wgc/core/notification/CreateNotification$Builder;
+}
+
+public final class br/com/wgc/core/notification/CreateNotification$Builder {
+	public fun <init> (Lbr/com/wgc/core/notification/CreateNotification;Ljava/lang/String;Ljava/lang/String;)V
+	public final fun asLiveUpdate (Z)Lbr/com/wgc/core/notification/CreateNotification$Builder;
+	public final fun autoCancel (Z)Lbr/com/wgc/core/notification/CreateNotification$Builder;
+	public final fun build ()Landroid/app/Notification;
+	public final fun show (I)V
+	public final fun withAction (ILjava/lang/String;Landroid/app/PendingIntent;)Lbr/com/wgc/core/notification/CreateNotification$Builder;
+	public final fun withAction (Landroidx/core/app/NotificationCompat$Action;)Lbr/com/wgc/core/notification/CreateNotification$Builder;
+	public final fun withBigPictureStyle (Landroid/graphics/Bitmap;Ljava/lang/String;Ljava/lang/String;)Lbr/com/wgc/core/notification/CreateNotification$Builder;
+	public static synthetic fun withBigPictureStyle$default (Lbr/com/wgc/core/notification/CreateNotification$Builder;Landroid/graphics/Bitmap;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lbr/com/wgc/core/notification/CreateNotification$Builder;
+	public final fun withBigTextStyle (Ljava/lang/String;)Lbr/com/wgc/core/notification/CreateNotification$Builder;
+	public final fun withContent (ILjava/lang/String;)Lbr/com/wgc/core/notification/CreateNotification$Builder;
+	public final fun withPriority (I)Lbr/com/wgc/core/notification/CreateNotification$Builder;
+	public final fun withProgressStyle (IIZZ)Lbr/com/wgc/core/notification/CreateNotification$Builder;
+	public static synthetic fun withProgressStyle$default (Lbr/com/wgc/core/notification/CreateNotification$Builder;IIZZILjava/lang/Object;)Lbr/com/wgc/core/notification/CreateNotification$Builder;
+	public final fun withTapAction (Landroid/app/PendingIntent;)Lbr/com/wgc/core/notification/CreateNotification$Builder;
+	public final fun withTapAction (Landroid/content/Intent;II)Lbr/com/wgc/core/notification/CreateNotification$Builder;
+	public final fun withTapAction (Lkotlin/reflect/KClass;)Lbr/com/wgc/core/notification/CreateNotification$Builder;
+	public static synthetic fun withTapAction$default (Lbr/com/wgc/core/notification/CreateNotification$Builder;Landroid/content/Intent;IIILjava/lang/Object;)Lbr/com/wgc/core/notification/CreateNotification$Builder;
+}
+
+public final class br/com/wgc/core/notification/NotificationHelper {
+	public static final field Companion Lbr/com/wgc/core/notification/NotificationHelper$Companion;
+	public static final field DEFAULT_CHANNEL_ID Ljava/lang/String;
+	public static final field DOWNLOAD_CHANNEL_ID Ljava/lang/String;
+	public static final field LOW_PRIORITY_CHANNEL_ID Ljava/lang/String;
+	public static final field URGENT_CHANNEL_ID Ljava/lang/String;
+	public fun <init> (Landroid/content/Context;)V
+	public final fun createNotificationChannelsDefault (Ljava/lang/String;)V
+}
+
+public final class br/com/wgc/core/notification/NotificationHelper$Companion {
+}
+

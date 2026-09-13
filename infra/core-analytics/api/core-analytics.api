@@ -1,0 +1,24 @@
+public final class br/com/wgc/core/analytics/consent/ConsentType : java/lang/Enum {
+	public static final field ANALYTICS Lbr/com/wgc/core/analytics/consent/ConsentType;
+	public static final field CRASH_REPORTING Lbr/com/wgc/core/analytics/consent/ConsentType;
+	public static final field MARKETING Lbr/com/wgc/core/analytics/consent/ConsentType;
+	public static final field PERSONALIZATION Lbr/com/wgc/core/analytics/consent/ConsentType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lbr/com/wgc/core/analytics/consent/ConsentType;
+	public static fun values ()[Lbr/com/wgc/core/analytics/consent/ConsentType;
+}
+
+public final class br/com/wgc/core/analytics/consent/LgpdConsentManager {
+	public fun <init> (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;)V
+	public final fun isConsentGranted (Lbr/com/wgc/core/analytics/consent/ConsentType;)Z
+	public final fun revokeAllConsents ()V
+	public final fun setConsent (Lbr/com/wgc/core/analytics/consent/ConsentType;Z)V
+}
+
+public final class br/com/wgc/core/analytics/consent/LgpdConsentManager_Factory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/analytics/consent/LgpdConsentManager_Factory;
+	public fun get ()Lbr/com/wgc/core/analytics/consent/LgpdConsentManager;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun newInstance (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;)Lbr/com/wgc/core/analytics/consent/LgpdConsentManager;
+}
+

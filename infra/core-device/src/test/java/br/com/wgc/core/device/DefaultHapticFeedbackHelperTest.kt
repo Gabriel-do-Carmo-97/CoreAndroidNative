@@ -11,7 +11,6 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [33])
 class DefaultHapticFeedbackHelperTest {
-
     private lateinit var context: Context
     private lateinit var hapticHelper: DefaultHapticFeedbackHelper
 

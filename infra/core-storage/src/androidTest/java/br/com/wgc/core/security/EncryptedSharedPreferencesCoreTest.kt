@@ -17,17 +17,17 @@ import org.junit.runner.RunWith
  */
 @RunWith(AndroidJUnit4::class)
 class EncryptedSharedPreferencesCoreTest {
-
     private lateinit var context: Context
     private lateinit var encryptedStorage: EncryptedSharedPreferencesCore
 
     @Before
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
-        encryptedStorage = EncryptedSharedPreferencesCore(
-            context = context,
-            fileName = "test_encrypted_prefs_${System.currentTimeMillis()}"
-        )
+        encryptedStorage =
+            EncryptedSharedPreferencesCore(
+                context = context,
+                fileName = "test_encrypted_prefs_${System.currentTimeMillis()}",
+            )
     }
 
     @Test

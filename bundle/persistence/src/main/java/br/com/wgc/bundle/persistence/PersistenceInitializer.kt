@@ -17,7 +17,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object PersistenceInitializer {
-
     /**
      * Provê a instância singleton de [PersistenceFacade].
      *
@@ -27,10 +26,8 @@ object PersistenceInitializer {
     @Provides
     @Singleton
     fun providePersistenceFacade(
-        @ApplicationContext context: Context
-    ): PersistenceFacade {
-        return PersistenceFacade(context)
-    }
+        @ApplicationContext context: Context,
+    ): PersistenceFacade = PersistenceFacade(context)
 }
 
 /**
@@ -39,7 +36,7 @@ object PersistenceInitializer {
  * @property context O contexto da aplicação consumidora.
  */
 class PersistenceFacade(
-    private val context: Context
+    private val context: Context,
 ) {
     /**
      * Retorna o status de inicialização do bundle de persistência contendo o nome do pacote consumidor.

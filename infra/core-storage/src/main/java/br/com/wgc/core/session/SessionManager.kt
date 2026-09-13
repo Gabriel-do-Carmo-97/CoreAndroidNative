@@ -14,7 +14,6 @@ import kotlinx.coroutines.withContext
  * orquestrada e atômica de credenciais seguras, preferências persistidas em disco e arquivos em cache.
  */
 interface SessionManager {
-
     /**
      * Limpa de forma assíncrona todos os dados de sessão do usuário:
      * - Preferences DataStore
@@ -42,9 +41,8 @@ class DefaultSessionManager(
     private val defaultStorage: KeyValueStorage,
     private val encryptedStorage: KeyValueStorage,
     private val fileManager: FileManager,
-    private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers()
+    private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers(),
 ) : SessionManager {
-
     override suspend fun clearSession(clearCache: Boolean) {
         withContext(dispatchers.io) {
             keyValueDataStore.clear()

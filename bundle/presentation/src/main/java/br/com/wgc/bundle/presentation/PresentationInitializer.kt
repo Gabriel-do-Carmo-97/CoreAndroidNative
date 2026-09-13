@@ -11,18 +11,15 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object PresentationInitializer {
-
     @Provides
     @Singleton
     fun providePresentationFacade(
-        @ApplicationContext context: Context
-    ): PresentationFacade {
-        return PresentationFacade(context)
-    }
+        @ApplicationContext context: Context,
+    ): PresentationFacade = PresentationFacade(context)
 }
 
 class PresentationFacade(
-    private val context: Context
+    private val context: Context,
 ) {
     fun getStatus(): String = "Presentation Bundle initialized successfully for package ${context.packageName}"
 }

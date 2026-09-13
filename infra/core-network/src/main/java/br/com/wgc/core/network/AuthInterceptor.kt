@@ -14,20 +14,21 @@ private const val BEARER_PREFIX = "Bearer "
  * @property tokenProvider Provedor responsável por fornecer o token de autenticação atual.
  */
 class AuthInterceptor(
-    private val tokenProvider: TokenProvider
+    private val tokenProvider: TokenProvider,
 ) : Interceptor {
-
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val token = runBlocking { tokenProvider.getAccessToken() }
 
-        val request = if (!token.isNullOrBlank() && originalRequest.header(AUTHORIZATION_HEADER) == null) {
-            originalRequest.newBuilder()
-                .header(AUTHORIZATION_HEADER, "$BEARER_PREFIX$token")
-                .build()
-        } else {
-            originalRequest
-        }
+        val request =
+            if (!token.isNullOrBlank() && originalRequest.header(AUTHORIZATION_HEADER) == null) {
+                originalRequest
+                    .newBuilder()
+                    .header(AUTHORIZATION_HEADER, "$BEARER_PREFIX$token")
+                    .build()
+            } else {
+                originalRequest
+            }
 
         return chain.proceed(request)
     }

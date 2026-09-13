@@ -51,7 +51,7 @@ fun BigDecimal.toCurrencyFormatted(locale: Locale = Locale.forLanguageTag("pt-BR
  */
 fun Long.toFormattedDate(
     pattern: String = "dd/MM/yyyy",
-    zoneId: ZoneId = ZoneId.systemDefault()
+    zoneId: ZoneId = ZoneId.systemDefault(),
 ): String {
     val formatter = DateTimeFormatter.ofPattern(pattern).withZone(zoneId)
     return formatter.format(Instant.ofEpochMilli(this))

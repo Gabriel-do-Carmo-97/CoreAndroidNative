@@ -27,36 +27,37 @@ fun Modifier.debouncedClick(
     showRipple: Boolean = true,
     onClickLabel: String? = null,
     role: Role? = null,
-    onClick: () -> Unit
-): Modifier = composed {
-    var lastClickTime by remember { mutableLongStateOf(0L) }
+    onClick: () -> Unit,
+): Modifier =
+    composed {
+        var lastClickTime by remember { mutableLongStateOf(0L) }
 
-    val debouncedOnClick = {
-        val currentTime = System.currentTimeMillis()
-        if (currentTime - lastClickTime >= debounceTimeMs) {
-            lastClickTime = currentTime
-            onClick()
+        val debouncedOnClick = {
+            val currentTime = System.currentTimeMillis()
+            if (currentTime - lastClickTime >= debounceTimeMs) {
+                lastClickTime = currentTime
+                onClick()
+            }
+        }
+
+        if (showRipple) {
+            this.clickable(
+                enabled = enabled,
+                onClickLabel = onClickLabel,
+                role = role,
+                onClick = debouncedOnClick,
+            )
+        } else {
+            this.clickable(
+                enabled = enabled,
+                onClickLabel = onClickLabel,
+                role = role,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = debouncedOnClick,
+            )
         }
     }
-
-    if (showRipple) {
-        this.clickable(
-            enabled = enabled,
-            onClickLabel = onClickLabel,
-            role = role,
-            onClick = debouncedOnClick
-        )
-    } else {
-        this.clickable(
-            enabled = enabled,
-            onClickLabel = onClickLabel,
-            role = role,
-            interactionSource = remember { MutableInteractionSource() },
-            indication = null,
-            onClick = debouncedOnClick
-        )
-    }
-}
 
 /**
  * Extensão de Modifier para cliques com debounce com customização explícita
@@ -69,21 +70,22 @@ fun Modifier.debouncedClick(
     enabled: Boolean = true,
     onClickLabel: String? = null,
     role: Role? = null,
-    onClick: () -> Unit
-): Modifier = composed {
-    var lastClickTime by remember { mutableLongStateOf(0L) }
+    onClick: () -> Unit,
+): Modifier =
+    composed {
+        var lastClickTime by remember { mutableLongStateOf(0L) }
 
-    this.clickable(
-        interactionSource = interactionSource,
-        indication = indication,
-        enabled = enabled,
-        onClickLabel = onClickLabel,
-        role = role
-    ) {
-        val currentTime = System.currentTimeMillis()
-        if (currentTime - lastClickTime >= debounceTimeMs) {
-            lastClickTime = currentTime
-            onClick()
+        this.clickable(
+            interactionSource = interactionSource,
+            indication = indication,
+            enabled = enabled,
+            onClickLabel = onClickLabel,
+            role = role,
+        ) {
+            val currentTime = System.currentTimeMillis()
+            if (currentTime - lastClickTime >= debounceTimeMs) {
+                lastClickTime = currentTime
+                onClick()
+            }
         }
     }
-}

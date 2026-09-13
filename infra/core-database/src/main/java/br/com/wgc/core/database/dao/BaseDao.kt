@@ -24,7 +24,6 @@ import androidx.room.Update
  */
 @JvmSuppressWildcards
 interface BaseDao<T> {
-
     /**
      * Insere uma única entidade no banco de dados.
      *

@@ -12,7 +12,6 @@ import org.junit.Before
 import org.junit.Test
 
 class AuthInterceptorTest {
-
     private lateinit var server: MockWebServer
     private val tokenProvider: TokenProvider = mockk()
 
@@ -31,15 +30,19 @@ class AuthInterceptorTest {
     fun intercept_whenTokenExists_shouldAttachBearerHeader() {
         coEvery { tokenProvider.getAccessToken() } returns "my_valid_token"
 
-        val client = OkHttpClient.Builder()
-            .addInterceptor(AuthInterceptor(tokenProvider))
-            .build()
+        val client =
+            OkHttpClient
+                .Builder()
+                .addInterceptor(AuthInterceptor(tokenProvider))
+                .build()
 
         server.enqueue(MockResponse().setResponseCode(200).setBody("OK"))
 
-        val request = Request.Builder()
-            .url(server.url("/test"))
-            .build()
+        val request =
+            Request
+                .Builder()
+                .url(server.url("/test"))
+                .build()
 
         val response = client.newCall(request).execute()
         assertEquals(200, response.code)
@@ -52,15 +55,19 @@ class AuthInterceptorTest {
     fun intercept_whenTokenIsNull_shouldNotAttachBearerHeader() {
         coEvery { tokenProvider.getAccessToken() } returns null
 
-        val client = OkHttpClient.Builder()
-            .addInterceptor(AuthInterceptor(tokenProvider))
-            .build()
+        val client =
+            OkHttpClient
+                .Builder()
+                .addInterceptor(AuthInterceptor(tokenProvider))
+                .build()
 
         server.enqueue(MockResponse().setResponseCode(200).setBody("OK"))
 
-        val request = Request.Builder()
-            .url(server.url("/test"))
-            .build()
+        val request =
+            Request
+                .Builder()
+                .url(server.url("/test"))
+                .build()
 
         client.newCall(request).execute()
 

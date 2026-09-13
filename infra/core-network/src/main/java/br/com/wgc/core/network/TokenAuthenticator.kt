@@ -24,33 +24,37 @@ private const val MAX_RETRY_ATTEMPTS = 3
  */
 class TokenAuthenticator(
     private val tokenProvider: TokenProvider,
-    private val refreshMutex: Mutex = Mutex()
+    private val refreshMutex: Mutex = Mutex(),
 ) : Authenticator {
-
-    override fun authenticate(route: Route?, response: Response): Request? {
+    override fun authenticate(
+        route: Route?,
+        response: Response,
+    ): Request? {
         if (responseCount(response) >= MAX_RETRY_ATTEMPTS) {
             return null
         }
 
         val currentHeader = response.request.header(AUTHORIZATION_HEADER)
 
-        val newAccessToken: String? = runBlocking {
-            refreshMutex.withLock {
-                val latestToken = tokenProvider.getAccessToken()
-                if (!latestToken.isNullOrBlank() && "$BEARER_PREFIX$latestToken" != currentHeader) {
-                    latestToken
-                } else {
-                    val refreshed = tokenProvider.refreshToken()
-                    if (refreshed == null) {
-                        tokenProvider.onSessionExpired()
+        val newAccessToken: String? =
+            runBlocking {
+                refreshMutex.withLock {
+                    val latestToken = tokenProvider.getAccessToken()
+                    if (!latestToken.isNullOrBlank() && "$BEARER_PREFIX$latestToken" != currentHeader) {
+                        latestToken
+                    } else {
+                        val refreshed = tokenProvider.refreshToken()
+                        if (refreshed == null) {
+                            tokenProvider.onSessionExpired()
+                        }
+                        refreshed
                     }
-                    refreshed
                 }
             }
-        }
 
         return if (!newAccessToken.isNullOrBlank()) {
-            response.request.newBuilder()
+            response.request
+                .newBuilder()
                 .header(AUTHORIZATION_HEADER, "$BEARER_PREFIX$newAccessToken")
                 .build()
         } else {

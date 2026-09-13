@@ -19,7 +19,7 @@ data class DeviceSecurityReport(
     val isEmulator: Boolean,
     val isAdbEnabled: Boolean,
     val isRootDetectionEnabled: Boolean,
-    val isSecure: Boolean
+    val isSecure: Boolean,
 )
 
 /**
@@ -70,9 +70,8 @@ interface DeviceSecurityHelper {
  */
 class DefaultDeviceSecurityHelper(
     private val context: Context,
-    override val isRootDetectionEnabled: Boolean = false
+    override val isRootDetectionEnabled: Boolean = false,
 ) : DeviceSecurityHelper {
-
     override fun isRooted(): Boolean {
         if (!isRootDetectionEnabled) {
             return false
@@ -94,23 +93,23 @@ class DefaultDeviceSecurityHelper(
             model.contains("Emulator") ||
             model.contains("Android SDK built for x86") ||
             manufacturer.contains("Genymotion") ||
-            brand.startsWith("generic") && device.startsWith("generic") ||
+            brand.startsWith("generic") &&
+            device.startsWith("generic") ||
             product.contains("sdk") ||
             product.contains("vbox86p") ||
             product.contains("emulator")
     }
 
-    override fun isAdbEnabled(): Boolean {
-        return try {
+    override fun isAdbEnabled(): Boolean =
+        try {
             Settings.Global.getInt(
                 context.contentResolver,
                 Settings.Global.ADB_ENABLED,
-                0
+                0,
             ) != 0
         } catch (_: SecurityException) {
             false
         }
-    }
 
     override fun checkSecurity(): DeviceSecurityReport {
         val rooted = isRooted()
@@ -123,7 +122,7 @@ class DefaultDeviceSecurityHelper(
             isEmulator = emulator,
             isAdbEnabled = adb,
             isRootDetectionEnabled = isRootDetectionEnabled,
-            isSecure = secure
+            isSecure = secure,
         )
     }
 
@@ -133,21 +132,20 @@ class DefaultDeviceSecurityHelper(
     }
 
     private fun checkSuPaths(): Boolean {
-        val paths = listOf(
-            "/system/app/Superuser.apk",
-            "/sbin/su",
-            "/system/bin/su",
-            "/system/xbin/su",
-            "/data/local/xbin/su",
-            "/data/local/bin/su",
-            "/system/sd/xbin/su",
-            "/system/bin/failsafe/su",
-            "/data/local/su"
-        )
+        val paths =
+            listOf(
+                "/system/app/Superuser.apk",
+                "/sbin/su",
+                "/system/bin/su",
+                "/system/xbin/su",
+                "/data/local/xbin/su",
+                "/data/local/bin/su",
+                "/system/sd/xbin/su",
+                "/system/bin/failsafe/su",
+                "/data/local/su",
+            )
         return paths.any { File(it).exists() }
     }
 
-    private fun checkSuperuserApk(): Boolean {
-        return File("/system/app/Superuser/Superuser.apk").exists()
-    }
+    private fun checkSuperuserApk(): Boolean = File("/system/app/Superuser/Superuser.apk").exists()
 }

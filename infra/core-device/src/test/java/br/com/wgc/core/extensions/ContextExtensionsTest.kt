@@ -18,7 +18,6 @@ import org.robolectric.shadows.ShadowToast
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [33])
 class ContextExtensionsTest {
-
     private lateinit var context: Context
 
     @Before

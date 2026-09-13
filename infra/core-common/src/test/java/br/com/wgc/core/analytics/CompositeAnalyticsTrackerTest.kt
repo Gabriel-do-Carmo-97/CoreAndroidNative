@@ -6,30 +6,31 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class CompositeAnalyticsTrackerTest {
-
     @Test
     fun `logEvent should fan out to all registered trackers with masked PII`() {
         val tracker1 = mockk<AnalyticsTracker>(relaxed = true)
         val tracker2 = mockk<AnalyticsTracker>(relaxed = true)
         val composite = CompositeAnalyticsTracker(listOf(tracker1, tracker2), enablePiiMasking = true)
 
-        val params = mapOf(
-            "cpf" to "123.456.789-00",
-            "card" to "4111 2222 3333 4444",
-            "auth" to "Bearer abcdef123456",
-            "email" to "user@example.com",
-            "item_count" to 5
-        )
+        val params =
+            mapOf(
+                "cpf" to "123.456.789-00",
+                "card" to "4111 2222 3333 4444",
+                "auth" to "Bearer abcdef123456",
+                "email" to "user@example.com",
+                "item_count" to 5,
+            )
 
         composite.logEvent("purchase_attempt", params)
 
-        val expectedParams = mapOf(
-            "cpf" to "***.***.***-**",
-            "card" to "****-****-****-****",
-            "auth" to "Bearer [MASKED_TOKEN]",
-            "email" to "***@***.***",
-            "item_count" to 5
-        )
+        val expectedParams =
+            mapOf(
+                "cpf" to "***.***.***-**",
+                "card" to "****-****-****-****",
+                "auth" to "Bearer [MASKED_TOKEN]",
+                "email" to "***@***.***",
+                "item_count" to 5,
+            )
 
         verify(exactly = 1) { tracker1.logEvent("purchase_attempt", expectedParams) }
         verify(exactly = 1) { tracker2.logEvent("purchase_attempt", expectedParams) }

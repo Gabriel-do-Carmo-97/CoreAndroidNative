@@ -13,18 +13,19 @@ import java.io.IOException
  */
 sealed class StorageException(
     message: String,
-    cause: Throwable? = null
+    cause: Throwable? = null,
 ) : Exception(message, cause) {
-
     /**
      * Lançada quando uma operação de persistência recebe um tipo de dado não suportado.
      *
      * @param type Nome da classe do tipo incompatível recebido.
      */
-    class UnsupportedTypeException(type: String) : StorageException(
-        "Tipo de dado não suportado para armazenamento: $type. " +
-            "Tipos válidos: String, Int, Boolean, Float, Long, Set<String>."
-    )
+    class UnsupportedTypeException(
+        type: String,
+    ) : StorageException(
+            "Tipo de dado não suportado para armazenamento: $type. " +
+                "Tipos válidos: String, Int, Boolean, Float, Long, Set<String>.",
+        )
 
     /**
      * Lançada quando ocorre uma falha de entrada/saída durante a leitura ou escrita em disco.
@@ -32,10 +33,13 @@ sealed class StorageException(
      * @param message Detalhes do erro de I/O.
      * @param cause A [IOException] original.
      */
-    class StorageIOException(message: String, cause: IOException? = null) : StorageException(
-        message,
-        cause
-    )
+    class StorageIOException(
+        message: String,
+        cause: IOException? = null,
+    ) : StorageException(
+            message,
+            cause,
+        )
 
     /**
      * Lançada quando ocorre uma falha de criptografia ou acesso à Android KeyStore.
@@ -43,8 +47,11 @@ sealed class StorageException(
      * @param message Detalhes da falha criptográfica.
      * @param cause Causa original da exceção.
      */
-    class EncryptionException(message: String, cause: Throwable? = null) : StorageException(
-        message,
-        cause
-    )
+    class EncryptionException(
+        message: String,
+        cause: Throwable? = null,
+    ) : StorageException(
+            message,
+            cause,
+        )
 }

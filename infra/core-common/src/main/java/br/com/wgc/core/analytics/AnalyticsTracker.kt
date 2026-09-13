@@ -10,7 +10,10 @@ interface AnalyticsTracker {
      * @param name Unique event identifier (e.g., "checkout_completed").
      * @param params Key-value map representing event payload.
      */
-    fun logEvent(name: String, params: Map<String, Any> = emptyMap())
+    fun logEvent(
+        name: String,
+        params: Map<String, Any> = emptyMap(),
+    )
 
     /**
      * Associates a user-level characteristic with the active analytics session.
@@ -18,7 +21,10 @@ interface AnalyticsTracker {
      * @param name Property key (e.g., "subscription_tier").
      * @param value Property value.
      */
-    fun setUserProperty(name: String, value: String)
+    fun setUserProperty(
+        name: String,
+        value: String,
+    )
 
     /**
      * Associates an authenticated user identifier across all active trackers.
