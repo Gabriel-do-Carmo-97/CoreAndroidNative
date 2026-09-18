@@ -29,9 +29,9 @@ graph TD
     %% Infra
     Storage[":infra:core-storage<br/>(DataStore, SharedPreferences, Crypto)"]:::infra
     Database[":infra:core-database<br/>(Room, SQLCipher, DAOs)"]:::infra
-    Network[":infra:core-network<br/>(NetworkMonitor, Interceptors, Retry)"]:::infra
+    Network[":infra:core-network<br/>(AuthInterceptor, TokenAuthenticator, SslPinning)"]:::infra
     Analytics[":infra:core-analytics<br/>(LGPD Consent, Telemetria)"]:::infra
-    Device[":infra:core-device<br/>(DeviceInfo, Haptics, Notificações)"]:::infra
+    Device[":infra:core-device<br/>(DeviceInfo, NetworkMonitor, Haptics, Security)"]:::infra
     Location[":infra:core-location<br/>(GPS, DistanceUtils, FusedLocation)"]:::infra
     Camera[":infra:core-camera<br/>(CameraX, QR Code Scanner)"]:::infra
     UI[":infra:core-ui<br/>(VisualTransformations, Compose Modifiers)"]:::infra
@@ -98,9 +98,9 @@ Para arquiteturas limpas onde cada camada importa apenas o que precisa:
 | **`core-common`** | `br.com.wgc.core.common` | ❌ **NÃO** | `ResultState`, `CoroutineDispatchers`, `retryWithBackoff`, `CoreLogger` (PII Masking), `Validators` (CPF, CNPJ, Email, Telefone, CEP), `Formatters`. |
 | **`core-storage`** | `br.com.wgc.core.storage` | ❌ **NÃO** | `KeyValueDataStore`, `DataStorePreferencesCore`, `EncryptedSharedPreferencesCore` (AES-256 GCM), `SessionManager`. |
 | **`core-database`** | `br.com.wgc.core.database` | ❌ **NÃO** | **Room**, Criptografia com **SQLCipher**, `BaseDao`, `RoomConverters` (Date, UUID, List), `DatabaseEncrypter`. |
-| **`core-network`** | `br.com.wgc.core.network` | ❌ **NÃO** | `NetworkMonitor` reativo com `callbackFlow`, interceptors OkHttp e retentativas com backoff. |
+| **`core-network`** | `br.com.wgc.core.network` | ❌ **NÃO** | `AuthInterceptor`, `TokenAuthenticator`, `SslPinningHelper` e `ApiResult`. |
 | **`core-analytics`** | `br.com.wgc.core.analytics` | ❌ **NÃO** | `LgpdConsentManager` (Consentimento explícito por tipo) e telemetria segura. |
-| **`core-device`** | `br.com.wgc.core.device` | ❌ **NÃO** | `DeviceInfo`, `HapticFeedbackHelper`, `NotificationHelper` (Android 13+), `ContextExtensions`. |
+| **`core-device`** | `br.com.wgc.core.device` | ❌ **NÃO** | `DeviceInfo`, `NetworkMonitor` reativo via ConnectivityManager, `HapticFeedbackHelper`, `NotificationHelper`, `DeviceSecurityHelper`. |
 | **`core-location`** | `br.com.wgc.core.location` | ❌ **NÃO** | `LocationClient` reativo com FusedLocationProvider e `DistanceUtils` (Fórmula de Haversine). |
 | **`core-camera`** | `br.com.wgc.core.camera` | ⚠️ UI | `CameraPreview` com suporte ao Lifecycle do Compose e `QrCodeScannerAnalyzer` via Google ML Kit. |
 | **`core-ui`** | `br.com.wgc.core.ui` | ✅ **SIM** | `VisualTransformations` (CPF, CNPJ, Telefone, CEP), `ModifierExtensions` (`debouncedClick`), `UiEffectChannel`. |
@@ -134,16 +134,16 @@ dependencyResolutionManagement {
 ```kotlin
 dependencies {
     // Solução completa de banco e armazenamento
-    implementation("br.com.wgc:bundle-persistence:0.0.x")
+    implementation("br.com.wgc:bundle-persistence:1.0.0")
 
     // Solução completa de rede e telemetria
-    implementation("br.com.wgc:bundle-networking:0.0.x")
+    implementation("br.com.wgc:bundle-networking:1.0.0")
 
     // Componentes visuais e câmera
-    implementation("br.com.wgc:bundle-presentation:0.0.x")
+    implementation("br.com.wgc:bundle-presentation:1.0.0")
 
     // GPS e Hardware
-    implementation("br.com.wgc:bundle-hardware:0.0.x")
+    implementation("br.com.wgc:bundle-hardware:1.0.0")
 }
 ```
 
@@ -151,14 +151,14 @@ dependencies {
 
 ```kotlin
 // No módulo :domain (Kotlin puro, sem dependências Android)
-implementation("br.com.wgc:core-common:0.0.x")
+implementation("br.com.wgc:core-common:1.0.0")
 
 // No módulo :data (Banco de dados e armazenamento)
-implementation("br.com.wgc:core-storage:0.0.x")
-implementation("br.com.wgc:core-database:0.0.x")
+implementation("br.com.wgc:core-storage:1.0.0")
+implementation("br.com.wgc:core-database:1.0.0")
 
 // No módulo :presentation (Telas e componentes)
-implementation("br.com.wgc:core-ui:0.0.x")
+implementation("br.com.wgc:core-ui:1.0.0")
 ```
 
 ---

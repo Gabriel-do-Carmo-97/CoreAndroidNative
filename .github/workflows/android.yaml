@@ -633,28 +633,6 @@ jobs:
         if: steps.changed_modules.outputs.any_changed == 'true'
         uses: ./.github/actions/setup-android-env
 
-      - name: 📦 Publish Infra modules to GitHub Packages
-        if: steps.changed_modules.outputs.any_changed == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :infra:core-common:publish :infra:core-storage:publish :infra:core-device:publish :infra:core-network:publish :infra:core-ui:publish :infra:core-database:publish :infra:core-location:publish :infra:core-camera:publish :infra:core-analytics:publish :infra:core:publish
-
-      - name: ⬇️ Download Infra Release AARs
-        if: steps.changed_modules.outputs.any_changed == 'true'
-        uses: actions/download-artifact@v4
-        with:
-          pattern: release-aar-core-*
-          merge-multiple: true
-          path: ./infra-release-aars
-
-      - name: Configure GitHub Access
-        if: steps.changed_modules.outputs.any_changed == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
-
       - name: 🏷️ Calculate Semantic Version (SemVer)
         if: steps.changed_modules.outputs.any_changed == 'true'
         id: semver
@@ -681,8 +659,32 @@ jobs:
             fi
             NEW_TAG="v${MAJOR}.${MINOR}.${PATCH}"
           fi
-          echo "Calculated SemVer Tag: $NEW_TAG"
+          NEW_VERSION=${NEW_TAG#v}
+          echo "Calculated SemVer Tag: $NEW_TAG (version: $NEW_VERSION)"
           echo "tag_name=$NEW_TAG" >> $GITHUB_OUTPUT
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: 📦 Publish Infra modules to GitHub Packages
+        if: steps.changed_modules.outputs.any_changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew :infra:core-common:publish :infra:core-storage:publish :infra:core-device:publish :infra:core-network:publish :infra:core-ui:publish :infra:core-database:publish :infra:core-location:publish :infra:core-camera:publish :infra:core-analytics:publish :infra:core:publish -Pversion="${{ steps.semver.outputs.version }}"
+
+      - name: ⬇️ Download Infra Release AARs
+        if: steps.changed_modules.outputs.any_changed == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          pattern: release-aar-core-*
+          merge-multiple: true
+          path: ./infra-release-aars
+
+      - name: Configure GitHub Access
+        if: steps.changed_modules.outputs.any_changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
 
       - name: Create Git Tag
         if: steps.changed_modules.outputs.any_changed == 'true'
@@ -760,11 +762,21 @@ jobs:
         if: steps.changed_modules.outputs.any_changed == 'true'
         uses: ./.github/actions/setup-android-env
 
+      - name: 🏷️ Get Current Release Version
+        if: steps.changed_modules.outputs.any_changed == 'true'
+        id: semver
+        run: |
+          LATEST_TAG=$(git describe --tags --match "v[0-9]*.[0-9]*.[0-9]*" --abbrev=0 2>/dev/null || echo "v1.0.0")
+          VERSION=${LATEST_TAG#v}
+          echo "Current Release Version: $VERSION ($LATEST_TAG)"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag_name=$LATEST_TAG" >> $GITHUB_OUTPUT
+
       - name: 📦 Publish Bundles to GitHub Packages
         if: steps.changed_modules.outputs.any_changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :bundle:persistence:publish :bundle:networking:publish :bundle:presentation:publish :bundle:hardware:publish
+        run: ./gradlew :bundle:persistence:publish :bundle:networking:publish :bundle:presentation:publish :bundle:hardware:publish -Pversion="${{ steps.semver.outputs.version }}"
 
       - name: ⬇️ Download Bundle Release AARs
         if: steps.changed_modules.outputs.any_changed == 'true'

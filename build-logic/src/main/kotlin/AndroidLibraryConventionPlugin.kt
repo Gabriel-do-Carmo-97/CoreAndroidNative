@@ -20,8 +20,12 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<DetektExtension> {
-                ignoreFailures = true
+                ignoreFailures = false
                 buildUponDefaultConfig = true
+                val detektConfigFile = rootProject.file("config/detekt/detekt.yml")
+                if (detektConfigFile.exists()) {
+                    config.setFrom(detektConfigFile)
+                }
             }
 
             extensions.configure<LibraryExtension> {
@@ -63,7 +67,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 }
 
                 lint {
-                    abortOnError = false
+                    abortOnError = true
                     checkDependencies = true
                     warningsAsErrors = false
                 }

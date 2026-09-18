@@ -23,11 +23,39 @@ class AndroidPublishConventionPlugin : Plugin<Project> {
                                     target.parent?.name == "bundle" -> "bundle-${target.name}"
                                     else -> target.name
                                 }
-                            version = "0.0.${System.getenv("GITHUB_RUN_NUMBER") ?: "0.0.1-SNAPSHOT"}"
+                            val releaseVersion = target.findProperty("version")?.toString()?.takeIf { it != "unspecified" }
+                                ?: System.getenv("RELEASE_VERSION")
+                                ?: "1.0.0"
+                            version = releaseVersion
 
                             val releaseComponent = components.findByName("release")
                             if (releaseComponent != null) {
                                 from(releaseComponent)
+                            }
+
+                            pom {
+                                name.set(artifactId)
+                                description.set("CoreAndroidNative - Enterprise Android Infrastructure Library: $artifactId")
+                                url.set("https://github.com/Gabriel-do-Carmo-97/CoreAndroidNative")
+                                licenses {
+                                    license {
+                                        name.set("The Apache Software License, Version 2.0")
+                                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                                        distribution.set("repo")
+                                    }
+                                }
+                                developers {
+                                    developer {
+                                        id.set("Gabriel-do-Carmo-97")
+                                        name.set("Gabriel do Carmo")
+                                        email.set("gabriel.desenvolvedor.97@gmail.com")
+                                    }
+                                }
+                                scm {
+                                    connection.set("scm:git:github.com/Gabriel-do-Carmo-97/CoreAndroidNative.git")
+                                    developerConnection.set("scm:git:ssh://github.com/Gabriel-do-Carmo-97/CoreAndroidNative.git")
+                                    url.set("https://github.com/Gabriel-do-Carmo-97/CoreAndroidNative")
+                                }
                             }
                         }
                     }
