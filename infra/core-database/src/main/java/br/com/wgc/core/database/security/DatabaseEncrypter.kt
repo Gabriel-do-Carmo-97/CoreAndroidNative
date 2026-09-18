@@ -47,7 +47,7 @@ class DatabaseEncrypter
         /**
          * Recupera a passphrase existente do armazenamento seguro ou gera uma nova de 256 bits com [SecureRandom].
          */
-        private fun getOrCreatePassphrase(): ByteArray {
+        internal fun getOrCreatePassphrase(): ByteArray {
             val existing = encryptedStorage.getString(KEY_PASSPHRASE)
             if (existing != null) {
                 return Base64.decode(existing, Base64.NO_WRAP)
@@ -62,6 +62,6 @@ class DatabaseEncrypter
 
         companion object {
             /** Chave utilizada no armazenamento seguro para salvar a passphrase do banco. */
-            private const val KEY_PASSPHRASE = "wgc_db_passphrase"
+            internal const val KEY_PASSPHRASE = "wgc_db_passphrase"
         }
     }

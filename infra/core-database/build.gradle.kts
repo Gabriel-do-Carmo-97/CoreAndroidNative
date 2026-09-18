@@ -18,6 +18,7 @@ dependencies {
     implementation(libs.sqlcipher)
 
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.robolectric)
     testImplementation(libs.turbine)
