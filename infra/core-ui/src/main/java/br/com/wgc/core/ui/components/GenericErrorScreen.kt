@@ -12,6 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
@@ -27,7 +30,8 @@ fun GenericErrorScreen(
         modifier =
             modifier
                 .fillMaxSize()
-                .padding(24.dp),
+                .padding(24.dp)
+                .semantics(mergeDescendants = true) {},
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -36,6 +40,7 @@ fun GenericErrorScreen(
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.error,
             textAlign = TextAlign.Center,
+            modifier = Modifier.semantics { heading() },
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
@@ -46,7 +51,10 @@ fun GenericErrorScreen(
         )
         if (onRetry != null) {
             Spacer(modifier = Modifier.height(24.dp))
-            Button(onClick = onRetry) {
+            Button(
+                onClick = onRetry,
+                modifier = Modifier.semantics { contentDescription = retryButtonText },
+            ) {
                 Text(text = retryButtonText)
             }
         }

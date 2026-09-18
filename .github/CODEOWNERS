@@ -1,0 +1,10 @@
+﻿# Global owners for CoreAndroidNative
+* @Gabriel-do-Carmo-97
+
+# Build logic and CI/CD pipelines
+/build-logic/ @Gabriel-do-Carmo-97
+/.github/ @Gabriel-do-Carmo-97
+
+# Infra and Bundles
+/infra/ @Gabriel-do-Carmo-97
+/bundle/ @Gabriel-do-Carmo-97
