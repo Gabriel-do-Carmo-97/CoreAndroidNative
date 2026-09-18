@@ -12,6 +12,7 @@ public final class br/com/wgc/core/di/CoreModule {
 	public final fun provideCoroutineDispatchers ()Lbr/com/wgc/core/coroutines/CoroutineDispatchers;
 	public final fun provideDataStoreName ()Ljava/lang/String;
 	public final fun provideDataStorePreferencesCore (Landroid/content/Context;Ljava/lang/String;)Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore;
+	public final fun provideDatabaseEncrypter (Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;)Lbr/com/wgc/core/database/security/DatabaseEncrypter;
 	public final fun provideDefaultKeyValueStorage (Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;)Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;
 	public final fun provideDeviceInfo (Landroid/content/Context;)Lbr/com/wgc/core/device/DeviceInfo;
 	public final fun provideDeviceSecurityHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/DeviceSecurityHelper;
@@ -21,7 +22,11 @@ public final class br/com/wgc/core/di/CoreModule {
 	public final fun provideHapticFeedbackHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/HapticFeedbackHelper;
 	public final fun provideImageCompressor (Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)Lbr/com/wgc/core/ui/media/ImageCompressor;
 	public final fun provideKeyValueDataStore (Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore;)Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;
+	public final fun provideKeyValueStorage (Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;)Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;
+	public final fun provideLgpdConsentManager (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;)Lbr/com/wgc/core/analytics/consent/LgpdConsentManager;
+	public final fun provideLocationClient (Landroid/content/Context;)Lbr/com/wgc/core/location/LocationClient;
 	public final fun provideNetworkMonitor (Landroid/content/Context;)Lbr/com/wgc/core/network/NetworkMonitor;
+	public final fun provideOkHttpClient ()Lokhttp3/OkHttpClient;
 	public final fun providePermissionManager (Landroid/content/Context;)Lbr/com/wgc/core/device/PermissionManager;
 	public final fun provideSessionManager (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/file/FileManager;Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)Lbr/com/wgc/core/session/SessionManager;
 	public final fun provideSharedPreferencesCore (Landroid/content/Context;Ljava/lang/String;)Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;
@@ -72,6 +77,13 @@ public final class br/com/wgc/core/di/CoreModule_ProvideDataStorePreferencesCore
 	public fun get ()Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore;
 	public synthetic fun get ()Ljava/lang/Object;
 	public static fun provideDataStorePreferencesCore (Landroid/content/Context;Ljava/lang/String;)Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideDatabaseEncrypterFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideDatabaseEncrypterFactory;
+	public fun get ()Lbr/com/wgc/core/database/security/DatabaseEncrypter;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideDatabaseEncrypter (Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;)Lbr/com/wgc/core/database/security/DatabaseEncrypter;
 }
 
 public final class br/com/wgc/core/di/CoreModule_ProvideDefaultKeyValueStorageFactory : dagger/internal/Factory {
@@ -137,11 +149,40 @@ public final class br/com/wgc/core/di/CoreModule_ProvideKeyValueDataStoreFactory
 	public static fun provideKeyValueDataStore (Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore;)Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;
 }
 
+public final class br/com/wgc/core/di/CoreModule_ProvideKeyValueStorageFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideKeyValueStorageFactory;
+	public fun get ()Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideKeyValueStorage (Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;)Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideLgpdConsentManagerFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideLgpdConsentManagerFactory;
+	public fun get ()Lbr/com/wgc/core/analytics/consent/LgpdConsentManager;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideLgpdConsentManager (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;)Lbr/com/wgc/core/analytics/consent/LgpdConsentManager;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideLocationClientFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideLocationClientFactory;
+	public fun get ()Lbr/com/wgc/core/location/LocationClient;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideLocationClient (Landroid/content/Context;)Lbr/com/wgc/core/location/LocationClient;
+}
+
 public final class br/com/wgc/core/di/CoreModule_ProvideNetworkMonitorFactory : dagger/internal/Factory {
 	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideNetworkMonitorFactory;
 	public fun get ()Lbr/com/wgc/core/network/NetworkMonitor;
 	public synthetic fun get ()Ljava/lang/Object;
 	public static fun provideNetworkMonitor (Landroid/content/Context;)Lbr/com/wgc/core/network/NetworkMonitor;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideOkHttpClientFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideOkHttpClientFactory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lokhttp3/OkHttpClient;
+	public static fun provideOkHttpClient ()Lokhttp3/OkHttpClient;
 }
 
 public final class br/com/wgc/core/di/CoreModule_ProvidePermissionManagerFactory : dagger/internal/Factory {

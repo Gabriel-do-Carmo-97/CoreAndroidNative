@@ -31,6 +31,12 @@ public final class br/com/wgc/core/network/AuthInterceptor : okhttp3/Interceptor
 	public fun intercept (Lokhttp3/Interceptor$Chain;)Lokhttp3/Response;
 }
 
+public final class br/com/wgc/core/network/NetworkClientFactory {
+	public static final field INSTANCE Lbr/com/wgc/core/network/NetworkClientFactory;
+	public final fun createOkHttpClient (Lbr/com/wgc/core/network/TokenProvider;JJJZLjava/util/Map;)Lokhttp3/OkHttpClient;
+	public static synthetic fun createOkHttpClient$default (Lbr/com/wgc/core/network/NetworkClientFactory;Lbr/com/wgc/core/network/TokenProvider;JJJZLjava/util/Map;ILjava/lang/Object;)Lokhttp3/OkHttpClient;
+}
+
 public abstract class br/com/wgc/core/network/NetworkException : java/lang/Exception {
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -75,6 +81,7 @@ public final class br/com/wgc/core/network/NetworkException$UnknownNetworkExcept
 
 public final class br/com/wgc/core/network/SslPinningHelper {
 	public static final field INSTANCE Lbr/com/wgc/core/network/SslPinningHelper;
+	public final fun buildCertificatePinner (Ljava/util/Map;)Lokhttp3/CertificatePinner;
 	public final fun configureCertificatePinner (Lokhttp3/OkHttpClient$Builder;Ljava/util/Map;)Lokhttp3/OkHttpClient$Builder;
 }
 
@@ -86,7 +93,12 @@ public final class br/com/wgc/core/network/TokenAuthenticator : okhttp3/Authenti
 
 public abstract interface class br/com/wgc/core/network/TokenProvider {
 	public abstract fun getAccessToken (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getCachedAccessToken ()Ljava/lang/String;
 	public abstract fun onSessionExpired (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun refreshToken (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class br/com/wgc/core/network/TokenProvider$DefaultImpls {
+	public static fun getCachedAccessToken (Lbr/com/wgc/core/network/TokenProvider;)Ljava/lang/String;
 }
 

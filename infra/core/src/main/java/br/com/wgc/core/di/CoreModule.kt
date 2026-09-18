@@ -3,10 +3,12 @@ package br.com.wgc.core.di
 import android.content.Context
 import br.com.wgc.core.analytics.AnalyticsTracker
 import br.com.wgc.core.analytics.CompositeAnalyticsTracker
+import br.com.wgc.core.analytics.consent.LgpdConsentManager
 import br.com.wgc.core.coroutines.CoroutineDispatchers
 import br.com.wgc.core.coroutines.DefaultCoroutineDispatchers
 import br.com.wgc.core.dataStorePreferences.DataStorePreferencesCore
 import br.com.wgc.core.dataStorePreferences.KeyValueDataStore
+import br.com.wgc.core.database.security.DatabaseEncrypter
 import br.com.wgc.core.device.DefaultDeviceInfo
 import br.com.wgc.core.device.DefaultDeviceSecurityHelper
 import br.com.wgc.core.device.DefaultHapticFeedbackHelper
@@ -17,8 +19,11 @@ import br.com.wgc.core.device.HapticFeedbackHelper
 import br.com.wgc.core.device.PermissionManager
 import br.com.wgc.core.file.DefaultFileManager
 import br.com.wgc.core.file.FileManager
+import br.com.wgc.core.location.DefaultLocationClient
+import br.com.wgc.core.location.LocationClient
 import br.com.wgc.core.logging.CoreLogger
 import br.com.wgc.core.logging.DefaultCoreLogger
+import br.com.wgc.core.network.NetworkClientFactory
 import br.com.wgc.core.network.NetworkMonitor
 import br.com.wgc.core.security.EncryptedSharedPreferencesCore
 import br.com.wgc.core.security.biometric.BiometricAuthHelper
@@ -34,6 +39,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -113,6 +119,13 @@ object CoreModule {
     @Singleton
     @Named(STORAGE_DEFAULT_QUALIFIER)
     fun provideDefaultKeyValueStorage(sharedPreferencesCore: SharedPreferencesCore): KeyValueStorage = sharedPreferencesCore
+
+    /**
+     * Provê o binding padrão de [KeyValueStorage] sem qualificador para injeção direta.
+     */
+    @Provides
+    @Singleton
+    fun provideKeyValueStorage(sharedPreferencesCore: SharedPreferencesCore): KeyValueStorage = sharedPreferencesCore
 
     /**
      * Provê a instância singleton de [EncryptedSharedPreferencesCore].
@@ -212,13 +225,13 @@ object CoreModule {
     ): BiometricAuthHelper = DefaultBiometricAuthHelper(context)
 
     /**
-     * Provê a instância singleton de [DeviceSecurityHelper] com detecção de root desabilitada por padrão.
+     * Provê a instância singleton de [DeviceSecurityHelper] com detecção de root ativa por padrão.
      */
     @Provides
     @Singleton
     fun provideDeviceSecurityHelper(
         @ApplicationContext context: Context,
-    ): DeviceSecurityHelper = DefaultDeviceSecurityHelper(context, isRootDetectionEnabled = false)
+    ): DeviceSecurityHelper = DefaultDeviceSecurityHelper(context, isRootDetectionEnabled = true)
 
     /**
      * Provê a instância singleton de [PermissionManager] para checagem e abertura de configurações de permissões.
@@ -242,4 +255,36 @@ object CoreModule {
     @Provides
     @Singleton
     fun provideImageCompressor(dispatchers: CoroutineDispatchers): ImageCompressor = DefaultImageCompressor(dispatchers)
+
+    /**
+     * Provê a instância singleton de [LgpdConsentManager] para gestão de consentimentos de privacidade.
+     */
+    @Provides
+    @Singleton
+    fun provideLgpdConsentManager(
+        @Named(STORAGE_DEFAULT_QUALIFIER) storage: KeyValueStorage,
+    ): LgpdConsentManager = LgpdConsentManager(storage)
+
+    /**
+     * Provê a instância singleton de [LocationClient] para atualizações de localização geográfica.
+     */
+    @Provides
+    @Singleton
+    fun provideLocationClient(
+        @ApplicationContext context: Context,
+    ): LocationClient = DefaultLocationClient(context)
+
+    /**
+     * Provê a instância singleton de [DatabaseEncrypter] para criptografia transparente Room/SQLCipher.
+     */
+    @Provides
+    @Singleton
+    fun provideDatabaseEncrypter(encryptedStorage: EncryptedSharedPreferencesCore): DatabaseEncrypter = DatabaseEncrypter(encryptedStorage)
+
+    /**
+     * Provê uma instância padrão e segura de [OkHttpClient] com timeouts corporativos.
+     */
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(): OkHttpClient = NetworkClientFactory.createOkHttpClient()
 }

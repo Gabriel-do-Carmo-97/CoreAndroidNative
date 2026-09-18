@@ -23,9 +23,10 @@ class AndroidPublishConventionPlugin : Plugin<Project> {
                                     target.parent?.name == "bundle" -> "bundle-${target.name}"
                                     else -> target.name
                                 }
-                            val releaseVersion = target.findProperty("version")?.toString()?.takeIf { it != "unspecified" }
-                                ?: System.getenv("RELEASE_VERSION")
-                                ?: "1.0.0"
+                            val releaseVersion =
+                                target.findProperty("version")?.toString()?.takeIf { it != "unspecified" }
+                                    ?: System.getenv("RELEASE_VERSION")
+                                    ?: "1.0.0"
                             version = releaseVersion
 
                             val releaseComponent = components.findByName("release")

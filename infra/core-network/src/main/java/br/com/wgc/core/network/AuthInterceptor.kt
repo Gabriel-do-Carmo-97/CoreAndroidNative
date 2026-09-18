@@ -18,7 +18,13 @@ class AuthInterceptor(
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
-        val token = runBlocking { tokenProvider.getAccessToken() }
+        val token =
+            runCatching { tokenProvider.getCachedAccessToken() }
+                .getOrNull()
+                ?.takeIf { it.isNotBlank() }
+                ?: runCatching {
+                    runBlocking { tokenProvider.getAccessToken() }
+                }.getOrNull()
 
         val request =
             if (!token.isNullOrBlank() && originalRequest.header(AUTHORIZATION_HEADER) == null) {

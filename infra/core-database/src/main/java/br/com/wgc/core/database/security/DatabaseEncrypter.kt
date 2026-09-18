@@ -50,14 +50,14 @@ class DatabaseEncrypter
         private fun getOrCreatePassphrase(): ByteArray {
             val existing = encryptedStorage.getString(KEY_PASSPHRASE)
             if (existing != null) {
-                return existing.toByteArray(Charsets.UTF_8)
+                return Base64.decode(existing, Base64.NO_WRAP)
             }
 
             val randomBytes = ByteArray(32)
             SecureRandom().nextBytes(randomBytes)
-            val newPassphrase = Base64.encodeToString(randomBytes, Base64.NO_WRAP)
-            encryptedStorage.saveString(KEY_PASSPHRASE, newPassphrase)
-            return newPassphrase.toByteArray(Charsets.UTF_8)
+            val encoded = Base64.encodeToString(randomBytes, Base64.NO_WRAP)
+            encryptedStorage.saveString(KEY_PASSPHRASE, encoded)
+            return randomBytes
         }
 
         companion object {

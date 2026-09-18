@@ -5,6 +5,11 @@ package br.com.wgc.core.network
  */
 interface TokenProvider {
     /**
+     * Retorna o token de acesso armazenado em cache/memória de forma síncrona para evitar bloqueio de threads de I/O.
+     */
+    fun getCachedAccessToken(): String? = null
+
+    /**
      * Retorna o token de acesso atual retido em armazenamento seguro.
      *
      * @return O token em formato texto ou `null` se o usuário não estiver autenticado.
