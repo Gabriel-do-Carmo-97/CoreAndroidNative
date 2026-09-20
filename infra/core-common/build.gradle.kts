@@ -10,6 +10,7 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.javax.inject)
+    api(libs.androidx.startup)
 
     testImplementation(libs.junit)
     testImplementation(libs.androidx.test.core)

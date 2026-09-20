@@ -33,6 +33,7 @@ ksp = "2.2.20-2.0.4"
 bcv = "0.17.0"
 spotless = "7.0.2"
 leakcanary = "2.14"
+startup = "1.2.0"
 
 
 [libraries]
@@ -85,6 +86,7 @@ androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", versi
 androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "camerax" }
 mlkit-barcode-scanning = { module = "com.google.mlkit:barcode-scanning", version.ref = "barcodeScanning" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
+androidx-startup = { module = "androidx.startup:startup-runtime", version.ref = "startup" }
 
 # Gradle Plugins for build-logic
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }

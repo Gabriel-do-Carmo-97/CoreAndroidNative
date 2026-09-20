@@ -195,6 +195,13 @@ public final class br/com/wgc/core/result/ResultStateKt {
 	public static final fun map (Lbr/com/wgc/core/result/ResultState;Lkotlin/jvm/functions/Function1;)Lbr/com/wgc/core/result/ResultState;
 }
 
+public final class br/com/wgc/core/startup/CoreInitializer : androidx/startup/Initializer {
+	public fun <init> ()V
+	public synthetic fun create (Landroid/content/Context;)Ljava/lang/Object;
+	public fun create (Landroid/content/Context;)V
+	public fun dependencies ()Ljava/util/List;
+}
+
 public final class br/com/wgc/core/utils/ConstantsDefault {
 	public static final field EMPTY Ljava/lang/String;
 	public static final field INSTANCE Lbr/com/wgc/core/utils/ConstantsDefault;

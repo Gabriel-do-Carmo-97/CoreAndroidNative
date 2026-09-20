@@ -235,7 +235,8 @@ O repositório é rigorosamente mantido sob o padrão **Enterprise Grade**:
 - **Documentação de API:** Site completo gerado automaticamente via **Dokka** e publicado no [GitHub Pages](https://gabriel-do-carmo-97.github.io/CoreAndroidNative/).
 - **Equipe de Agentes Autônomos:** Especialistas de domínio dedicados para governança técnica ([Ver agentes](./agents/README.md)).
 
-Consulte nossos guias de governança:
+Consulte nossos guias de governança e integração:
+* [Guia de Integração Corporativo (INTEGRATION_GUIDE.md)](./INTEGRATION_GUIDE.md)
 * [Guia de Contribuição (CONTRIBUTING.md)](./CONTRIBUTING.md)
 * [Política de Segurança (SECURITY.md)](./SECURITY.md)
 
