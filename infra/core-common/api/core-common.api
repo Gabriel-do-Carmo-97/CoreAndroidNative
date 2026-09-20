@@ -42,6 +42,36 @@ public final class br/com/wgc/core/coroutines/DefaultCoroutineDispatchers : br/c
 	public fun getUnconfined ()Lkotlinx/coroutines/CoroutineDispatcher;
 }
 
+public final class br/com/wgc/core/featureflag/DefaultFeatureToggle : java/lang/Enum, br/com/wgc/core/featureflag/FeatureToggle {
+	public static final field DISTRIBUTED_TRACING Lbr/com/wgc/core/featureflag/DefaultFeatureToggle;
+	public static final field NETWORK_METRICS Lbr/com/wgc/core/featureflag/DefaultFeatureToggle;
+	public static final field SAMPLE_NEW_EXPERIENCE Lbr/com/wgc/core/featureflag/DefaultFeatureToggle;
+	public fun getDefaultValue ()Z
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public fun getKey ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lbr/com/wgc/core/featureflag/DefaultFeatureToggle;
+	public static fun values ()[Lbr/com/wgc/core/featureflag/DefaultFeatureToggle;
+}
+
+public abstract interface class br/com/wgc/core/featureflag/FeatureToggle {
+	public abstract fun getDefaultValue ()Z
+	public abstract fun getKey ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/featureflag/FeatureToggleManager {
+	public fun <init> ()V
+	public fun <init> (Lbr/com/wgc/core/featureflag/FeatureToggleProvider;)V
+	public synthetic fun <init> (Lbr/com/wgc/core/featureflag/FeatureToggleProvider;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun clearAllOverrides ()V
+	public final fun clearOverride (Lbr/com/wgc/core/featureflag/FeatureToggle;)V
+	public final fun isEnabled (Lbr/com/wgc/core/featureflag/FeatureToggle;)Z
+	public final fun setOverride (Lbr/com/wgc/core/featureflag/FeatureToggle;Z)V
+}
+
+public abstract interface class br/com/wgc/core/featureflag/FeatureToggleProvider {
+	public abstract fun getBoolean (Ljava/lang/String;)Ljava/lang/Boolean;
+}
+
 public final class br/com/wgc/core/formatters/FormattersKt {
 	public static final fun formatCep (Ljava/lang/String;)Ljava/lang/String;
 	public static final fun formatCnpj (Ljava/lang/String;)Ljava/lang/String;

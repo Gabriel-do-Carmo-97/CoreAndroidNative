@@ -1,4 +1,4 @@
-﻿package br.com.wgc.coreandroidnative
+package br.com.wgc.coreandroidnative
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -48,6 +48,8 @@ import br.com.wgc.core.database.security.DatabaseEncrypter
 import br.com.wgc.core.device.DeviceInfo
 import br.com.wgc.core.device.DeviceSecurityHelper
 import br.com.wgc.core.device.HapticFeedbackHelper
+import br.com.wgc.core.featureflag.DefaultFeatureToggle
+import br.com.wgc.core.featureflag.FeatureToggleManager
 import br.com.wgc.core.formatters.transformations.CpfVisualTransformation
 import br.com.wgc.core.formatters.unmask
 import br.com.wgc.core.location.LocationClient
@@ -95,6 +97,9 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var locationClient: LocationClient
 
+    @Inject
+    lateinit var featureToggleManager: FeatureToggleManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -110,6 +115,7 @@ class MainActivity : ComponentActivity() {
                     lgpdConsentManager = lgpdConsentManager,
                     databaseEncrypter = databaseEncrypter,
                     locationClient = locationClient,
+                    featureToggleManager = featureToggleManager,
                 )
             }
         }
@@ -128,6 +134,7 @@ fun ShowcaseScreen(
     lgpdConsentManager: LgpdConsentManager,
     databaseEncrypter: DatabaseEncrypter,
     locationClient: LocationClient,
+    featureToggleManager: FeatureToggleManager,
 ) {
     val isConnected by networkMonitor.isConnected.collectAsState(initial = true)
     var cpfInput by remember { mutableStateOf("") }
@@ -141,8 +148,11 @@ fun ShowcaseScreen(
     var crashConsent by remember {
         mutableStateOf(lgpdConsentManager.isConsentGranted(ConsentType.CRASH_REPORTING))
     }
+    var sampleFeatureEnabled by remember {
+        mutableStateOf(featureToggleManager.isEnabled(DefaultFeatureToggle.SAMPLE_NEW_EXPERIENCE))
+    }
 
-    val tabs = listOf("🌐 Rede", "🎨 UI", "📳 Haptics", "🔒 Sessão", "🛡️ Segurança")
+    val tabs = listOf("🌐 Rede", "🎨 UI", "📳 Haptics", "🔒 Sessão", "🛡️ Segurança", "🚀 Nível 5")
 
     Scaffold(
         topBar = {
@@ -193,8 +203,14 @@ fun ShowcaseScreen(
                             Column(modifier = Modifier.padding(16.dp)) {
                                 Text("🌐 Conectividade & Dispositivo", style = MaterialTheme.typography.titleMedium)
                                 Spacer(modifier = Modifier.height(8.dp))
+                                val connectionStatus =
+                                    if (isConnected) {
+                                        "Status: Online (Conectado)"
+                                    } else {
+                                        "Status: Offline (Sem Conexão)"
+                                    }
                                 Text(
-                                    text = if (isConnected) "Status: Online (Conectado)" else "Status: Offline (Sem Conexão)",
+                                    text = connectionStatus,
                                     color = if (isConnected) Color(0xFF2E7D32) else MaterialTheme.colorScheme.error,
                                     style = MaterialTheme.typography.bodyMedium,
                                 )
@@ -239,14 +255,21 @@ fun ShowcaseScreen(
                                 val cpfStatus =
                                     when {
                                         cpfInput.isEmpty() -> "Aguardando preenchimento..."
-                                        cpfInput.length < CPF_MAX_DIGITS -> "Digitando (${cpfInput.length}/$CPF_MAX_DIGITS)..."
+                                        cpfInput.length < CPF_MAX_DIGITS ->
+                                            "Digitando (${cpfInput.length}/$CPF_MAX_DIGITS)..."
                                         cpfInput.isValidCpf() -> "✅ CPF Válido!"
                                         else -> "❌ CPF Inválido!"
+                                    }
+                                val cpfColor =
+                                    if (cpfInput.isValidCpf()) {
+                                        Color(0xFF2E7D32)
+                                    } else {
+                                        MaterialTheme.colorScheme.error
                                     }
                                 Text(
                                     text = cpfStatus,
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = if (cpfInput.isValidCpf()) Color(0xFF2E7D32) else MaterialTheme.colorScheme.error,
+                                    color = cpfColor,
                                 )
                             }
                         }
@@ -300,7 +323,7 @@ fun ShowcaseScreen(
                                         scope.launch {
                                             coreLogger.i(
                                                 "Showcase",
-                                                "Iniciando logout seguro para CPF: $cpfInput com Bearer token_secret_abc",
+                                                "Iniciando logout seguro para CPF: $cpfInput",
                                             )
                                             sessionManager.clearSession(clearCache = true)
                                             sessionStatusMessage = "Sessão e cache limpos com sucesso!"
@@ -336,10 +359,12 @@ fun ShowcaseScreen(
                                 val isEmulator = remember { deviceSecurityHelper.isEmulator() }
                                 val isAdb = remember { deviceSecurityHelper.isAdbEnabled() }
 
+                                val rootedStatus = if (isRooted) "⚠️ SIM (Risco Detectado)" else "✅ NÃO (Seguro)"
+                                val rootedColor = if (isRooted) MaterialTheme.colorScheme.error else Color(0xFF2E7D32)
                                 Text(
-                                    "Dispositivo Rooted: ${if (isRooted) "⚠️ SIM (Risco Detectado)" else "✅ NÃO (Seguro)"}",
+                                    "Dispositivo Rooted: $rootedStatus",
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = if (isRooted) MaterialTheme.colorScheme.error else Color(0xFF2E7D32),
+                                    color = rootedColor,
                                 )
                                 Text("Ambiente Emulador: $isEmulator", style = MaterialTheme.typography.bodySmall)
                                 Text("USB Debugging (ADB): $isAdb", style = MaterialTheme.typography.bodySmall)
@@ -350,10 +375,22 @@ fun ShowcaseScreen(
                                     remember {
                                         runCatching { databaseEncrypter.getSupportFactory() }.isSuccess
                                     }
+                                val cipherStatus =
+                                    if (cipherFactoryReady) {
+                                        "✅ Inicializada via KeyStore"
+                                    } else {
+                                        "❌ Erro"
+                                    }
+                                val cipherColor =
+                                    if (cipherFactoryReady) {
+                                        Color(0xFF2E7D32)
+                                    } else {
+                                        MaterialTheme.colorScheme.error
+                                    }
                                 Text(
-                                    "Chave SQLCipher 256-bit: ${if (cipherFactoryReady) "✅ Inicializada via KeyStore" else "❌ Erro"}",
+                                    "Chave SQLCipher 256-bit: $cipherStatus",
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = if (cipherFactoryReady) Color(0xFF2E7D32) else MaterialTheme.colorScheme.error,
+                                    color = cipherColor,
                                 )
 
                                 Spacer(modifier = Modifier.height(12.dp))
@@ -388,6 +425,70 @@ fun ShowcaseScreen(
                                         },
                                     )
                                 }
+                            }
+                        }
+                    }
+                    5 -> {
+                        // Aba 5: Nível 5 - APM & Feature Flags
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text("🚀 Nível 5: APM & Feature Flags", style = MaterialTheme.typography.titleMedium)
+                                Spacer(modifier = Modifier.height(8.dp))
+
+                                Text("🚩 Gestão Dinâmica de Feature Flags", style = MaterialTheme.typography.labelLarge)
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                ) {
+                                    Text("Flag 'SAMPLE_NEW_EXPERIENCE'", style = MaterialTheme.typography.bodySmall)
+                                    Switch(
+                                        checked = sampleFeatureEnabled,
+                                        onCheckedChange = { isEnabled ->
+                                            sampleFeatureEnabled = isEnabled
+                                            featureToggleManager.setOverride(
+                                                DefaultFeatureToggle.SAMPLE_NEW_EXPERIENCE,
+                                                isEnabled,
+                                            )
+                                            hapticHelper.vibrateClick()
+                                        },
+                                    )
+                                }
+                                val flagStatus =
+                                    if (sampleFeatureEnabled) {
+                                        "✅ Feature Ativa (Rollout On)"
+                                    } else {
+                                        "⏸️ Feature Inativa (Rollout Off)"
+                                    }
+                                Text(
+                                    text = flagStatus,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color =
+                                        if (sampleFeatureEnabled) {
+                                            Color(0xFF2E7D32)
+                                        } else {
+                                            MaterialTheme.colorScheme.error
+                                        },
+                                )
+
+                                Spacer(modifier = Modifier.height(12.dp))
+                                Text("🌐 W3C Distributed Tracing (APM)", style = MaterialTheme.typography.labelLarge)
+                                Text(
+                                    "X-Correlation-ID: e8f23a10-7e44-48b2-a42e-89a1bc498d21",
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                                Text(
+                                    "traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01",
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                                Text(
+                                    "Telemetria de Rede: DNS 12ms | TLS 28ms | Total 114ms",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color(0xFF2E7D32),
+                                )
                             }
                         }
                     }

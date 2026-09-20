@@ -33,8 +33,8 @@ public final class br/com/wgc/core/network/AuthInterceptor : okhttp3/Interceptor
 
 public final class br/com/wgc/core/network/NetworkClientFactory {
 	public static final field INSTANCE Lbr/com/wgc/core/network/NetworkClientFactory;
-	public final fun createOkHttpClient (Lbr/com/wgc/core/network/TokenProvider;JJJZLjava/util/Map;)Lokhttp3/OkHttpClient;
-	public static synthetic fun createOkHttpClient$default (Lbr/com/wgc/core/network/NetworkClientFactory;Lbr/com/wgc/core/network/TokenProvider;JJJZLjava/util/Map;ILjava/lang/Object;)Lokhttp3/OkHttpClient;
+	public final fun createOkHttpClient (Lbr/com/wgc/core/network/TokenProvider;JJJZLjava/util/Map;ZLkotlin/jvm/functions/Function1;)Lokhttp3/OkHttpClient;
+	public static synthetic fun createOkHttpClient$default (Lbr/com/wgc/core/network/NetworkClientFactory;Lbr/com/wgc/core/network/TokenProvider;JJJZLjava/util/Map;ZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lokhttp3/OkHttpClient;
 }
 
 public abstract class br/com/wgc/core/network/NetworkException : java/lang/Exception {
@@ -100,5 +100,61 @@ public abstract interface class br/com/wgc/core/network/TokenProvider {
 
 public final class br/com/wgc/core/network/TokenProvider$DefaultImpls {
 	public static fun getCachedAccessToken (Lbr/com/wgc/core/network/TokenProvider;)Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/network/metrics/NetworkMetric {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;JJJZLjava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;JJJZLjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/Integer;
+	public final fun component4 ()J
+	public final fun component5 ()J
+	public final fun component6 ()J
+	public final fun component7 ()Z
+	public final fun component8 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;JJJZLjava/lang/String;)Lbr/com/wgc/core/network/metrics/NetworkMetric;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/network/metrics/NetworkMetric;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;JJJZLjava/lang/String;ILjava/lang/Object;)Lbr/com/wgc/core/network/metrics/NetworkMetric;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDnsDurationMs ()J
+	public final fun getErrorMessage ()Ljava/lang/String;
+	public final fun getMethod ()Ljava/lang/String;
+	public final fun getStatusCode ()Ljava/lang/Integer;
+	public final fun getTlsDurationMs ()J
+	public final fun getTotalDurationMs ()J
+	public final fun getUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isSuccess ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/network/metrics/NetworkMetricsEventListener : okhttp3/EventListener {
+	public fun <init> (Lkotlin/jvm/functions/Function1;)V
+	public fun callEnd (Lokhttp3/Call;)V
+	public fun callFailed (Lokhttp3/Call;Ljava/io/IOException;)V
+	public fun callStart (Lokhttp3/Call;)V
+	public fun dnsEnd (Lokhttp3/Call;Ljava/lang/String;Ljava/util/List;)V
+	public fun dnsStart (Lokhttp3/Call;Ljava/lang/String;)V
+	public fun responseHeadersEnd (Lokhttp3/Call;Lokhttp3/Response;)V
+	public fun secureConnectEnd (Lokhttp3/Call;Lokhttp3/Handshake;)V
+	public fun secureConnectStart (Lokhttp3/Call;)V
+}
+
+public final class br/com/wgc/core/network/metrics/NetworkMetricsEventListener$Factory : okhttp3/EventListener$Factory {
+	public fun <init> (Lkotlin/jvm/functions/Function1;)V
+	public fun create (Lokhttp3/Call;)Lokhttp3/EventListener;
+}
+
+public final class br/com/wgc/core/network/tracing/TraceIdInterceptor : okhttp3/Interceptor {
+	public static final field Companion Lbr/com/wgc/core/network/tracing/TraceIdInterceptor$Companion;
+	public static final field HEADER_CORRELATION_ID Ljava/lang/String;
+	public static final field HEADER_TRACEPARENT Ljava/lang/String;
+	public fun <init> ()V
+	public fun <init> (Ljava/security/SecureRandom;)V
+	public synthetic fun <init> (Ljava/security/SecureRandom;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun intercept (Lokhttp3/Interceptor$Chain;)Lokhttp3/Response;
+}
+
+public final class br/com/wgc/core/network/tracing/TraceIdInterceptor$Companion {
 }
 

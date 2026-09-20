@@ -51,7 +51,9 @@ class DefaultLocationClient
         @param:ApplicationContext private val context: Context,
         private val client: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context),
     ) : LocationClient {
-        @RequiresPermission(anyOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
+        @RequiresPermission(
+            anyOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION],
+        )
         override fun getLocationUpdates(intervalMs: Long): Flow<Location> =
             callbackFlow {
                 val request =

@@ -36,7 +36,9 @@ class AndroidPublishConventionPlugin : Plugin<Project> {
 
                             pom {
                                 name.set(artifactId)
-                                description.set("CoreAndroidNative - Enterprise Android Infrastructure Library: $artifactId")
+                                description.set(
+                                    "CoreAndroidNative - Enterprise Android Infrastructure Library: $artifactId",
+                                )
                                 url.set("https://github.com/Gabriel-do-Carmo-97/CoreAndroidNative")
                                 licenses {
                                     license {
@@ -54,7 +56,9 @@ class AndroidPublishConventionPlugin : Plugin<Project> {
                                 }
                                 scm {
                                     connection.set("scm:git:github.com/Gabriel-do-Carmo-97/CoreAndroidNative.git")
-                                    developerConnection.set("scm:git:ssh://github.com/Gabriel-do-Carmo-97/CoreAndroidNative.git")
+                                    developerConnection.set(
+                                        "scm:git:ssh://github.com/Gabriel-do-Carmo-97/CoreAndroidNative.git",
+                                    )
                                     url.set("https://github.com/Gabriel-do-Carmo-97/CoreAndroidNative")
                                 }
                             }

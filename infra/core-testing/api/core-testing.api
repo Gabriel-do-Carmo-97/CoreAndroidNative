@@ -1,0 +1,30 @@
+public final class br/com/wgc/core/testing/fakes/FakeTokenProvider : br/com/wgc/core/network/TokenProvider {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getAccessToken (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getCachedAccessToken ()Ljava/lang/String;
+	public final fun getNextRefreshToken ()Ljava/lang/String;
+	public final fun getRefreshTokenCallCount ()I
+	public final fun getSessionExpiredCalledCount ()I
+	public fun onSessionExpired (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun refreshToken (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun setNextRefreshToken (Ljava/lang/String;)V
+	public final fun setToken (Ljava/lang/String;)V
+}
+
+public final class br/com/wgc/core/testing/network/MockWebServerHelper {
+	public static final field INSTANCE Lbr/com/wgc/core/testing/network/MockWebServerHelper;
+	public final fun enqueueError (Lokhttp3/mockwebserver/MockWebServer;ILjava/lang/String;)V
+	public static synthetic fun enqueueError$default (Lbr/com/wgc/core/testing/network/MockWebServerHelper;Lokhttp3/mockwebserver/MockWebServer;ILjava/lang/String;ILjava/lang/Object;)V
+	public final fun enqueueJsonResponse (Lokhttp3/mockwebserver/MockWebServer;ILjava/lang/String;)V
+	public static synthetic fun enqueueJsonResponse$default (Lbr/com/wgc/core/testing/network/MockWebServerHelper;Lokhttp3/mockwebserver/MockWebServer;ILjava/lang/String;ILjava/lang/Object;)V
+}
+
+public final class br/com/wgc/core/testing/rules/MainDispatcherRule : org/junit/rules/TestWatcher {
+	public fun <init> ()V
+	public fun <init> (Lkotlinx/coroutines/test/TestDispatcher;)V
+	public synthetic fun <init> (Lkotlinx/coroutines/test/TestDispatcher;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getTestDispatcher ()Lkotlinx/coroutines/test/TestDispatcher;
+}
+

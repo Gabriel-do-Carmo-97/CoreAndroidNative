@@ -100,7 +100,8 @@ object CoreModule {
      */
     @Provides
     @Singleton
-    fun provideKeyValueDataStore(dataStorePreferencesCore: DataStorePreferencesCore): KeyValueDataStore = dataStorePreferencesCore
+    fun provideKeyValueDataStore(dataStorePreferencesCore: DataStorePreferencesCore): KeyValueDataStore =
+        dataStorePreferencesCore
 
     /**
      * Provê a instância singleton de [SharedPreferencesCore].
@@ -118,7 +119,8 @@ object CoreModule {
     @Provides
     @Singleton
     @Named(STORAGE_DEFAULT_QUALIFIER)
-    fun provideDefaultKeyValueStorage(sharedPreferencesCore: SharedPreferencesCore): KeyValueStorage = sharedPreferencesCore
+    fun provideDefaultKeyValueStorage(sharedPreferencesCore: SharedPreferencesCore): KeyValueStorage =
+        sharedPreferencesCore
 
     /**
      * Provê o binding padrão de [KeyValueStorage] sem qualificador para injeção direta.
@@ -142,8 +144,9 @@ object CoreModule {
     @Provides
     @Singleton
     @Named(STORAGE_ENCRYPTED_QUALIFIER)
-    fun provideEncryptedKeyValueStorage(encryptedSharedPreferencesCore: EncryptedSharedPreferencesCore): KeyValueStorage =
-        encryptedSharedPreferencesCore
+    fun provideEncryptedKeyValueStorage(
+        encryptedSharedPreferencesCore: EncryptedSharedPreferencesCore,
+    ): KeyValueStorage = encryptedSharedPreferencesCore
 
     /**
      * Provê a instância singleton do monitor de conectividade de rede [NetworkMonitor].
@@ -247,7 +250,8 @@ object CoreModule {
      */
     @Provides
     @Singleton
-    fun provideAnalyticsTracker(): AnalyticsTracker = CompositeAnalyticsTracker(trackers = emptyList(), enablePiiMasking = true)
+    fun provideAnalyticsTracker(): AnalyticsTracker =
+        CompositeAnalyticsTracker(trackers = emptyList(), enablePiiMasking = true)
 
     /**
      * Provê a instância singleton de [ImageCompressor] para processamento assíncrono de imagens.
@@ -279,9 +283,9 @@ object CoreModule {
      */
     @Provides
     @Singleton
-    fun provideDatabaseEncrypter(
-        encryptedStorage: EncryptedSharedPreferencesCore,
-    ): DatabaseEncrypter = DatabaseEncrypter(encryptedStorage)
+    fun provideDatabaseEncrypter(encryptedStorage: EncryptedSharedPreferencesCore): DatabaseEncrypter {
+        return DatabaseEncrypter(encryptedStorage)
+    }
 
     /**
      * Provê uma instância padrão e segura de [OkHttpClient] com timeouts corporativos.
@@ -289,4 +293,14 @@ object CoreModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient = NetworkClientFactory.createOkHttpClient()
+
+    /**
+     * Provê o gerenciador corporativo de [FeatureToggleManager].
+     */
+    @Provides
+    @Singleton
+    fun provideFeatureToggleManager(): br.com.wgc.core.featureflag.FeatureToggleManager {
+        return br.com.wgc.core.featureflag
+            .FeatureToggleManager()
+    }
 }

@@ -95,7 +95,10 @@ class NetworkMonitor
                             network: Network,
                             networkCapabilities: NetworkCapabilities,
                         ) {
-                            val hasInternet = networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                            val hasInternet =
+                                networkCapabilities.hasCapability(
+                                    NetworkCapabilities.NET_CAPABILITY_INTERNET,
+                                )
                             if (hasInternet) {
                                 trySend(NetworkStatus.Available)
                             } else {
@@ -146,7 +149,10 @@ class NetworkMonitor
                             network: Network,
                             networkCapabilities: NetworkCapabilities,
                         ) {
-                            val hasInternet = networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                            val hasInternet =
+                                networkCapabilities.hasCapability(
+                                    NetworkCapabilities.NET_CAPABILITY_INTERNET,
+                                )
                             trySend(hasInternet)
                         }
                     }

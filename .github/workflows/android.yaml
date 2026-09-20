@@ -357,6 +357,43 @@ jobs:
           path: infra/core-analytics/build/outputs/aar/*-debug.aar
           if-no-files-found: ignore
 
+  core-testing:
+    name: "infra: core-testing"
+    needs: [core-common, core-network]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0, lfs: true }
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+      - name: 🔍 Detekt, Lint, Testes e Build
+        run: ./gradlew :infra:core-testing:detekt :infra:core-testing:lintDebug :infra:core-testing:testDebugUnitTest :infra:core-testing:assembleRelease :infra:core-testing:assembleDebug
+      - name: 📊 Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-core-testing
+          path: |
+            infra/core-testing/build/reports/tests/
+            infra/core-testing/build/reports/detekt/
+            infra/core-testing/build/reports/lint-results*.html
+          if-no-files-found: ignore
+      - name: ⬆️ Upload Release AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aar-core-testing
+          path: infra/core-testing/build/outputs/aar/*-release.aar
+          if-no-files-found: error
+      - name: ⬆️ Upload Debug AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-aar-core-testing
+          path: infra/core-testing/build/outputs/aar/*-debug.aar
+          if-no-files-found: ignore
+
   # ═════════════════════════════════════════════════════════════════════════════
   # NÍVEL 4: BUNDLES E GUARDA-CHUVA
   # ═════════════════════════════════════════════════════════════════════════════
@@ -373,6 +410,7 @@ jobs:
       - core-camera
       - core-database
       - core-analytics
+      - core-testing
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -668,7 +706,7 @@ jobs:
         if: steps.changed_modules.outputs.any_changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :infra:core-common:publish :infra:core-storage:publish :infra:core-device:publish :infra:core-network:publish :infra:core-ui:publish :infra:core-database:publish :infra:core-location:publish :infra:core-camera:publish :infra:core-analytics:publish :infra:core:publish -Pversion="${{ steps.semver.outputs.version }}"
+        run: ./gradlew :infra:core-common:publish :infra:core-storage:publish :infra:core-device:publish :infra:core-network:publish :infra:core-ui:publish :infra:core-database:publish :infra:core-location:publish :infra:core-camera:publish :infra:core-analytics:publish :infra:core-testing:publish :infra:core:publish -Pversion="${{ steps.semver.outputs.version }}"
 
       - name: ⬇️ Download Infra Release AARs
         if: steps.changed_modules.outputs.any_changed == 'true'
@@ -716,6 +754,7 @@ jobs:
               - br.com.wgc:core-location
               - br.com.wgc:core-camera
               - br.com.wgc:core-analytics
+              - br.com.wgc:core-testing
               - br.com.wgc:core-android-native (guarda-chuva)
               Mudanças detectadas em: ${{ steps.changed_modules.outputs.all_changed_files }}." \
               "${AAR_FILES[@]}"

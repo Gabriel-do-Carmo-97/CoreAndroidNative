@@ -18,6 +18,7 @@ public final class br/com/wgc/core/di/CoreModule {
 	public final fun provideDeviceSecurityHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/DeviceSecurityHelper;
 	public final fun provideEncryptedKeyValueStorage (Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;)Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;
 	public final fun provideEncryptedSharedPreferencesCore (Landroid/content/Context;)Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;
+	public final fun provideFeatureToggleManager ()Lbr/com/wgc/core/featureflag/FeatureToggleManager;
 	public final fun provideFileManager (Landroid/content/Context;)Lbr/com/wgc/core/file/FileManager;
 	public final fun provideHapticFeedbackHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/HapticFeedbackHelper;
 	public final fun provideImageCompressor (Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)Lbr/com/wgc/core/ui/media/ImageCompressor;
@@ -119,6 +120,14 @@ public final class br/com/wgc/core/di/CoreModule_ProvideEncryptedSharedPreferenc
 	public fun get ()Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;
 	public synthetic fun get ()Ljava/lang/Object;
 	public static fun provideEncryptedSharedPreferencesCore (Landroid/content/Context;)Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideFeatureToggleManagerFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideFeatureToggleManagerFactory;
+	public fun get ()Lbr/com/wgc/core/featureflag/FeatureToggleManager;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideFeatureToggleManager ()Lbr/com/wgc/core/featureflag/FeatureToggleManager;
 }
 
 public final class br/com/wgc/core/di/CoreModule_ProvideFileManagerFactory : dagger/internal/Factory {
