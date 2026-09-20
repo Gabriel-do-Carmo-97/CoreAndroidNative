@@ -279,7 +279,9 @@ object CoreModule {
      */
     @Provides
     @Singleton
-    fun provideDatabaseEncrypter(encryptedStorage: EncryptedSharedPreferencesCore): DatabaseEncrypter = DatabaseEncrypter(encryptedStorage)
+    fun provideDatabaseEncrypter(
+        encryptedStorage: EncryptedSharedPreferencesCore,
+    ): DatabaseEncrypter = DatabaseEncrypter(encryptedStorage)
 
     /**
      * Provê uma instância padrão e segura de [OkHttpClient] com timeouts corporativos.

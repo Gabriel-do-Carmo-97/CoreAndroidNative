@@ -27,7 +27,8 @@ interface BaseDao<T> {
     /**
      * Insere uma única entidade no banco de dados.
      *
-     * Caso ocorra conflito de chave primária, a estratégia padrão é substituir o registro existente ([OnConflictStrategy.REPLACE]).
+     * Caso ocorra conflito de chave primária, a estratégia padrão é substituir
+     * o registro existente ([OnConflictStrategy.REPLACE]).
      *
      * @param entity O objeto da entidade a ser inserido.
      * @return O ID (`rowId`) da linha recém-inserida no SQLite.
