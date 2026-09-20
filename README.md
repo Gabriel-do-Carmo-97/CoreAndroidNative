@@ -236,6 +236,7 @@ O repositório é rigorosamente mantido sob o padrão **Enterprise Grade**:
 - **Equipe de Agentes Autônomos:** Especialistas de domínio dedicados para governança técnica ([Ver agentes](./agents/README.md)).
 
 Consulte nossos guias de governança e integração:
+* [Histórico de Versões (CHANGELOG.md)](./CHANGELOG.md)
 * [Guia de Integração Corporativo (INTEGRATION_GUIDE.md)](./INTEGRATION_GUIDE.md)
 * [Guia de Contribuição (CONTRIBUTING.md)](./CONTRIBUTING.md)
 * [Política de Segurança (SECURITY.md)](./SECURITY.md)

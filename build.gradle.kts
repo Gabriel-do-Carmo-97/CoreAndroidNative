@@ -8,6 +8,8 @@ plugins {
     alias(libs.plugins.dokka) apply false
     alias(libs.plugins.binary.compatibility.validator)
     alias(libs.plugins.spotless)
+    alias(libs.plugins.sonarqube) apply false
+    alias(libs.plugins.dependency.check) apply false
     id("com.google.devtools.ksp") version "2.2.20-2.0.4" apply false
     id("com.google.dagger.hilt.android") version "2.60.1" apply false
     id("jacoco")

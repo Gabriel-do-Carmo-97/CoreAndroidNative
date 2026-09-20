@@ -34,6 +34,8 @@ bcv = "0.17.0"
 spotless = "7.0.2"
 leakcanary = "2.14"
 startup = "1.2.0"
+sonarqube = "7.4.0.8496"
+dependencyCheck = "10.0.4"
 
 
 [libraries]
@@ -106,3 +108,5 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "bcv" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
+dependency-check = { id = "org.owasp.dependencycheck", version.ref = "dependencyCheck" }
