@@ -489,6 +489,27 @@ fun ShowcaseScreen(
                                     style = MaterialTheme.typography.bodySmall,
                                     color = Color(0xFF2E7D32),
                                 )
+
+                                Spacer(modifier = Modifier.height(12.dp))
+                                Text(
+                                    "⚡ Otimizações de Performance & Memória",
+                                    style = MaterialTheme.typography.labelLarge,
+                                )
+                                Text(
+                                    "Baseline Profiles: ✅ Ativo (AOT compilation ART)",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color(0xFF2E7D32),
+                                )
+                                Text(
+                                    "StrictMode: ✅ Ativo (Thread & VM Policies)",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color(0xFF2E7D32),
+                                )
+                                Text(
+                                    "LeakCanary: ✅ Integrado (Monitor de Leaks em Debug)",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color(0xFF2E7D32),
+                                )
                             }
                         }
                     }

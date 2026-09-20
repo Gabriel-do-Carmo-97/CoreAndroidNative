@@ -138,6 +138,11 @@ public final class br/com/wgc/core/logging/LogLevel : java/lang/Enum {
 	public static fun values ()[Lbr/com/wgc/core/logging/LogLevel;
 }
 
+public final class br/com/wgc/core/performance/StrictModeHelper {
+	public static final field INSTANCE Lbr/com/wgc/core/performance/StrictModeHelper;
+	public final fun enableStrictModeInDebug (Z)V
+}
+
 public abstract interface class br/com/wgc/core/result/ResultState {
 }
 

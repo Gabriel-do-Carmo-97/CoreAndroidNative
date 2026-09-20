@@ -1,0 +1,19 @@
+# Baseline Profile para Core Network (AOT de requisições e interceptors)
+
+Lbr/com/wgc/core/network/NetworkClientFactory;
+HSPLbr/com/wgc/core/network/NetworkClientFactory;->createOkHttpClient(Lbr/com/wgc/core/network/TokenProvider;JJJZLjava/util/Map;ZLkotlin/jvm/functions/Function1;)Lokhttp3/OkHttpClient;
+
+Lbr/com/wgc/core/network/tracing/TraceIdInterceptor;
+HSPLbr/com/wgc/core/network/tracing/TraceIdInterceptor;-><init>(Ljava/security/SecureRandom;)V
+HSPLbr/com/wgc/core/network/tracing/TraceIdInterceptor;->intercept(Lokhttp3/Interceptor$Chain;)Lokhttp3/Response;
+
+Lbr/com/wgc/core/network/AuthInterceptor;
+HSPLbr/com/wgc/core/network/AuthInterceptor;-><init>(Lbr/com/wgc/core/network/TokenProvider;)V
+HSPLbr/com/wgc/core/network/AuthInterceptor;->intercept(Lokhttp3/Interceptor$Chain;)Lokhttp3/Response;
+
+Lbr/com/wgc/core/network/TokenAuthenticator;
+HSPLbr/com/wgc/core/network/TokenAuthenticator;-><init>(Lbr/com/wgc/core/network/TokenProvider;)V
+HSPLbr/com/wgc/core/network/TokenAuthenticator;->authenticate(Lokhttp3/Route;Lokhttp3/Response;)Lokhttp3/Request;
+
+Lbr/com/wgc/core/network/metrics/NetworkMetricsEventListener;
+HSPLbr/com/wgc/core/network/metrics/NetworkMetricsEventListener;-><init>(Lkotlin/jvm/functions/Function1;)V

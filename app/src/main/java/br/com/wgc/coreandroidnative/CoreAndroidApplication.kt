@@ -3,12 +3,14 @@ package br.com.wgc.coreandroidnative
 import android.app.Application
 import android.app.NotificationManager
 import br.com.wgc.core.notification.CreateChannelNotification
+import br.com.wgc.core.performance.StrictModeHelper
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class CoreAndroidApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+        StrictModeHelper.enableStrictModeInDebug(BuildConfig.DEBUG)
         createNotificationChannels()
     }
 

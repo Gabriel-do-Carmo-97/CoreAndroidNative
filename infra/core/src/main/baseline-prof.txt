@@ -1,0 +1,34 @@
+# Baseline Profile para CoreAndroidNative (AOT compilation pelo ART)
+# Classes e métodos críticos executados no Cold Start da aplicação
+
+Lbr/com/wgc/core/di/CoreModule;
+HSPLbr/com/wgc/core/di/CoreModule;-><init>()V
+HSPLbr/com/wgc/core/di/CoreModule;->provideOkHttpClient()Lokhttp3/OkHttpClient;
+HSPLbr/com/wgc/core/di/CoreModule;->provideFeatureToggleManager()Lbr/com/wgc/core/featureflag/FeatureToggleManager;
+HSPLbr/com/wgc/core/di/CoreModule;->provideDatabaseEncrypter(Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;)Lbr/com/wgc/core/database/security/DatabaseEncrypter;
+HSPLbr/com/wgc/core/di/CoreModule;->provideDeviceInfo(Landroid/content/Context;)Lbr/com/wgc/core/device/DeviceInfo;
+HSPLbr/com/wgc/core/di/CoreModule;->provideDeviceSecurityHelper(Landroid/content/Context;)Lbr/com/wgc/core/device/DeviceSecurityHelper;
+HSPLbr/com/wgc/core/di/CoreModule;->provideHapticFeedbackHelper(Landroid/content/Context;)Lbr/com/wgc/core/device/HapticFeedbackHelper;
+
+Lbr/com/wgc/core/featureflag/FeatureToggleManager;
+HSPLbr/com/wgc/core/featureflag/FeatureToggleManager;-><init>(Lbr/com/wgc/core/featureflag/FeatureToggleProvider;)V
+HSPLbr/com/wgc/core/featureflag/FeatureToggleManager;->isEnabled(Lbr/com/wgc/core/featureflag/FeatureToggle;)Z
+
+Lbr/com/wgc/core/network/NetworkClientFactory;
+HSPLbr/com/wgc/core/network/NetworkClientFactory;->createOkHttpClient(Lbr/com/wgc/core/network/TokenProvider;JJJZLjava/util/Map;ZLkotlin/jvm/functions/Function1;)Lokhttp3/OkHttpClient;
+
+Lbr/com/wgc/core/network/tracing/TraceIdInterceptor;
+HSPLbr/com/wgc/core/network/tracing/TraceIdInterceptor;-><init>(Ljava/security/SecureRandom;)V
+HSPLbr/com/wgc/core/network/tracing/TraceIdInterceptor;->intercept(Lokhttp3/Interceptor$Chain;)Lokhttp3/Response;
+
+Lbr/com/wgc/core/database/security/DatabaseEncrypter;
+HSPLbr/com/wgc/core/database/security/DatabaseEncrypter;-><init>(Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;)V
+HSPLbr/com/wgc/core/database/security/DatabaseEncrypter;->getSupportFactory()Landroidx/sqlite/db/SupportSQLiteOpenHelper$Factory;
+
+Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;
+HSPLbr/com/wgc/core/security/EncryptedSharedPreferencesCore;-><init>(Landroid/content/Context;)V
+
+Lbr/com/wgc/core/formatters/FormattersKt;
+Lbr/com/wgc/core/validators/ValidatorsKt;
+Lbr/com/wgc/core/ui/components/LoadingButtonKt;
+Lbr/com/wgc/core/ui/modifiers/ShimmerModifierKt;
