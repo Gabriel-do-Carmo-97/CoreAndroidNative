@@ -35,7 +35,7 @@ spotless = "7.0.2"
 leakcanary = "2.14"
 startup = "1.2.0"
 sonarqube = "7.4.0.8496"
-dependencyCheck = "10.0.4"
+dependencyCheck = "13.0.0"
 work = "2.10.0"
 paging = "3.3.6"
 
