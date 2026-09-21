@@ -21,8 +21,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -39,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -48,14 +49,19 @@ import br.com.wgc.core.database.security.DatabaseEncrypter
 import br.com.wgc.core.device.DeviceInfo
 import br.com.wgc.core.device.DeviceSecurityHelper
 import br.com.wgc.core.device.HapticFeedbackHelper
+import br.com.wgc.core.device.hardware.BleScannerHelper
+import br.com.wgc.core.device.hardware.NfcHelper
+import br.com.wgc.core.device.notification.NotificationChannelConfig
 import br.com.wgc.core.featureflag.DefaultFeatureToggle
 import br.com.wgc.core.featureflag.FeatureToggleManager
-import br.com.wgc.core.formatters.transformations.CpfVisualTransformation
 import br.com.wgc.core.formatters.unmask
 import br.com.wgc.core.location.LocationClient
 import br.com.wgc.core.logging.CoreLogger
 import br.com.wgc.core.network.NetworkMonitor
 import br.com.wgc.core.session.SessionManager
+import br.com.wgc.core.storage.cache.TwoLevelCache
+import br.com.wgc.core.sync.DefaultOutboxQueue
+import br.com.wgc.core.sync.OutboxRequest
 import br.com.wgc.core.validators.isValidCpf
 import br.com.wgc.coreandroidnative.ui.theme.CoreAndroidNativeTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -152,7 +158,18 @@ fun ShowcaseScreen(
         mutableStateOf(featureToggleManager.isEnabled(DefaultFeatureToggle.SAMPLE_NEW_EXPERIENCE))
     }
 
-    val tabs = listOf("🌐 Rede", "🎨 UI", "📳 Haptics", "🔒 Sessão", "🛡️ Segurança", "🚀 Nível 5")
+    val context = LocalContext.current
+    val outboxQueue = remember { DefaultOutboxQueue() }
+    val outboxPendingCount by outboxQueue.observePendingCount().collectAsState(initial = 0)
+    val twoLevelCache = remember { TwoLevelCache<String, String>(maxMemoryEntries = 10) }
+    var cacheMessage by remember { mutableStateOf("Nenhum dado lido") }
+    val nfcHelper = remember { NfcHelper(context) }
+    val bleHelper = remember { BleScannerHelper(context) }
+    var rolloutUserId by remember { mutableStateOf("user_9921") }
+    var rolloutPercentage by remember { mutableIntStateOf(50) }
+    var rolloutResult by remember { mutableStateOf<Boolean?>(null) }
+
+    val tabs = listOf("🌐 Rede", "🎨 UI", "📳 Haptics", "🔒 Sessão", "🛡️ Segurança", "🚀 Nível 5", "⚡ Avançado")
 
     Scaffold(
         topBar = {
@@ -172,7 +189,10 @@ fun ShowcaseScreen(
                     .fillMaxSize()
                     .padding(innerPadding),
         ) {
-            PrimaryTabRow(selectedTabIndex = selectedTabIndex) {
+            ScrollableTabRow(
+                selectedTabIndex = selectedTabIndex,
+                edgePadding = 16.dp,
+            ) {
                 tabs.forEachIndexed { index, title ->
                     Tab(
                         selected = selectedTabIndex == index,
@@ -244,7 +264,6 @@ fun ShowcaseScreen(
                                         }
                                     },
                                     label = { Text("Digite um CPF") },
-                                    visualTransformation = CpfVisualTransformation(),
                                     isError = cpfInput.length == CPF_MAX_DIGITS && !cpfInput.isValidCpf(),
                                     modifier =
                                         Modifier.fillMaxWidth().semantics {
@@ -510,6 +529,180 @@ fun ShowcaseScreen(
                                     style = MaterialTheme.typography.bodySmall,
                                     color = Color(0xFF2E7D32),
                                 )
+                            }
+                        }
+                    }
+                    6 -> {
+                        // Aba 6: Recursos Avançados de Infraestrutura
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text("🔄 Outbox Pattern & Sync Offline", style = MaterialTheme.typography.titleMedium)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    "Fila de requisições pendentes: $outboxPendingCount itens",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Button(
+                                    onClick = {
+                                        scope.launch {
+                                            outboxQueue.enqueue(
+                                                OutboxRequest(
+                                                    endpoint = "/api/v1/orders",
+                                                    payload = "{\"order\": 1024, \"status\": \"PENDING\"}",
+                                                ),
+                                            )
+                                            hapticHelper.vibrateSuccess()
+                                        }
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Text("Enfileirar Operação Offline")
+                                }
+                            }
+                        }
+
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text("🚀 Two-Level Cache (RAM + Disco)", style = MaterialTheme.typography.titleMedium)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    "Status: $cacheMessage",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                ) {
+                                    Button(
+                                        onClick = {
+                                            scope.launch {
+                                                twoLevelCache.put(
+                                                    "chave_teste",
+                                                    "Payload em Cache (Válido)",
+                                                    ttlMs = 10000L,
+                                                )
+                                                cacheMessage = "Gravado no Cache (TTL: 10s)"
+                                                hapticHelper.vibrateSuccess()
+                                            }
+                                        },
+                                        modifier = Modifier.weight(1f),
+                                    ) {
+                                        Text("Gravar")
+                                    }
+                                    OutlinedButton(
+                                        onClick = {
+                                            scope.launch {
+                                                val value = twoLevelCache.get("chave_teste")
+                                                cacheMessage = value ?: "Expirado ou Não Encontrado"
+                                                hapticHelper.vibrateClick()
+                                            }
+                                        },
+                                        modifier = Modifier.weight(1f),
+                                    ) {
+                                        Text("Ler")
+                                    }
+                                }
+                            }
+                        }
+
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text(
+                                    "🔔 Canais de Notificação Corporativos",
+                                    style = MaterialTheme.typography.titleMedium,
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                NotificationChannelConfig.entries.forEach { config ->
+                                    Text(
+                                        "• ${config.channelName} (${config.channelId})",
+                                        style = MaterialTheme.typography.bodySmall,
+                                    )
+                                }
+                            }
+                        }
+
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text("📡 Sensores de Hardware", style = MaterialTheme.typography.titleMedium)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                val nfcSupported = nfcHelper.isNfcSupported()
+                                val bleSupported = bleHelper.isBluetoothEnabled()
+                                Text(
+                                    "NFC Disponível: ${if (nfcSupported) "✅ Sim" else "❌ Não / Emulador"}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                                Text(
+                                    "Bluetooth LE: ${if (bleSupported) "✅ Ativo" else "⚠️ Desativado / Sem Permissão"}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                            }
+                        }
+
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text(
+                                    "🚩 Rollout Percentual de Feature Flags",
+                                    style = MaterialTheme.typography.titleMedium,
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    "Usuário: $rolloutUserId | Percentual: $rolloutPercentage%",
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Button(
+                                    onClick = {
+                                        rolloutResult =
+                                            featureToggleManager.isRolloutEnabled(
+                                                DefaultFeatureToggle.SAMPLE_NEW_EXPERIENCE,
+                                                rolloutUserId,
+                                                rolloutPercentage,
+                                            )
+                                        hapticHelper.vibrateClick()
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Text("Avaliar Rollout Determinístico")
+                                }
+                                if (rolloutResult != null) {
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Text(
+                                        text =
+                                            if (rolloutResult ==
+                                                true
+                                            ) {
+                                                "Resultado: Ativo para este usuário"
+                                            } else {
+                                                "Resultado: Inativo no bucket"
+                                            },
+                                        color =
+                                            if (rolloutResult ==
+                                                true
+                                            ) {
+                                                Color(0xFF2E7D32)
+                                            } else {
+                                                MaterialTheme.colorScheme.error
+                                            },
+                                        style = MaterialTheme.typography.bodyMedium,
+                                    )
+                                }
                             }
                         }
                     }

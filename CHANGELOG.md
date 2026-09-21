@@ -1,4 +1,4 @@
-﻿# Changelog
+# Changelog
 
 Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 
@@ -8,6 +8,31 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 ---
 
 ## [Unreleased]
+
+## [1.2.0] - 2026-09-20
+
+### Added
+- **Motor de Sincronização Offline & Outbox Pattern (`:infra:core-storage`)**:
+  - `OutboxRequest`, `OutboxQueue` (thread-safe com StateFlow) e `SyncManager`.
+  - Agendamento de background jobs resilientes com `WorkManager` e `SyncWorker`.
+- **Comunicação Reativa em Tempo Real (`:infra:core-network`)**:
+  - `CoreWebSocketClient` reativo sobre OkHttp baseado em corrotinas e `Flow<WebSocketEvent>`.
+  - `ServerSentEventClient` para consumo de streaming Server-Sent Events (SSE).
+- **Paginação Genérica com Cache Local (`:infra:core-database`)**:
+  - `BaseRemoteMediator` e `RemoteKeyEntity` com suporte ao Jetpack Paging 3 integrado ao Room.
+- **Armazenamento de Alta Performance (`:infra:core-storage`)**:
+  - `TwoLevelCache` combinando L1 (RAM `LruCache`) e L2 (Disco) com política de invalidação temporal (TTL).
+- **Central de Notificações Corporativas (`:infra:core-device`)**:
+  - `NotificationChannelConfig` (Security, Transactions, General), `NotificationPayloadParser` e `NotificationManagerHelper`.
+- **Conectividade com Sensores de Hardware (`:infra:core-device`)**:
+  - `NfcHelper` para leitura de tags NDEF e verificação de hardware.
+  - `BleScannerHelper` reativo via corrotinas para descoberta de dispositivos Bluetooth Low Energy (BLE).
+- **Rollout Percentual Determinístico de Feature Flags (`:infra:core-common`)**:
+  - Método `isRolloutEnabled` com hashing consistente de usuário.
+- **Showcase Interativo Completo no `:app`**:
+  - Nova aba interativa para testes de Outbox, Two-Level Cache, Canais de Notificação, Sensores de Hardware e Rollout de Feature Flags.
+- **Integração Validada no Consumidor Real (`SolutionsAndroid`)**:
+  - Consumo direto dos pacotes `1.1.0` via Maven Local e build validado com sucesso no hub de soluções.
 
 ## [1.1.0] - 2026-09-20
 

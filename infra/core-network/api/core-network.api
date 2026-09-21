@@ -145,6 +145,31 @@ public final class br/com/wgc/core/network/metrics/NetworkMetricsEventListener$F
 	public fun create (Lokhttp3/Call;)Lokhttp3/EventListener;
 }
 
+public final class br/com/wgc/core/network/sse/ServerSentEventClient {
+	public fun <init> ()V
+	public fun <init> (Lokhttp3/OkHttpClient;)V
+	public synthetic fun <init> (Lokhttp3/OkHttpClient;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun openStream (Ljava/lang/String;Ljava/util/Map;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun openStream$default (Lbr/com/wgc/core/network/sse/ServerSentEventClient;Ljava/lang/String;Ljava/util/Map;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class br/com/wgc/core/network/sse/SseEvent {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lbr/com/wgc/core/network/sse/SseEvent;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/network/sse/SseEvent;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lbr/com/wgc/core/network/sse/SseEvent;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getData ()Ljava/lang/String;
+	public final fun getEvent ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class br/com/wgc/core/network/tracing/TraceIdInterceptor : okhttp3/Interceptor {
 	public static final field Companion Lbr/com/wgc/core/network/tracing/TraceIdInterceptor$Companion;
 	public static final field HEADER_CORRELATION_ID Ljava/lang/String;
@@ -156,5 +181,96 @@ public final class br/com/wgc/core/network/tracing/TraceIdInterceptor : okhttp3/
 }
 
 public final class br/com/wgc/core/network/tracing/TraceIdInterceptor$Companion {
+}
+
+public final class br/com/wgc/core/network/websocket/CoreWebSocketClient {
+	public static final field Companion Lbr/com/wgc/core/network/websocket/CoreWebSocketClient$Companion;
+	public static final field NORMAL_CLOSURE_STATUS I
+	public fun <init> ()V
+	public fun <init> (Lokhttp3/OkHttpClient;)V
+	public synthetic fun <init> (Lokhttp3/OkHttpClient;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun close (ILjava/lang/String;)Z
+	public static synthetic fun close$default (Lbr/com/wgc/core/network/websocket/CoreWebSocketClient;ILjava/lang/String;ILjava/lang/Object;)Z
+	public final fun connect (Ljava/lang/String;Ljava/util/Map;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun connect$default (Lbr/com/wgc/core/network/websocket/CoreWebSocketClient;Ljava/lang/String;Ljava/util/Map;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public final fun sendMessage (Ljava/lang/String;)Z
+}
+
+public final class br/com/wgc/core/network/websocket/CoreWebSocketClient$Companion {
+}
+
+public abstract class br/com/wgc/core/network/websocket/WebSocketEvent {
+}
+
+public final class br/com/wgc/core/network/websocket/WebSocketEvent$BinaryMessage : br/com/wgc/core/network/websocket/WebSocketEvent {
+	public fun <init> (Lokio/ByteString;)V
+	public final fun component1 ()Lokio/ByteString;
+	public final fun copy (Lokio/ByteString;)Lbr/com/wgc/core/network/websocket/WebSocketEvent$BinaryMessage;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/network/websocket/WebSocketEvent$BinaryMessage;Lokio/ByteString;ILjava/lang/Object;)Lbr/com/wgc/core/network/websocket/WebSocketEvent$BinaryMessage;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBytes ()Lokio/ByteString;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/network/websocket/WebSocketEvent$Closed : br/com/wgc/core/network/websocket/WebSocketEvent {
+	public fun <init> (ILjava/lang/String;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (ILjava/lang/String;)Lbr/com/wgc/core/network/websocket/WebSocketEvent$Closed;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/network/websocket/WebSocketEvent$Closed;ILjava/lang/String;ILjava/lang/Object;)Lbr/com/wgc/core/network/websocket/WebSocketEvent$Closed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCode ()I
+	public final fun getReason ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/network/websocket/WebSocketEvent$Closing : br/com/wgc/core/network/websocket/WebSocketEvent {
+	public fun <init> (ILjava/lang/String;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (ILjava/lang/String;)Lbr/com/wgc/core/network/websocket/WebSocketEvent$Closing;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/network/websocket/WebSocketEvent$Closing;ILjava/lang/String;ILjava/lang/Object;)Lbr/com/wgc/core/network/websocket/WebSocketEvent$Closing;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCode ()I
+	public final fun getReason ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/network/websocket/WebSocketEvent$Failure : br/com/wgc/core/network/websocket/WebSocketEvent {
+	public fun <init> (Ljava/lang/Throwable;Lokhttp3/Response;)V
+	public final fun component1 ()Ljava/lang/Throwable;
+	public final fun component2 ()Lokhttp3/Response;
+	public final fun copy (Ljava/lang/Throwable;Lokhttp3/Response;)Lbr/com/wgc/core/network/websocket/WebSocketEvent$Failure;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/network/websocket/WebSocketEvent$Failure;Ljava/lang/Throwable;Lokhttp3/Response;ILjava/lang/Object;)Lbr/com/wgc/core/network/websocket/WebSocketEvent$Failure;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getResponse ()Lokhttp3/Response;
+	public final fun getThrowable ()Ljava/lang/Throwable;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/network/websocket/WebSocketEvent$Message : br/com/wgc/core/network/websocket/WebSocketEvent {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lbr/com/wgc/core/network/websocket/WebSocketEvent$Message;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/network/websocket/WebSocketEvent$Message;Ljava/lang/String;ILjava/lang/Object;)Lbr/com/wgc/core/network/websocket/WebSocketEvent$Message;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/network/websocket/WebSocketEvent$Open : br/com/wgc/core/network/websocket/WebSocketEvent {
+	public fun <init> (Lokhttp3/Response;)V
+	public final fun component1 ()Lokhttp3/Response;
+	public final fun copy (Lokhttp3/Response;)Lbr/com/wgc/core/network/websocket/WebSocketEvent$Open;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/network/websocket/WebSocketEvent$Open;Lokhttp3/Response;ILjava/lang/Object;)Lbr/com/wgc/core/network/websocket/WebSocketEvent$Open;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getResponse ()Lokhttp3/Response;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 

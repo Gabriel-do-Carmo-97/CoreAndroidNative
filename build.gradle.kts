@@ -20,6 +20,7 @@ apiValidation {
 }
 
 spotless {
+    lineEndings = com.diffplug.spotless.LineEnding.PLATFORM_NATIVE
     kotlin {
         target("**/*.kt")
         targetExclude("**/build/**", "**/.gradle/**")

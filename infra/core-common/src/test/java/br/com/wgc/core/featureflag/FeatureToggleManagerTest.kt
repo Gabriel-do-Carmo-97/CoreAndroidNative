@@ -57,4 +57,18 @@ class FeatureToggleManagerTest {
         assertFalse(manager.isEnabled(TestToggles.DISABLED_BY_DEFAULT))
         assertTrue(manager.isEnabled(TestToggles.ENABLED_BY_DEFAULT))
     }
+
+    @Test
+    fun `isRolloutEnabled should respect percentage thresholds`() {
+        val manager = FeatureToggleManager()
+
+        // 0% rollout must always return false
+        assertFalse(manager.isRolloutEnabled(TestToggles.ENABLED_BY_DEFAULT, "user_123", 0))
+
+        // 100% rollout must return true for enabled toggle
+        assertTrue(manager.isRolloutEnabled(TestToggles.ENABLED_BY_DEFAULT, "user_123", 100))
+
+        // When toggle is disabled, rollout must always return false
+        assertFalse(manager.isRolloutEnabled(TestToggles.DISABLED_BY_DEFAULT, "user_123", 100))
+    }
 }

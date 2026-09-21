@@ -353,3 +353,140 @@ public final class br/com/wgc/core/sharedPreferences/SharedPreferencesCore_Facto
 	public static fun newInstance (Landroid/content/Context;Ljava/lang/String;)Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;
 }
 
+public final class br/com/wgc/core/storage/cache/CacheEntry {
+	public fun <init> (Ljava/lang/Object;JLjava/lang/Long;)V
+	public synthetic fun <init> (Ljava/lang/Object;JLjava/lang/Long;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()J
+	public final fun component3 ()Ljava/lang/Long;
+	public final fun copy (Ljava/lang/Object;JLjava/lang/Long;)Lbr/com/wgc/core/storage/cache/CacheEntry;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/storage/cache/CacheEntry;Ljava/lang/Object;JLjava/lang/Long;ILjava/lang/Object;)Lbr/com/wgc/core/storage/cache/CacheEntry;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCreatedAt ()J
+	public final fun getTtlMs ()Ljava/lang/Long;
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public final fun isExpired (J)Z
+	public static synthetic fun isExpired$default (Lbr/com/wgc/core/storage/cache/CacheEntry;JILjava/lang/Object;)Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/storage/cache/TwoLevelCache {
+	public fun <init> ()V
+	public fun <init> (I)V
+	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun clear (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun evict (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun get (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun put (Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Long;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun put$default (Lbr/com/wgc/core/storage/cache/TwoLevelCache;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Long;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun size (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class br/com/wgc/core/sync/DefaultOutboxQueue : br/com/wgc/core/sync/OutboxQueue {
+	public fun <init> ()V
+	public fun clear (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun dequeue (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun enqueue (Lbr/com/wgc/core/sync/OutboxRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getAllPending (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun observePendingCount ()Lkotlinx/coroutines/flow/Flow;
+	public fun peek (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun remove (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class br/com/wgc/core/sync/OutboxQueue {
+	public abstract fun clear (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun dequeue (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun enqueue (Lbr/com/wgc/core/sync/OutboxRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getAllPending (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun observePendingCount ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun peek (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun remove (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class br/com/wgc/core/sync/OutboxRequest {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;IJ)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;IJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/util/Map;
+	public final fun component6 ()I
+	public final fun component7 ()J
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;IJ)Lbr/com/wgc/core/sync/OutboxRequest;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/sync/OutboxRequest;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;IJILjava/lang/Object;)Lbr/com/wgc/core/sync/OutboxRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEndpoint ()Ljava/lang/String;
+	public final fun getHeaders ()Ljava/util/Map;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getMethod ()Ljava/lang/String;
+	public final fun getPayload ()Ljava/lang/String;
+	public final fun getRetryCount ()I
+	public final fun getTimestamp ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/sync/SyncManager {
+	public static final field Companion Lbr/com/wgc/core/sync/SyncManager$Companion;
+	public static final field SYNC_WORK_NAME Ljava/lang/String;
+	public fun <init> (Landroid/content/Context;Lbr/com/wgc/core/sync/OutboxQueue;)V
+	public synthetic fun <init> (Landroid/content/Context;Lbr/com/wgc/core/sync/OutboxQueue;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun enqueue (Lbr/com/wgc/core/sync/OutboxRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getOutboxQueue ()Lbr/com/wgc/core/sync/OutboxQueue;
+	public final fun observeSyncWorkInfo ()Lkotlinx/coroutines/flow/Flow;
+	public final fun scheduleSyncWork ()V
+}
+
+public final class br/com/wgc/core/sync/SyncManager$Companion {
+}
+
+public abstract class br/com/wgc/core/sync/SyncStatus {
+}
+
+public final class br/com/wgc/core/sync/SyncStatus$Failed : br/com/wgc/core/sync/SyncStatus {
+	public fun <init> (Ljava/lang/Throwable;)V
+	public final fun component1 ()Ljava/lang/Throwable;
+	public final fun copy (Ljava/lang/Throwable;)Lbr/com/wgc/core/sync/SyncStatus$Failed;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/sync/SyncStatus$Failed;Ljava/lang/Throwable;ILjava/lang/Object;)Lbr/com/wgc/core/sync/SyncStatus$Failed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getError ()Ljava/lang/Throwable;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/sync/SyncStatus$Idle : br/com/wgc/core/sync/SyncStatus {
+	public static final field INSTANCE Lbr/com/wgc/core/sync/SyncStatus$Idle;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/sync/SyncStatus$Success : br/com/wgc/core/sync/SyncStatus {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lbr/com/wgc/core/sync/SyncStatus$Success;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/sync/SyncStatus$Success;IILjava/lang/Object;)Lbr/com/wgc/core/sync/SyncStatus$Success;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getProcessedCount ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/sync/SyncStatus$Syncing : br/com/wgc/core/sync/SyncStatus {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lbr/com/wgc/core/sync/SyncStatus$Syncing;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/sync/SyncStatus$Syncing;IILjava/lang/Object;)Lbr/com/wgc/core/sync/SyncStatus$Syncing;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPendingCount ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/sync/SyncWorker : androidx/work/CoroutineWorker {
+	public fun <init> (Landroid/content/Context;Landroidx/work/WorkerParameters;)V
+	public fun doWork (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+

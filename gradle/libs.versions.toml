@@ -36,6 +36,8 @@ leakcanary = "2.14"
 startup = "1.2.0"
 sonarqube = "7.4.0.8496"
 dependencyCheck = "10.0.4"
+work = "2.10.0"
+paging = "3.3.6"
 
 
 [libraries]
@@ -89,6 +91,10 @@ androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "
 mlkit-barcode-scanning = { module = "com.google.mlkit:barcode-scanning", version.ref = "barcodeScanning" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 androidx-startup = { module = "androidx.startup:startup-runtime", version.ref = "startup" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
+androidx-work-testing = { module = "androidx.work:work-testing", version.ref = "work" }
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
+androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "paging" }
 
 # Gradle Plugins for build-logic
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }

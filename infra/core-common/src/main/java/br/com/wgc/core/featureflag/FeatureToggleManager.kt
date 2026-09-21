@@ -58,4 +58,26 @@ class FeatureToggleManager(
     fun clearAllOverrides() {
         localOverrides.clear()
     }
+
+    /**
+     * Avalia se um usuário específico está incluído no rollout percentual determinístico de uma flag.
+     *
+     * @param toggle Feature toggle sendo avaliado.
+     * @param userId Identificador único do usuário ou dispositivo.
+     * @param rolloutPercentage Percentual de ativação (0 a 100).
+     */
+    fun isRolloutEnabled(
+        toggle: FeatureToggle,
+        userId: String,
+        rolloutPercentage: Int,
+    ): Boolean {
+        if (!isEnabled(toggle) || rolloutPercentage <= 0) return false
+        if (rolloutPercentage >= MAX_PERCENTAGE) return true
+        val hash = kotlin.math.abs("$userId:${toggle.key}".hashCode())
+        return (hash % MAX_PERCENTAGE) < rolloutPercentage
+    }
+
+    companion object {
+        private const val MAX_PERCENTAGE = 100
+    }
 }

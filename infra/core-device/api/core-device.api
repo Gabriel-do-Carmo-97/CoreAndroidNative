@@ -101,6 +101,80 @@ public final class br/com/wgc/core/device/PermissionState$Granted : br/com/wgc/c
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class br/com/wgc/core/device/hardware/BleDeviceFound {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;I)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()I
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;I)Lbr/com/wgc/core/device/hardware/BleDeviceFound;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/device/hardware/BleDeviceFound;Ljava/lang/String;Ljava/lang/String;IILjava/lang/Object;)Lbr/com/wgc/core/device/hardware/BleDeviceFound;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAddress ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getRssi ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/device/hardware/BleScannerHelper {
+	public fun <init> (Landroid/content/Context;)V
+	public final fun isBluetoothEnabled ()Z
+	public final fun scanDevices ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class br/com/wgc/core/device/hardware/NfcHelper {
+	public fun <init> (Landroid/content/Context;)V
+	public final fun isNfcEnabled ()Z
+	public final fun isNfcSupported ()Z
+	public final fun parseNdefMessages ([Landroid/nfc/NdefMessage;)Ljava/util/List;
+	public final fun parseNdefPayload (Landroid/nfc/NdefRecord;)Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/device/notification/NotificationChannelConfig : java/lang/Enum {
+	public static final field GENERAL Lbr/com/wgc/core/device/notification/NotificationChannelConfig;
+	public static final field SECURITY Lbr/com/wgc/core/device/notification/NotificationChannelConfig;
+	public static final field TRANSACTIONS Lbr/com/wgc/core/device/notification/NotificationChannelConfig;
+	public final fun getChannelId ()Ljava/lang/String;
+	public final fun getChannelName ()Ljava/lang/String;
+	public final fun getDescriptionText ()Ljava/lang/String;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getImportance ()I
+	public static fun valueOf (Ljava/lang/String;)Lbr/com/wgc/core/device/notification/NotificationChannelConfig;
+	public static fun values ()[Lbr/com/wgc/core/device/notification/NotificationChannelConfig;
+}
+
+public final class br/com/wgc/core/device/notification/NotificationManagerHelper {
+	public fun <init> (Landroid/content/Context;)V
+	public final fun areNotificationsEnabled ()Z
+	public final fun buildNotification (Lbr/com/wgc/core/device/notification/PushNotificationPayload;I)Landroidx/core/app/NotificationCompat$Builder;
+	public final fun createChannels ()V
+}
+
+public final class br/com/wgc/core/device/notification/NotificationPayloadParser {
+	public static final field INSTANCE Lbr/com/wgc/core/device/notification/NotificationPayloadParser;
+	public final fun parse (Ljava/util/Map;)Lbr/com/wgc/core/device/notification/PushNotificationPayload;
+}
+
+public final class br/com/wgc/core/device/notification/PushNotificationPayload {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lbr/com/wgc/core/device/notification/NotificationChannelConfig;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lbr/com/wgc/core/device/notification/NotificationChannelConfig;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Lbr/com/wgc/core/device/notification/NotificationChannelConfig;
+	public final fun component5 ()Ljava/util/Map;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lbr/com/wgc/core/device/notification/NotificationChannelConfig;Ljava/util/Map;)Lbr/com/wgc/core/device/notification/PushNotificationPayload;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/device/notification/PushNotificationPayload;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lbr/com/wgc/core/device/notification/NotificationChannelConfig;Ljava/util/Map;ILjava/lang/Object;)Lbr/com/wgc/core/device/notification/PushNotificationPayload;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBody ()Ljava/lang/String;
+	public final fun getChannel ()Lbr/com/wgc/core/device/notification/NotificationChannelConfig;
+	public final fun getDeepLink ()Ljava/lang/String;
+	public final fun getMetadata ()Ljava/util/Map;
+	public final fun getTitle ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class br/com/wgc/core/extensions/ContextExtensionsKt {
 	public static final fun hasPermission (Landroid/content/Context;Ljava/lang/String;)Z
 	public static final fun showToast (Landroid/content/Context;Ljava/lang/String;I)V
