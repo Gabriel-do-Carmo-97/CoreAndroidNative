@@ -175,6 +175,51 @@ public final class br/com/wgc/core/device/notification/PushNotificationPayload {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class br/com/wgc/core/device/security/IntegrityReport {
+	public fun <init> (ZZZZ)V
+	public final fun component1 ()Z
+	public final fun component2 ()Z
+	public final fun component3 ()Z
+	public final fun component4 ()Z
+	public final fun copy (ZZZZ)Lbr/com/wgc/core/device/security/IntegrityReport;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/device/security/IntegrityReport;ZZZZILjava/lang/Object;)Lbr/com/wgc/core/device/security/IntegrityReport;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public final fun isCompromised ()Z
+	public final fun isDebuggerAttached ()Z
+	public final fun isFridaDetected ()Z
+	public final fun isHookingDetected ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/device/security/SecureClipboardManager {
+	public static final field Companion Lbr/com/wgc/core/device/security/SecureClipboardManager$Companion;
+	public static final field DEFAULT_AUTO_CLEAR_MS J
+	public fun <init> (Landroid/content/Context;Lkotlinx/coroutines/CoroutineScope;)V
+	public synthetic fun <init> (Landroid/content/Context;Lkotlinx/coroutines/CoroutineScope;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun clearClipboard ()V
+	public final fun copySensitive (Ljava/lang/String;Ljava/lang/String;J)V
+	public static synthetic fun copySensitive$default (Lbr/com/wgc/core/device/security/SecureClipboardManager;Ljava/lang/String;Ljava/lang/String;JILjava/lang/Object;)V
+	public final fun hasClipboardData ()Z
+}
+
+public final class br/com/wgc/core/device/security/SecureClipboardManager$Companion {
+}
+
+public final class br/com/wgc/core/device/security/SecurityIntegrityHelper {
+	public static final field Companion Lbr/com/wgc/core/device/security/SecurityIntegrityHelper$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun checkSecurityIntegrity ()Lbr/com/wgc/core/device/security/IntegrityReport;
+	public final fun isDebuggerAttached ()Z
+	public final fun isFridaDetected ()Z
+	public final fun isHookingDetected ()Z
+}
+
+public final class br/com/wgc/core/device/security/SecurityIntegrityHelper$Companion {
+}
+
 public final class br/com/wgc/core/extensions/ContextExtensionsKt {
 	public static final fun hasPermission (Landroid/content/Context;Ljava/lang/String;)Z
 	public static final fun showToast (Landroid/content/Context;Ljava/lang/String;I)V

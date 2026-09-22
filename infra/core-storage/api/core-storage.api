@@ -243,6 +243,20 @@ public final class br/com/wgc/core/security/biometric/BiometricAuthStatus$Unknow
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class br/com/wgc/core/security/biometric/BiometricCryptoHelper {
+	public static final field Companion Lbr/com/wgc/core/security/biometric/BiometricCryptoHelper$Companion;
+	public static final field DEFAULT_KEY_ALIAS Ljava/lang/String;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun createDecryptCryptoObject ([B)Landroidx/biometric/BiometricPrompt$CryptoObject;
+	public final fun createEncryptCryptoObject ()Landroidx/biometric/BiometricPrompt$CryptoObject;
+	public final fun getOrCreateSecretKey ()Ljavax/crypto/SecretKey;
+}
+
+public final class br/com/wgc/core/security/biometric/BiometricCryptoHelper$Companion {
+}
+
 public final class br/com/wgc/core/security/biometric/BiometricPromptConfig {
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZI)V
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZIILkotlin/jvm/internal/DefaultConstructorMarker;)V

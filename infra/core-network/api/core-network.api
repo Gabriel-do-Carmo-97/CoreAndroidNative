@@ -145,6 +145,18 @@ public final class br/com/wgc/core/network/metrics/NetworkMetricsEventListener$F
 	public fun create (Lokhttp3/Call;)Lokhttp3/EventListener;
 }
 
+public final class br/com/wgc/core/network/security/DynamicCertificatePinner {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun addPins (Ljava/lang/String;[Ljava/lang/String;)V
+	public final fun buildCertificatePinner ()Lokhttp3/CertificatePinner;
+	public final fun clear ()V
+	public final fun getAllPins ()Ljava/util/Map;
+	public final fun getPins (Ljava/lang/String;)Ljava/util/Set;
+	public final fun removePins (Ljava/lang/String;)V
+}
+
 public final class br/com/wgc/core/network/sse/ServerSentEventClient {
 	public fun <init> ()V
 	public fun <init> (Lokhttp3/OkHttpClient;)V

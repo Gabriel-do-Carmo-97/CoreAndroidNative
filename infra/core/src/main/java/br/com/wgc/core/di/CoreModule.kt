@@ -20,6 +20,8 @@ import br.com.wgc.core.device.PermissionManager
 import br.com.wgc.core.device.hardware.BleScannerHelper
 import br.com.wgc.core.device.hardware.NfcHelper
 import br.com.wgc.core.device.notification.NotificationManagerHelper
+import br.com.wgc.core.device.security.SecureClipboardManager
+import br.com.wgc.core.device.security.SecurityIntegrityHelper
 import br.com.wgc.core.featureflag.FeatureToggleManager
 import br.com.wgc.core.file.DefaultFileManager
 import br.com.wgc.core.file.FileManager
@@ -29,9 +31,11 @@ import br.com.wgc.core.logging.CoreLogger
 import br.com.wgc.core.logging.DefaultCoreLogger
 import br.com.wgc.core.network.NetworkClientFactory
 import br.com.wgc.core.network.NetworkMonitor
+import br.com.wgc.core.network.security.DynamicCertificatePinner
 import br.com.wgc.core.network.websocket.CoreWebSocketClient
 import br.com.wgc.core.security.EncryptedSharedPreferencesCore
 import br.com.wgc.core.security.biometric.BiometricAuthHelper
+import br.com.wgc.core.security.biometric.BiometricCryptoHelper
 import br.com.wgc.core.security.biometric.DefaultBiometricAuthHelper
 import br.com.wgc.core.session.DefaultSessionManager
 import br.com.wgc.core.session.SessionManager
@@ -360,4 +364,34 @@ object CoreModule {
     @Provides
     @Singleton
     fun provideCoreWebSocketClient(okHttpClient: OkHttpClient): CoreWebSocketClient = CoreWebSocketClient(okHttpClient)
+
+    /**
+     * Provê o utilitário corporativo de criptografia biométrica [BiometricCryptoHelper].
+     */
+    @Provides
+    @Singleton
+    fun provideBiometricCryptoHelper(): BiometricCryptoHelper = BiometricCryptoHelper()
+
+    /**
+     * Provê o utilitário de auditoria e anti-tampering [SecurityIntegrityHelper].
+     */
+    @Provides
+    @Singleton
+    fun provideSecurityIntegrityHelper(): SecurityIntegrityHelper = SecurityIntegrityHelper()
+
+    /**
+     * Provê o gerenciador de área de transferência confidencial [SecureClipboardManager].
+     */
+    @Provides
+    @Singleton
+    fun provideSecureClipboardManager(
+        @ApplicationContext context: Context,
+    ): SecureClipboardManager = SecureClipboardManager(context)
+
+    /**
+     * Provê o gerenciador dinâmico de Certificate Pinning [DynamicCertificatePinner].
+     */
+    @Provides
+    @Singleton
+    fun provideDynamicCertificatePinner(): DynamicCertificatePinner = DynamicCertificatePinner()
 }

@@ -8,6 +8,7 @@ public final class br/com/wgc/core/di/CoreModule {
 	public static final field STORAGE_ENCRYPTED_QUALIFIER Ljava/lang/String;
 	public final fun provideAnalyticsTracker ()Lbr/com/wgc/core/analytics/AnalyticsTracker;
 	public final fun provideBiometricAuthHelper (Landroid/content/Context;)Lbr/com/wgc/core/security/biometric/BiometricAuthHelper;
+	public final fun provideBiometricCryptoHelper ()Lbr/com/wgc/core/security/biometric/BiometricCryptoHelper;
 	public final fun provideBleScannerHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/hardware/BleScannerHelper;
 	public final fun provideCoreLogger ()Lbr/com/wgc/core/logging/CoreLogger;
 	public final fun provideCoreWebSocketClient (Lokhttp3/OkHttpClient;)Lbr/com/wgc/core/network/websocket/CoreWebSocketClient;
@@ -18,6 +19,7 @@ public final class br/com/wgc/core/di/CoreModule {
 	public final fun provideDefaultKeyValueStorage (Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;)Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;
 	public final fun provideDeviceInfo (Landroid/content/Context;)Lbr/com/wgc/core/device/DeviceInfo;
 	public final fun provideDeviceSecurityHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/DeviceSecurityHelper;
+	public final fun provideDynamicCertificatePinner ()Lbr/com/wgc/core/network/security/DynamicCertificatePinner;
 	public final fun provideEncryptedKeyValueStorage (Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;)Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;
 	public final fun provideEncryptedSharedPreferencesCore (Landroid/content/Context;)Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;
 	public final fun provideFeatureToggleManager ()Lbr/com/wgc/core/featureflag/FeatureToggleManager;
@@ -34,6 +36,8 @@ public final class br/com/wgc/core/di/CoreModule {
 	public final fun provideOkHttpClient ()Lokhttp3/OkHttpClient;
 	public final fun provideOutboxQueue ()Lbr/com/wgc/core/sync/OutboxQueue;
 	public final fun providePermissionManager (Landroid/content/Context;)Lbr/com/wgc/core/device/PermissionManager;
+	public final fun provideSecureClipboardManager (Landroid/content/Context;)Lbr/com/wgc/core/device/security/SecureClipboardManager;
+	public final fun provideSecurityIntegrityHelper ()Lbr/com/wgc/core/device/security/SecurityIntegrityHelper;
 	public final fun provideSessionManager (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/file/FileManager;Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)Lbr/com/wgc/core/session/SessionManager;
 	public final fun provideSharedPreferencesCore (Landroid/content/Context;Ljava/lang/String;)Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;
 	public final fun provideSharedPreferencesName ()Ljava/lang/String;
@@ -53,6 +57,14 @@ public final class br/com/wgc/core/di/CoreModule_ProvideBiometricAuthHelperFacto
 	public fun get ()Lbr/com/wgc/core/security/biometric/BiometricAuthHelper;
 	public synthetic fun get ()Ljava/lang/Object;
 	public static fun provideBiometricAuthHelper (Landroid/content/Context;)Lbr/com/wgc/core/security/biometric/BiometricAuthHelper;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideBiometricCryptoHelperFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideBiometricCryptoHelperFactory;
+	public fun get ()Lbr/com/wgc/core/security/biometric/BiometricCryptoHelper;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideBiometricCryptoHelper ()Lbr/com/wgc/core/security/biometric/BiometricCryptoHelper;
 }
 
 public final class br/com/wgc/core/di/CoreModule_ProvideBleScannerHelperFactory : dagger/internal/Factory {
@@ -126,6 +138,14 @@ public final class br/com/wgc/core/di/CoreModule_ProvideDeviceSecurityHelperFact
 	public fun get ()Lbr/com/wgc/core/device/DeviceSecurityHelper;
 	public synthetic fun get ()Ljava/lang/Object;
 	public static fun provideDeviceSecurityHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/DeviceSecurityHelper;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideDynamicCertificatePinnerFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideDynamicCertificatePinnerFactory;
+	public fun get ()Lbr/com/wgc/core/network/security/DynamicCertificatePinner;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideDynamicCertificatePinner ()Lbr/com/wgc/core/network/security/DynamicCertificatePinner;
 }
 
 public final class br/com/wgc/core/di/CoreModule_ProvideEncryptedKeyValueStorageFactory : dagger/internal/Factory {
@@ -241,6 +261,21 @@ public final class br/com/wgc/core/di/CoreModule_ProvidePermissionManagerFactory
 	public fun get ()Lbr/com/wgc/core/device/PermissionManager;
 	public synthetic fun get ()Ljava/lang/Object;
 	public static fun providePermissionManager (Landroid/content/Context;)Lbr/com/wgc/core/device/PermissionManager;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideSecureClipboardManagerFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideSecureClipboardManagerFactory;
+	public fun get ()Lbr/com/wgc/core/device/security/SecureClipboardManager;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideSecureClipboardManager (Landroid/content/Context;)Lbr/com/wgc/core/device/security/SecureClipboardManager;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideSecurityIntegrityHelperFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideSecurityIntegrityHelperFactory;
+	public fun get ()Lbr/com/wgc/core/device/security/SecurityIntegrityHelper;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideSecurityIntegrityHelper ()Lbr/com/wgc/core/device/security/SecurityIntegrityHelper;
 }
 
 public final class br/com/wgc/core/di/CoreModule_ProvideSessionManagerFactory : dagger/internal/Factory {

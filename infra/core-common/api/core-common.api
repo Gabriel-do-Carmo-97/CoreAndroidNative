@@ -200,6 +200,15 @@ public final class br/com/wgc/core/result/ResultStateKt {
 	public static final fun map (Lbr/com/wgc/core/result/ResultState;Lkotlin/jvm/functions/Function1;)Lbr/com/wgc/core/result/ResultState;
 }
 
+public final class br/com/wgc/core/security/MemorySanitizer {
+	public static final field INSTANCE Lbr/com/wgc/core/security/MemorySanitizer;
+	public final fun useAndWipe ([BLkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+	public final fun useAndWipe ([CLkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+	public final fun wipe (Ljava/lang/StringBuilder;)V
+	public final fun wipe ([B)V
+	public final fun wipe ([C)V
+}
+
 public final class br/com/wgc/core/startup/CoreInitializer : androidx/startup/Initializer {
 	public fun <init> ()V
 	public synthetic fun create (Landroid/content/Context;)Ljava/lang/Object;
