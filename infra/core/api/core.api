@@ -7,9 +7,11 @@ public final class br/com/wgc/core/di/CoreModule {
 	public static final field STORAGE_DEFAULT_QUALIFIER Ljava/lang/String;
 	public static final field STORAGE_ENCRYPTED_QUALIFIER Ljava/lang/String;
 	public final fun provideAnalyticsTracker ()Lbr/com/wgc/core/analytics/AnalyticsTracker;
+	public final fun provideAppStartupTracer ()Lbr/com/wgc/core/analytics/startup/AppStartupTracer;
 	public final fun provideBiometricAuthHelper (Landroid/content/Context;)Lbr/com/wgc/core/security/biometric/BiometricAuthHelper;
 	public final fun provideBiometricCryptoHelper ()Lbr/com/wgc/core/security/biometric/BiometricCryptoHelper;
 	public final fun provideBleScannerHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/hardware/BleScannerHelper;
+	public final fun provideBreadcrumbManager ()Lbr/com/wgc/core/analytics/breadcrumbs/BreadcrumbManager;
 	public final fun provideCoreLogger ()Lbr/com/wgc/core/logging/CoreLogger;
 	public final fun provideCoreWebSocketClient (Lokhttp3/OkHttpClient;)Lbr/com/wgc/core/network/websocket/CoreWebSocketClient;
 	public final fun provideCoroutineDispatchers ()Lbr/com/wgc/core/coroutines/CoroutineDispatchers;
@@ -31,6 +33,7 @@ public final class br/com/wgc/core/di/CoreModule {
 	public final fun provideLgpdConsentManager (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;)Lbr/com/wgc/core/analytics/consent/LgpdConsentManager;
 	public final fun provideLocationClient (Landroid/content/Context;)Lbr/com/wgc/core/location/LocationClient;
 	public final fun provideNetworkMonitor (Landroid/content/Context;)Lbr/com/wgc/core/network/NetworkMonitor;
+	public final fun provideNetworkQualityMonitor ()Lbr/com/wgc/core/network/quality/NetworkQualityMonitor;
 	public final fun provideNfcHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/hardware/NfcHelper;
 	public final fun provideNotificationManagerHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/notification/NotificationManagerHelper;
 	public final fun provideOkHttpClient ()Lokhttp3/OkHttpClient;
@@ -50,6 +53,14 @@ public final class br/com/wgc/core/di/CoreModule_ProvideAnalyticsTrackerFactory 
 	public fun get ()Lbr/com/wgc/core/analytics/AnalyticsTracker;
 	public synthetic fun get ()Ljava/lang/Object;
 	public static fun provideAnalyticsTracker ()Lbr/com/wgc/core/analytics/AnalyticsTracker;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideAppStartupTracerFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideAppStartupTracerFactory;
+	public fun get ()Lbr/com/wgc/core/analytics/startup/AppStartupTracer;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideAppStartupTracer ()Lbr/com/wgc/core/analytics/startup/AppStartupTracer;
 }
 
 public final class br/com/wgc/core/di/CoreModule_ProvideBiometricAuthHelperFactory : dagger/internal/Factory {
@@ -72,6 +83,14 @@ public final class br/com/wgc/core/di/CoreModule_ProvideBleScannerHelperFactory 
 	public fun get ()Lbr/com/wgc/core/device/hardware/BleScannerHelper;
 	public synthetic fun get ()Ljava/lang/Object;
 	public static fun provideBleScannerHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/hardware/BleScannerHelper;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideBreadcrumbManagerFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideBreadcrumbManagerFactory;
+	public fun get ()Lbr/com/wgc/core/analytics/breadcrumbs/BreadcrumbManager;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideBreadcrumbManager ()Lbr/com/wgc/core/analytics/breadcrumbs/BreadcrumbManager;
 }
 
 public final class br/com/wgc/core/di/CoreModule_ProvideCoreLoggerFactory : dagger/internal/Factory {
@@ -224,6 +243,14 @@ public final class br/com/wgc/core/di/CoreModule_ProvideNetworkMonitorFactory : 
 	public fun get ()Lbr/com/wgc/core/network/NetworkMonitor;
 	public synthetic fun get ()Ljava/lang/Object;
 	public static fun provideNetworkMonitor (Landroid/content/Context;)Lbr/com/wgc/core/network/NetworkMonitor;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideNetworkQualityMonitorFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideNetworkQualityMonitorFactory;
+	public fun get ()Lbr/com/wgc/core/network/quality/NetworkQualityMonitor;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideNetworkQualityMonitor ()Lbr/com/wgc/core/network/quality/NetworkQualityMonitor;
 }
 
 public final class br/com/wgc/core/di/CoreModule_ProvideNfcHelperFactory : dagger/internal/Factory {

@@ -3,7 +3,9 @@ package br.com.wgc.core.di
 import android.content.Context
 import br.com.wgc.core.analytics.AnalyticsTracker
 import br.com.wgc.core.analytics.CompositeAnalyticsTracker
+import br.com.wgc.core.analytics.breadcrumbs.BreadcrumbManager
 import br.com.wgc.core.analytics.consent.LgpdConsentManager
+import br.com.wgc.core.analytics.startup.AppStartupTracer
 import br.com.wgc.core.coroutines.CoroutineDispatchers
 import br.com.wgc.core.coroutines.DefaultCoroutineDispatchers
 import br.com.wgc.core.dataStorePreferences.DataStorePreferencesCore
@@ -31,6 +33,7 @@ import br.com.wgc.core.logging.CoreLogger
 import br.com.wgc.core.logging.DefaultCoreLogger
 import br.com.wgc.core.network.NetworkClientFactory
 import br.com.wgc.core.network.NetworkMonitor
+import br.com.wgc.core.network.quality.NetworkQualityMonitor
 import br.com.wgc.core.network.security.DynamicCertificatePinner
 import br.com.wgc.core.network.websocket.CoreWebSocketClient
 import br.com.wgc.core.security.EncryptedSharedPreferencesCore
@@ -394,4 +397,25 @@ object CoreModule {
     @Provides
     @Singleton
     fun provideDynamicCertificatePinner(): DynamicCertificatePinner = DynamicCertificatePinner()
+
+    /**
+     * Provê o rastreador de telemetria de inicialização e marcos de APM [AppStartupTracer].
+     */
+    @Provides
+    @Singleton
+    fun provideAppStartupTracer(): AppStartupTracer = AppStartupTracer()
+
+    /**
+     * Provê o gerenciador de breadcrumbs para rastreamento de diagnósticos e falhas [BreadcrumbManager].
+     */
+    @Provides
+    @Singleton
+    fun provideBreadcrumbManager(): BreadcrumbManager = BreadcrumbManager()
+
+    /**
+     * Provê o monitor de qualidade e latência de rede [NetworkQualityMonitor].
+     */
+    @Provides
+    @Singleton
+    fun provideNetworkQualityMonitor(): NetworkQualityMonitor = NetworkQualityMonitor()
 }
