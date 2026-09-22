@@ -17,7 +17,9 @@ public final class br/com/wgc/core/di/CoreModule {
 	public final fun provideCoroutineDispatchers ()Lbr/com/wgc/core/coroutines/CoroutineDispatchers;
 	public final fun provideDataStoreName ()Ljava/lang/String;
 	public final fun provideDataStorePreferencesCore (Landroid/content/Context;Ljava/lang/String;)Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore;
+	public final fun provideDatabaseBackupManager ()Lbr/com/wgc/core/database/backup/DatabaseBackupManager;
 	public final fun provideDatabaseEncrypter (Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;)Lbr/com/wgc/core/database/security/DatabaseEncrypter;
+	public final fun provideDatabaseMaintenanceHelper ()Lbr/com/wgc/core/database/maintenance/DatabaseMaintenanceHelper;
 	public final fun provideDefaultKeyValueStorage (Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;)Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;
 	public final fun provideDeviceInfo (Landroid/content/Context;)Lbr/com/wgc/core/device/DeviceInfo;
 	public final fun provideDeviceSecurityHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/DeviceSecurityHelper;
@@ -28,6 +30,7 @@ public final class br/com/wgc/core/di/CoreModule {
 	public final fun provideFileManager (Landroid/content/Context;)Lbr/com/wgc/core/file/FileManager;
 	public final fun provideHapticFeedbackHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/HapticFeedbackHelper;
 	public final fun provideImageCompressor (Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)Lbr/com/wgc/core/ui/media/ImageCompressor;
+	public final fun provideKeyRotationHelper ()Lbr/com/wgc/core/security/keyrotation/KeyRotationHelper;
 	public final fun provideKeyValueDataStore (Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore;)Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;
 	public final fun provideKeyValueStorage (Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;)Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;
 	public final fun provideLgpdConsentManager (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;)Lbr/com/wgc/core/analytics/consent/LgpdConsentManager;
@@ -46,6 +49,7 @@ public final class br/com/wgc/core/di/CoreModule {
 	public final fun provideSessionManager (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/file/FileManager;Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)Lbr/com/wgc/core/session/SessionManager;
 	public final fun provideSharedPreferencesCore (Landroid/content/Context;Ljava/lang/String;)Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;
 	public final fun provideSharedPreferencesName ()Ljava/lang/String;
+	public final fun provideSupervisedAppScope (Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)Lbr/com/wgc/core/coroutines/SupervisedAppScope;
 	public final fun provideSyncManager (Landroid/content/Context;Lbr/com/wgc/core/sync/OutboxQueue;)Lbr/com/wgc/core/sync/SyncManager;
 }
 
@@ -133,11 +137,27 @@ public final class br/com/wgc/core/di/CoreModule_ProvideDataStorePreferencesCore
 	public static fun provideDataStorePreferencesCore (Landroid/content/Context;Ljava/lang/String;)Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore;
 }
 
+public final class br/com/wgc/core/di/CoreModule_ProvideDatabaseBackupManagerFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideDatabaseBackupManagerFactory;
+	public fun get ()Lbr/com/wgc/core/database/backup/DatabaseBackupManager;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideDatabaseBackupManager ()Lbr/com/wgc/core/database/backup/DatabaseBackupManager;
+}
+
 public final class br/com/wgc/core/di/CoreModule_ProvideDatabaseEncrypterFactory : dagger/internal/Factory {
 	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideDatabaseEncrypterFactory;
 	public fun get ()Lbr/com/wgc/core/database/security/DatabaseEncrypter;
 	public synthetic fun get ()Ljava/lang/Object;
 	public static fun provideDatabaseEncrypter (Lbr/com/wgc/core/security/EncryptedSharedPreferencesCore;)Lbr/com/wgc/core/database/security/DatabaseEncrypter;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideDatabaseMaintenanceHelperFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideDatabaseMaintenanceHelperFactory;
+	public fun get ()Lbr/com/wgc/core/database/maintenance/DatabaseMaintenanceHelper;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideDatabaseMaintenanceHelper ()Lbr/com/wgc/core/database/maintenance/DatabaseMaintenanceHelper;
 }
 
 public final class br/com/wgc/core/di/CoreModule_ProvideDefaultKeyValueStorageFactory : dagger/internal/Factory {
@@ -210,6 +230,14 @@ public final class br/com/wgc/core/di/CoreModule_ProvideImageCompressorFactory :
 	public fun get ()Lbr/com/wgc/core/ui/media/ImageCompressor;
 	public synthetic fun get ()Ljava/lang/Object;
 	public static fun provideImageCompressor (Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)Lbr/com/wgc/core/ui/media/ImageCompressor;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideKeyRotationHelperFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideKeyRotationHelperFactory;
+	public fun get ()Lbr/com/wgc/core/security/keyrotation/KeyRotationHelper;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideKeyRotationHelper ()Lbr/com/wgc/core/security/keyrotation/KeyRotationHelper;
 }
 
 public final class br/com/wgc/core/di/CoreModule_ProvideKeyValueDataStoreFactory : dagger/internal/Factory {
@@ -342,6 +370,13 @@ public final class br/com/wgc/core/di/CoreModule_ProvideSharedPreferencesNameFac
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Ljava/lang/String;
 	public static fun provideSharedPreferencesName ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideSupervisedAppScopeFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideSupervisedAppScopeFactory;
+	public fun get ()Lbr/com/wgc/core/coroutines/SupervisedAppScope;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideSupervisedAppScope (Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)Lbr/com/wgc/core/coroutines/SupervisedAppScope;
 }
 
 public final class br/com/wgc/core/di/CoreModule_ProvideSyncManagerFactory : dagger/internal/Factory {

@@ -8,8 +8,11 @@ import br.com.wgc.core.analytics.consent.LgpdConsentManager
 import br.com.wgc.core.analytics.startup.AppStartupTracer
 import br.com.wgc.core.coroutines.CoroutineDispatchers
 import br.com.wgc.core.coroutines.DefaultCoroutineDispatchers
+import br.com.wgc.core.coroutines.SupervisedAppScope
 import br.com.wgc.core.dataStorePreferences.DataStorePreferencesCore
 import br.com.wgc.core.dataStorePreferences.KeyValueDataStore
+import br.com.wgc.core.database.backup.DatabaseBackupManager
+import br.com.wgc.core.database.maintenance.DatabaseMaintenanceHelper
 import br.com.wgc.core.database.security.DatabaseEncrypter
 import br.com.wgc.core.device.DefaultDeviceInfo
 import br.com.wgc.core.device.DefaultDeviceSecurityHelper
@@ -42,6 +45,7 @@ import br.com.wgc.core.security.EncryptedSharedPreferencesCore
 import br.com.wgc.core.security.biometric.BiometricAuthHelper
 import br.com.wgc.core.security.biometric.BiometricCryptoHelper
 import br.com.wgc.core.security.biometric.DefaultBiometricAuthHelper
+import br.com.wgc.core.security.keyrotation.KeyRotationHelper
 import br.com.wgc.core.session.DefaultSessionManager
 import br.com.wgc.core.session.SessionManager
 import br.com.wgc.core.sharedPreferences.KeyValueStorage
@@ -434,4 +438,33 @@ object CoreModule {
     @Provides
     @Singleton
     fun provideNetworkTrafficStats(): NetworkTrafficStats = NetworkTrafficStats()
+
+    /**
+     * Provê o assistente de rotinas de manutenção, desfragmentação e vacuum de banco de dados [DatabaseMaintenanceHelper].
+     */
+    @Provides
+    @Singleton
+    fun provideDatabaseMaintenanceHelper(): DatabaseMaintenanceHelper = DatabaseMaintenanceHelper()
+
+    /**
+     * Provê o gerenciador corporativo de backup e restauração cifrada AES-256 [DatabaseBackupManager].
+     */
+    @Provides
+    @Singleton
+    fun provideDatabaseBackupManager(): DatabaseBackupManager = DatabaseBackupManager()
+
+    /**
+     * Provê o utilitário de rotação e migração de chaves criptográficas [KeyRotationHelper].
+     */
+    @Provides
+    @Singleton
+    fun provideKeyRotationHelper(): KeyRotationHelper = KeyRotationHelper()
+
+    /**
+     * Provê o escopo corporativo supervisionado de corrotinas com SupervisorJob [SupervisedAppScope].
+     */
+    @Provides
+    @Singleton
+    fun provideSupervisedAppScope(dispatchers: CoroutineDispatchers): SupervisedAppScope =
+        SupervisedAppScope(dispatchers)
 }

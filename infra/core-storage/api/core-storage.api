@@ -1,3 +1,64 @@
+public final class br/com/wgc/core/cache/prefetch/CachedItem {
+	public fun <init> (Ljava/lang/Object;JJ)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()J
+	public final fun component3 ()J
+	public final fun copy (Ljava/lang/Object;JJ)Lbr/com/wgc/core/cache/prefetch/CachedItem;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/cache/prefetch/CachedItem;Ljava/lang/Object;JJILjava/lang/Object;)Lbr/com/wgc/core/cache/prefetch/CachedItem;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCachedAtMs ()J
+	public final fun getTtlMs ()J
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public final fun isExpired (J)Z
+	public static synthetic fun isExpired$default (Lbr/com/wgc/core/cache/prefetch/CachedItem;JILjava/lang/Object;)Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/cache/prefetch/DefaultPrefetchPolicy : br/com/wgc/core/cache/prefetch/PrefetchPolicy {
+	public static final field Companion Lbr/com/wgc/core/cache/prefetch/DefaultPrefetchPolicy$Companion;
+	public static final field DEFAULT_MIN_BATTERY F
+	public static final field DEFAULT_PREFETCH_RATIO F
+	public fun <init> ()V
+	public fun <init> (FF)V
+	public synthetic fun <init> (FFILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun shouldPrefetch (JJZF)Z
+}
+
+public final class br/com/wgc/core/cache/prefetch/DefaultPrefetchPolicy$Companion {
+}
+
+public final class br/com/wgc/core/cache/prefetch/PrefetchCacheManager {
+	public static final field Companion Lbr/com/wgc/core/cache/prefetch/PrefetchCacheManager$Companion;
+	public static final field DEFAULT_TTL_MS J
+	public fun <init> ()V
+	public fun <init> (Lbr/com/wgc/core/cache/prefetch/PrefetchPolicy;)V
+	public synthetic fun <init> (Lbr/com/wgc/core/cache/prefetch/PrefetchPolicy;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun clear ()V
+	public final fun get (Ljava/lang/Object;)Ljava/lang/Object;
+	public final fun invalidate (Ljava/lang/Object;)V
+	public final fun put (Ljava/lang/Object;Ljava/lang/Object;J)V
+	public static synthetic fun put$default (Lbr/com/wgc/core/cache/prefetch/PrefetchCacheManager;Ljava/lang/Object;Ljava/lang/Object;JILjava/lang/Object;)V
+	public final fun shouldPrefetch (Ljava/lang/Object;ZF)Z
+	public static synthetic fun shouldPrefetch$default (Lbr/com/wgc/core/cache/prefetch/PrefetchCacheManager;Ljava/lang/Object;ZFILjava/lang/Object;)Z
+	public final fun size ()I
+}
+
+public final class br/com/wgc/core/cache/prefetch/PrefetchCacheManager$Companion {
+}
+
+public final class br/com/wgc/core/cache/prefetch/PrefetchCacheManager_Factory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/cache/prefetch/PrefetchCacheManager_Factory;
+	public fun get ()Lbr/com/wgc/core/cache/prefetch/PrefetchCacheManager;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun newInstance ()Lbr/com/wgc/core/cache/prefetch/PrefetchCacheManager;
+}
+
+public abstract interface class br/com/wgc/core/cache/prefetch/PrefetchPolicy {
+	public abstract fun shouldPrefetch (JJZF)Z
+}
+
 public final class br/com/wgc/core/dataStorePreferences/DataStorePreferencesCore : br/com/wgc/core/dataStorePreferences/KeyValueDataStore {
 	public static final field Companion Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore$Companion;
 	public static final field DEFAULT_DATASTORE_NAME Ljava/lang/String;
@@ -283,6 +344,36 @@ public final class br/com/wgc/core/security/biometric/DefaultBiometricAuthHelper
 	public fun <init> (Landroid/content/Context;)V
 	public fun authenticate (Landroidx/fragment/app/FragmentActivity;Lbr/com/wgc/core/security/biometric/BiometricPromptConfig;Landroidx/biometric/BiometricPrompt$CryptoObject;Lkotlin/jvm/functions/Function1;)V
 	public fun canAuthenticate (I)Lbr/com/wgc/core/security/biometric/BiometricAuthStatus;
+}
+
+public final class br/com/wgc/core/security/keyrotation/KeyRotationHelper {
+	public fun <init> ()V
+	public final fun rotate (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Z)Lbr/com/wgc/core/security/keyrotation/RotationReport;
+	public static synthetic fun rotate$default (Lbr/com/wgc/core/security/keyrotation/KeyRotationHelper;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;ZILjava/lang/Object;)Lbr/com/wgc/core/security/keyrotation/RotationReport;
+}
+
+public final class br/com/wgc/core/security/keyrotation/KeyRotationHelper_Factory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/security/keyrotation/KeyRotationHelper_Factory;
+	public fun get ()Lbr/com/wgc/core/security/keyrotation/KeyRotationHelper;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun newInstance ()Lbr/com/wgc/core/security/keyrotation/KeyRotationHelper;
+}
+
+public final class br/com/wgc/core/security/keyrotation/RotationReport {
+	public fun <init> (IZLjava/lang/Throwable;)V
+	public synthetic fun <init> (IZLjava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()Z
+	public final fun component3 ()Ljava/lang/Throwable;
+	public final fun copy (IZLjava/lang/Throwable;)Lbr/com/wgc/core/security/keyrotation/RotationReport;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/security/keyrotation/RotationReport;IZLjava/lang/Throwable;ILjava/lang/Object;)Lbr/com/wgc/core/security/keyrotation/RotationReport;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getError ()Ljava/lang/Throwable;
+	public final fun getKeysMigrated ()I
+	public fun hashCode ()I
+	public final fun isSuccessful ()Z
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class br/com/wgc/core/session/DefaultSessionManager : br/com/wgc/core/session/SessionManager {
