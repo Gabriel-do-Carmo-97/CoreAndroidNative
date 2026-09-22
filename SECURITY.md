@@ -10,8 +10,9 @@ Apenas as versões mais recentes das ramificações ativas recebem atualizaçõe
 
 | Versão | Suporte a Patches de Segurança |
 |:---|:---|
-| `v0.0.x` (Atual) |  Sim (Versão ativa em desenvolvimento) |
-| `< v0.0.30` | ❌ Não (Recomenda-se atualização imediata) |
+| `v1.2.x` (Atual) | ✅ Sim (Versão ativa e recomendada) |
+| `v1.1.x` | ⚠️ Suporte a correções críticas |
+| `< v1.1.0` | ❌ Não (Recomenda-se atualização imediata) |
 
 ---
 

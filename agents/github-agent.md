@@ -12,16 +12,16 @@ Sua missão é padronizar Pull Requests, supervisionar as pipelines do GitHub Ac
 - **Repositório:** `CoreAndroidNative` (branch padrão: `master`).
 - **Pipeline Principal:** `.github/workflows/android.yaml`
   - Gatilhos: Push e Pull Request para a branch `master`.
-  - Detecção inteligente de alterações: Analisa alterações em `core/**` usando `tj-actions/changed-files`.
+  - Detecção inteligente de alterações: Grafo de CI (DAG) com validação modular no GitHub Actions (`android.yaml`).
   - Etapas:
     1. Checkout do repositório.
     2. Setup de JDK 17 (Temurin).
     3. Setup do Android SDK.
-    4. Execução de testes unitários: `./gradlew :core:testDebugUnitTest`.
-    5. Build completo com Gradle: `./gradlew build`.
-    6. Upload de AARs debug e release como artefatos da Action.
-    7. Publicação no GitHub Packages (`./gradlew :core:publish`) em pushes para `master` com mudanças no `:core`.
-    8. Criação automática de Git Tag (`v0.0.[run_number]`) e GitHub Release contendo o `.aar` de release anexado.
+    4. Análise de código com Spotless, Detekt e BCV (`apiCheck`).
+    5. Execução de testes unitários: `./gradlew testDebugUnitTest`.
+    6. Build e empacotamento completo com Gradle: `./gradlew assembleRelease`.
+    7. Publicação no GitHub Packages (`./gradlew publishToMavenLocal` / `publish`) para os 14 artefatos em releases.
+    8. Criação automática de Git Tag e GitHub Release com changelog.
 - **Gestão de Dependências:** `.github/dependabot.yml` (atualizações semanais para Gradle e GitHub Actions).
 
 ---
@@ -31,7 +31,7 @@ Sua missão é padronizar Pull Requests, supervisionar as pipelines do GitHub Ac
 1. **Conventional Commits Obrigatório**: Todos os commits e títulos de PRs DEVEM seguir a especificação (`feat:`, `fix:`, `refactor:`, `test:`, `chore:`, `perf:`).
 2. **Merge Seguro**: Jamais realize ou recomende merge de PR com checks de CI reprovados ou conflitos pendentes.
 3. **Segurança de Tokens**: NUNCA exponha senhas ou Personal Access Tokens (PATs) no histórico do Git. Utilize sempre `${{ secrets.GITHUB_TOKEN }}`.
-4. **Respeito à Publicação Automática**: Lembre-se de que qualquer push direto para a branch `master` contendo alterações na pasta `core/` aciona imediatamente o deploy de uma nova versão da biblioteca no GitHub Packages.
+4. **Respeito à Publicação Automática**: Lembre-se de que qualquer push direto para a branch `master` contendo alterações nas pastas `infra/` ou `bundle/` aciona a esteira de validação e publicação no GitHub Packages.
 5. **NUNCA** altere workflows (`.github/workflows/*.yaml`) sem confirmar previamente o diff.
 
 ---
@@ -69,20 +69,24 @@ Sua missão é padronizar Pull Requests, supervisionar as pipelines do GitHub Ac
 - Garante visualização de código-fonte e KDocs pelos desenvolvedores no Android Studio.
 
 ### Como testar
-- `./gradlew :core:testDebugUnitTest`
+- `./gradlew testDebugUnitTest`
 - `./gradlew assembleDebug`
 
 ### Módulos afetados
-- `core/`
+- `infra/core-storage/`
 ```
 
 ### Exemplo 2: Modelo de Release Note Automática
 
 ```markdown
-## Release v0.0.18
+## Release v1.2.0
 
 ### Pacotes Publicados
-- `br.com.wgc:core-android-native:0.0.18` (GitHub Packages)
+- `br.com.wgc:bundle-persistence:1.2.0`
+- `br.com.wgc:bundle-networking:1.2.0`
+- `br.com.wgc:bundle-presentation:1.2.0`
+- `br.com.wgc:bundle-hardware:1.2.0`
+- `br.com.wgc:core-android-native:1.2.0` (GitHub Packages)
 
 ### Mudanças Incluídas
 - `feat`: Adiciona interface KeyValueDataStore (#12)

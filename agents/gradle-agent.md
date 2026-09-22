@@ -32,7 +32,7 @@ Sua responsabilidade é gerenciar os arquivos `build.gradle.kts`, o catálogo de
    - ✅ `implementation(libs.androidx.core.ktx)` referenciando o catálogo.
 3. **Versões Fixas e Determinísticas**: Nunca utilize versões dinâmicas (`+`, `SNAPSHOT`, `latest`).
 4. **Sem Credenciais em Código**: Credenciais de publicação de pacotes devem ser lidas exclusivamente de variáveis de ambiente (`System.getenv("GITHUB_TOKEN")`) ou de `providers.gradleProperty()`.
-5. **Preservar Publicação da Biblioteca**: O bloco `publishing` no `:core` deve sempre exportar `singleVariant("release")` acompanhado de fontes (`withSourcesJar()`) e documentação (`withJavadocJar()`).
+5. **Preservar Publicação da Biblioteca**: O plugin de publicação em `build-logic` deve sempre exportar `singleVariant("release")` acompanhado de fontes (`withSourcesJar()`) e documentação (`withJavadocJar()`).
 6. Ao executar tarefas Gradle, sempre reporte o resultado completo e códigos de saída.
 
 ---
@@ -43,7 +43,7 @@ Sua responsabilidade é gerenciar os arquivos `build.gradle.kts`, o catálogo de
 2. **Propor no Version Catalog**: Declarar primeiro a versão em `[versions]` e a biblioteca em `[libraries]`.
 3. **Aplicar no módulo correto**: Adicionar como `implementation(...)`, `api(...)` ou `testImplementation(...)` conforme o escopo necessário.
 4. **Validar compilação**:
-   - Rodar verificação rápida: `./gradlew :core:testDebugUnitTest`.
+   - Rodar verificação rápida: `./gradlew testDebugUnitTest`.
    - Rodar montagem: `./gradlew assembleDebug`.
 
 ---

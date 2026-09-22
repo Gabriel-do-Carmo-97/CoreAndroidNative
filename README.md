@@ -95,15 +95,16 @@ Para arquiteturas limpas onde cada camada importa apenas o que precisa:
 
 | Artefato | Namespace | Compose? | Descrição |
 | :--- | :--- | :---: | :--- |
-| **`core-common`** | `br.com.wgc.core.common` | ❌ **NÃO** | `ResultState`, `CoroutineDispatchers`, `retryWithBackoff`, `CoreLogger` (PII Masking), `Validators` (CPF, CNPJ, Email, Telefone, CEP), `Formatters`. |
-| **`core-storage`** | `br.com.wgc.core.storage` | ❌ **NÃO** | `KeyValueDataStore`, `DataStorePreferencesCore`, `EncryptedSharedPreferencesCore` (AES-256 GCM), `SessionManager`. |
-| **`core-database`** | `br.com.wgc.core.database` | ❌ **NÃO** | **Room**, Criptografia com **SQLCipher**, `BaseDao`, `RoomConverters` (Date, UUID, List), `DatabaseEncrypter`. |
-| **`core-network`** | `br.com.wgc.core.network` | ❌ **NÃO** | `AuthInterceptor`, `TokenAuthenticator`, `SslPinningHelper` e `ApiResult`. |
+| **`core-common`** | `br.com.wgc.core.common` | ❌ **NÃO** | `ResultState`, `CoroutineDispatchers`, `retryWithBackoff`, `CoreLogger` (PII Masking), `Validators` (CPF, CNPJ, Email, Telefone, CEP), `Formatters`, Feature Flags com Rollout Percentual Determinístico. |
+| **`core-storage`** | `br.com.wgc.core.storage` | ❌ **NÃO** | `KeyValueDataStore`, `DataStorePreferencesCore`, `EncryptedSharedPreferencesCore` (AES-256 GCM), `SessionManager` (Logout atômico), Motor de Sincronização Offline (`OutboxQueue`, `SyncManager`) e Cache em Dois Níveis com TTL (`TwoLevelCache`). |
+| **`core-database`** | `br.com.wgc.core.database` | ❌ **NÃO** | **Room**, Criptografia com **SQLCipher**, `BaseDao`, `RoomConverters` (Date, UUID, List), `DatabaseEncrypter` e Paginação Paging 3 com `BaseRemoteMediator`. |
+| **`core-network`** | `br.com.wgc.core.network` | ❌ **NÃO** | `AuthInterceptor`, `TokenAuthenticator` (Mutex), `SslPinningHelper`, `ApiResult`, `CoreWebSocketClient` reativo e `ServerSentEventClient` (SSE). |
 | **`core-analytics`** | `br.com.wgc.core.analytics` | ❌ **NÃO** | `LgpdConsentManager` (Consentimento explícito por tipo) e telemetria segura. |
-| **`core-device`** | `br.com.wgc.core.device` | ❌ **NÃO** | `DeviceInfo`, `NetworkMonitor` reativo via ConnectivityManager, `HapticFeedbackHelper`, `NotificationHelper`, `DeviceSecurityHelper`. |
+| **`core-device`** | `br.com.wgc.core.device` | ❌ **NÃO** | `DeviceInfo`, `NetworkMonitor` reativo via ConnectivityManager, `HapticFeedbackHelper`, `NotificationManagerHelper` (Canais e Payloads), `NfcHelper`, `BleScannerHelper` e `DeviceSecurityHelper`. |
 | **`core-location`** | `br.com.wgc.core.location` | ❌ **NÃO** | `LocationClient` reativo com FusedLocationProvider e `DistanceUtils` (Fórmula de Haversine). |
 | **`core-camera`** | `br.com.wgc.core.camera` | ⚠️ UI | `CameraPreview` com suporte ao Lifecycle do Compose e `QrCodeScannerAnalyzer` via Google ML Kit. |
-| **`core-ui`** | `br.com.wgc.core.ui` | ✅ **SIM** | `VisualTransformations` (CPF, CNPJ, Telefone, CEP), `ModifierExtensions` (`debouncedClick`), `UiEffectChannel`. |
+| **`core-ui`** | `br.com.wgc.core.ui` | ✅ **SIM** | `VisualTransformations` (CPF, CNPJ, Telefone, CEP), `ModifierExtensions` (`debouncedClick`), Shimmer Skeletons, MultiPreviews e `UiEffectChannel`. |
+| **`core-testing`** | `br.com.wgc.core.testing` | ❌ **NÃO** | Utilitários de teste: `MainDispatcherRule` para corrotinas, `FakeTokenProvider` e `MockWebServerHelper`. |
 | **`core-android-native`** | `br.com.wgc.core` | Transitivo | Módulo guarda-chuva agregador com o Hilt `CoreModule` central. |
 
 ---
@@ -134,16 +135,16 @@ dependencyResolutionManagement {
 ```kotlin
 dependencies {
     // Solução completa de banco e armazenamento
-    implementation("br.com.wgc:bundle-persistence:1.0.0")
+    implementation("br.com.wgc:bundle-persistence:1.2.0")
 
     // Solução completa de rede e telemetria
-    implementation("br.com.wgc:bundle-networking:1.0.0")
+    implementation("br.com.wgc:bundle-networking:1.2.0")
 
     // Componentes visuais e câmera
-    implementation("br.com.wgc:bundle-presentation:1.0.0")
+    implementation("br.com.wgc:bundle-presentation:1.2.0")
 
     // GPS e Hardware
-    implementation("br.com.wgc:bundle-hardware:1.0.0")
+    implementation("br.com.wgc:bundle-hardware:1.2.0")
 }
 ```
 
@@ -151,14 +152,14 @@ dependencies {
 
 ```kotlin
 // No módulo :domain (Kotlin puro, sem dependências Android)
-implementation("br.com.wgc:core-common:1.0.0")
+implementation("br.com.wgc:core-common:1.2.0")
 
 // No módulo :data (Banco de dados e armazenamento)
-implementation("br.com.wgc:core-storage:1.0.0")
-implementation("br.com.wgc:core-database:1.0.0")
+implementation("br.com.wgc:core-storage:1.2.0")
+implementation("br.com.wgc:core-database:1.2.0")
 
 // No módulo :presentation (Telas e componentes)
-implementation("br.com.wgc:core-ui:1.0.0")
+implementation("br.com.wgc:core-ui:1.2.0")
 ```
 
 ---
@@ -237,9 +238,11 @@ O repositório é rigorosamente mantido sob o padrão **Enterprise Grade**:
 
 Consulte nossos guias de governança e integração:
 * [Histórico de Versões (CHANGELOG.md)](./CHANGELOG.md)
+* [Diretrizes de Arquitetura (ARCHITECTURE.md)](./ARCHITECTURE.md)
 * [Guia de Integração Corporativo (INTEGRATION_GUIDE.md)](./INTEGRATION_GUIDE.md)
 * [Guia de Contribuição (CONTRIBUTING.md)](./CONTRIBUTING.md)
 * [Política de Segurança (SECURITY.md)](./SECURITY.md)
+* [Código de Conduta (CODE_OF_CONDUCT.md)](./CODE_OF_CONDUCT.md)
 
 ---
 

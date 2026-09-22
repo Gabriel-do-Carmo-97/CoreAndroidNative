@@ -1,4 +1,4 @@
-﻿# 📘 Guia de Integração Corporativo — CoreAndroidNative
+# 📘 Guia de Integração Corporativo — CoreAndroidNative
 
 Bem-vindo ao **CoreAndroidNative**! Este guia fornece aos desenvolvedores e squads todas as diretrizes, padrões arquiteturais e exemplos práticos para integrar a infraestrutura corporativa nativa em seus aplicativos e módulos de feature.
 
@@ -49,16 +49,16 @@ Ideal para a maioria dos módulos de feature, reduzindo a complexidade do `build
 ```kotlin
 dependencies {
     // Banco de Dados Criptografado + DataStore + SharedPreferences
-    implementation("br.com.wgc:bundle-persistence:1.0.0")
+    implementation("br.com.wgc:bundle-persistence:1.2.0")
 
     // OkHttp/Retrofit + Interceptors + Autenticação + Telemetria LGPD
-    implementation("br.com.wgc:bundle-networking:1.0.0")
+    implementation("br.com.wgc:bundle-networking:1.2.0")
 
     // Localização FusedLocation + Monitor de Rede + Sensores + Notificações
-    implementation("br.com.wgc:bundle-hardware:1.0.0")
+    implementation("br.com.wgc:bundle-hardware:1.2.0")
 
     // Máscaras Visuais Compose + CameraX Preview com Scanner QR
-    implementation("br.com.wgc:bundle-presentation:1.0.0")
+    implementation("br.com.wgc:bundle-presentation:1.2.0")
 }
 ```
 
@@ -69,18 +69,18 @@ Para arquiteturas corporativas de grande escala com isolamento absoluto por cama
 ```kotlin
 // 📁 No módulo :feature-login:domain (sem dependências de UI nem de BD)
 dependencies {
-    implementation("br.com.wgc:core-common:1.0.0")
+    implementation("br.com.wgc:core-common:1.2.0")
 }
 
 // 📁 No módulo :feature-login:data (persistência e rede)
 dependencies {
-    implementation("br.com.wgc:core-storage:1.0.0")
-    implementation("br.com.wgc:core-network:1.0.0")
+    implementation("br.com.wgc:core-storage:1.2.0")
+    implementation("br.com.wgc:core-network:1.2.0")
 }
 
 // 📁 No módulo :feature-login:presentation (telas Compose)
 dependencies {
-    implementation("br.com.wgc:core-ui:1.0.0")
+    implementation("br.com.wgc:core-ui:1.2.0")
 }
 ```
 
@@ -148,7 +148,7 @@ O módulo `:infra:core-testing` elimina boilerplate de testes nas features:
 
 ```kotlin
 dependencies {
-    testImplementation("br.com.wgc:core-testing:1.0.0")
+    testImplementation("br.com.wgc:core-testing:1.2.0")
 }
 ```
 

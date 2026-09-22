@@ -28,7 +28,7 @@ Sua responsabilidade é projetar, implementar e garantir a execução confiável
    - Colocá-los em `src/test/` quebra a pipeline de CI local rápida (`./gradlew :core:testDebugUnitTest`) com erro `NoSuchAlgorithmException: AndroidKeyStore`.
 2. **Determinismo em Coroutines e Flows**:
    - **NUNCA** use `Thread.sleep()` ou `delay()` para esperar emissões de Flow em testes.
-   - Use SEMPRE `Turbine` (`flow.test { assertEquals(esperado, awaitItem()) }`) ou `runTest` com despachantes virtuais.
+   - Use SEMPRE `Turbine` (`flow.test { assertEquals(esperado, awaitItem()) }`) ou `runTest` com despachantes virtuais e `MainDispatcherRule`.
 3. **Nomenclatura Clara**:
    - Padrão `fun [metodoOuComportamento]_[cenario]_[resultadoEsperado]()` (ex: `saveAndGetString_returnsSavedValue()`).
 4. **Isolamento de Dados**:
@@ -50,7 +50,7 @@ Sua responsabilidade é projetar, implementar e garantir a execução confiável
    - Configurar `@RunWith(RobolectricTestRunner::class)` em testes unitários que utilizam `Context`.
    - Inicializar o sujeito do teste com contexto de aplicação fornecido por `ApplicationProvider.getApplicationContext()`.
 4. **Executar e Validar**:
-   - Rodar `./gradlew :core:testDebugUnitTest`.
+   - Rodar `./gradlew testDebugUnitTest` ou `./gradlew :<modulo>:testDebugUnitTest`.
    - Garantir 100% de sucesso sem falhas ou testes ignorados acidentalmente.
 
 ---

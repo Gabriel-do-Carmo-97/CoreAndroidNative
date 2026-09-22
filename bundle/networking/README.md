@@ -10,11 +10,11 @@ O **`:bundle:networking`** é um bundle de alto nível que agrupa e integra os m
 ## 🛠️ O que contém este bundle?
 
 ### 1. Inicializador e Fachada Hilt (`br.com.wgc.bundle.networking`)
-- [`NetworkingInitializer`](file:///C:/Users/gcarm/AndroidStudioProjects/CoreAndroidNative/bundle/networking/src/main/java/br/com/wgc/bundle/networking/NetworkingInitializer.kt): Módulo Dagger/Hilt (@InstallIn(SingletonComponent::class)) que fornece instâncias singleton da fachada de networking.
-- [`NetworkingFacade`](file:///C:/Users/gcarm/AndroidStudioProjects/CoreAndroidNative/bundle/networking/src/main/java/br/com/wgc/bundle/networking/NetworkingInitializer.kt): Ponto de entrada unificado para clientes HTTP, interceptors, tratamento de erros de rede e monitoramento de conectividade.
+- [`NetworkingInitializer`](src/main/java/br/com/wgc/bundle/networking/NetworkingInitializer.kt): Módulo Dagger/Hilt (`@InstallIn(SingletonComponent::class)`) que fornece instâncias singleton da fachada de networking.
+- [`NetworkingFacade`](src/main/java/br/com/wgc/bundle/networking/NetworkingInitializer.kt): Ponto de entrada unificado para clientes HTTP, interceptors, autenticação com renovação automática, WebSocket reativo, SSE e monitoramento de conectividade.
 
 ### 2. Dependências Subjacentes
-- **`:infra:core-network`**: Clientes HTTP configurados (Retrofit/OkHttp), serialização JSON e tratamento de resiliência.
+- **`:infra:core-network`**: Clientes HTTP configurados (OkHttp), WebSocket, Server-Sent Events, SSL Pinning e autenticação JWT.
 - **`:infra:core-device`**: Checagem de estado de conexão e tipo de rede (Wi-Fi, Celular, etc.).
 
 ---
@@ -25,7 +25,7 @@ No `build.gradle.kts` do módulo consumidor (ex: `:app`):
 
 ```kotlin
 dependencies {
-    implementation("br.com.wgc:bundle-networking:0.0.x")
+    implementation("br.com.wgc:bundle-networking:1.2.0")
 }
 ```
 

@@ -10,11 +10,11 @@ O **`:build-logic`** é um plugin composto (composite build) responsável por ce
 ## 🛠️ O que contém este módulo?
 
 ### Convention Plugins (Kotlin DSL)
-1. **[`AndroidLibraryConventionPlugin`](file:///C:/Users/gcarm/Documents/GitHub/CoreAndroidNative/build-logic/src/main/kotlin/AndroidLibraryConventionPlugin.kt)**: Configuração padrão para bibliotecas Android (`com.android.library`), definindo `compileSdk = 37`, `minSdk = 29`, Java 11 bytecode, testes unitários com recursos Android habilitados, Lint e Detekt.
-2. **[`AndroidLibraryComposeConventionPlugin`](file:///C:/Users/gcarm/Documents/GitHub/CoreAndroidNative/build-logic/src/main/kotlin/AndroidLibraryComposeConventionPlugin.kt)**: Ativa o suporte ao Jetpack Compose (`compose = true`) e aplica o compilador do Compose.
-3. **[`AndroidHiltConventionPlugin`](file:///C:/Users/gcarm/Documents/GitHub/CoreAndroidNative/build-logic/src/main/kotlin/AndroidHiltConventionPlugin.kt)**: Configura automaticamente o plugin e as dependências do Dagger Hilt com KSP (`com.google.dagger.hilt.android` e `com.google.devtools.ksp`).
-4. **[`AndroidPublishConventionPlugin`](file:///C:/Users/gcarm/Documents/GitHub/CoreAndroidNative/build-logic/src/main/kotlin/AndroidPublishConventionPlugin.kt)**: Configura o plugin `maven-publish` para gerar e publicar artefatos AAR em repositórios Maven (GitHub Packages) com versionamento dinâmico.
-5. **[`AndroidDokkaConventionPlugin`](file:///C:/Users/gcarm/Documents/GitHub/CoreAndroidNative/build-logic/src/main/kotlin/AndroidDokkaConventionPlugin.kt)**: Configura a geração de documentação em formato de API (Javadoc/HTML) via Dokka.
+1. **[`AndroidLibraryConventionPlugin`](src/main/kotlin/AndroidLibraryConventionPlugin.kt)**: Configuração padrão para bibliotecas Android (`com.android.library`), definindo `compileSdk = 37`, `minSdk = 29`, Java 11 bytecode, testes unitários com recursos Android habilitados, Lint e Detekt.
+2. **[`AndroidLibraryComposeConventionPlugin`](src/main/kotlin/AndroidLibraryComposeConventionPlugin.kt)**: Ativa o suporte ao Jetpack Compose (`compose = true`) e aplica o compilador do Compose.
+3. **[`AndroidHiltConventionPlugin`](src/main/kotlin/AndroidHiltConventionPlugin.kt)**: Configura automaticamente o plugin e as dependências do Dagger Hilt com KSP (`com.google.dagger.hilt.android` e `com.google.devtools.ksp`).
+4. **[`AndroidPublishConventionPlugin`](src/main/kotlin/AndroidPublishConventionPlugin.kt)**: Configura o plugin `maven-publish` para gerar e publicar artefatos AAR em repositórios Maven (GitHub Packages) com versionamento dinâmico.
+5. **[`AndroidDokkaConventionPlugin`](src/main/kotlin/AndroidDokkaConventionPlugin.kt)**: Configura a geração de documentação em formato de API (Javadoc/HTML) via Dokka.
 
 ---
 

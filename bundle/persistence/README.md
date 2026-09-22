@@ -10,12 +10,12 @@ O **`:bundle:persistence`** é um bundle de alto nível que agrupa e integra os 
 ## 🛠️ O que contém este bundle?
 
 ### 1. Inicializador e Fachada Hilt (`br.com.wgc.bundle.persistence`)
-- [`PersistenceInitializer`](file:///C:/Users/gcarm/AndroidStudioProjects/CoreAndroidNative/bundle/persistence/src/main/java/br/com/wgc/bundle/persistence/PersistenceInitializer.kt): Módulo Dagger/Hilt (@InstallIn(SingletonComponent::class)) que fornece instâncias singleton da fachada de persistência.
-- [`PersistenceFacade`](file:///C:/Users/gcarm/AndroidStudioProjects/CoreAndroidNative/bundle/persistence/src/main/java/br/com/wgc/bundle/persistence/PersistenceInitializer.kt): Ponto de entrada unificado para gerenciamento de preferências, banco de dados Room e armazenamento criptografado.
+- [`PersistenceInitializer`](src/main/java/br/com/wgc/bundle/persistence/PersistenceInitializer.kt): Módulo Dagger/Hilt (`@InstallIn(SingletonComponent::class)`) que fornece instâncias singleton da fachada de persistência.
+- [`PersistenceFacade`](src/main/java/br/com/wgc/bundle/persistence/PersistenceInitializer.kt): Ponto de entrada unificado para gerenciamento de preferências, banco de dados Room e armazenamento criptografado.
 
 ### 2. Dependências Subjacentes
-- **`:infra:core-storage`**: DataStore, SharedPreferences criptografados com Android KeyStore, biometria e gerenciamento de arquivos.
-- **`:infra:core-database`**: Configuração e DAOs do Room Database.
+- **`:infra:core-storage`**: DataStore, SharedPreferences criptografados com Android KeyStore, biometria, motor de sincronização offline (Outbox) e cache em dois níveis (RAM + Disco).
+- **`:infra:core-database`**: Configuração e DAOs do Room Database, SQLCipher e paginação com Paging 3 RemoteMediator.
 
 ---
 
@@ -25,7 +25,7 @@ No `build.gradle.kts` do módulo consumidor (ex: `:app`):
 
 ```kotlin
 dependencies {
-    implementation("br.com.wgc:bundle-persistence:0.0.x")
+    implementation("br.com.wgc:bundle-persistence:1.2.0")
 }
 ```
 
