@@ -17,6 +17,10 @@ import br.com.wgc.core.device.DeviceInfo
 import br.com.wgc.core.device.DeviceSecurityHelper
 import br.com.wgc.core.device.HapticFeedbackHelper
 import br.com.wgc.core.device.PermissionManager
+import br.com.wgc.core.device.hardware.BleScannerHelper
+import br.com.wgc.core.device.hardware.NfcHelper
+import br.com.wgc.core.device.notification.NotificationManagerHelper
+import br.com.wgc.core.featureflag.FeatureToggleManager
 import br.com.wgc.core.file.DefaultFileManager
 import br.com.wgc.core.file.FileManager
 import br.com.wgc.core.location.DefaultLocationClient
@@ -25,6 +29,7 @@ import br.com.wgc.core.logging.CoreLogger
 import br.com.wgc.core.logging.DefaultCoreLogger
 import br.com.wgc.core.network.NetworkClientFactory
 import br.com.wgc.core.network.NetworkMonitor
+import br.com.wgc.core.network.websocket.CoreWebSocketClient
 import br.com.wgc.core.security.EncryptedSharedPreferencesCore
 import br.com.wgc.core.security.biometric.BiometricAuthHelper
 import br.com.wgc.core.security.biometric.DefaultBiometricAuthHelper
@@ -32,6 +37,9 @@ import br.com.wgc.core.session.DefaultSessionManager
 import br.com.wgc.core.session.SessionManager
 import br.com.wgc.core.sharedPreferences.KeyValueStorage
 import br.com.wgc.core.sharedPreferences.SharedPreferencesCore
+import br.com.wgc.core.sync.DefaultOutboxQueue
+import br.com.wgc.core.sync.OutboxQueue
+import br.com.wgc.core.sync.SyncManager
 import br.com.wgc.core.ui.media.DefaultImageCompressor
 import br.com.wgc.core.ui.media.ImageCompressor
 import dagger.Module
@@ -52,6 +60,7 @@ import javax.inject.Singleton
  */
 @Module
 @InstallIn(SingletonComponent::class)
+@Suppress("TooManyFunctions")
 object CoreModule {
     /** Qualifier [Named] para o nome do arquivo Preferences DataStore em disco. */
     const val DATASTORE_NAME_QUALIFIER = "DataStoreName"
@@ -299,8 +308,56 @@ object CoreModule {
      */
     @Provides
     @Singleton
-    fun provideFeatureToggleManager(): br.com.wgc.core.featureflag.FeatureToggleManager {
-        return br.com.wgc.core.featureflag
-            .FeatureToggleManager()
-    }
+    fun provideFeatureToggleManager(): FeatureToggleManager = FeatureToggleManager()
+
+    /**
+     * Provê a fila persistente em memória [OutboxQueue] para o padrão Outbox.
+     */
+    @Provides
+    @Singleton
+    fun provideOutboxQueue(): OutboxQueue = DefaultOutboxQueue()
+
+    /**
+     * Provê o orquestrador de sincronização em segundo plano [SyncManager].
+     */
+    @Provides
+    @Singleton
+    fun provideSyncManager(
+        @ApplicationContext context: Context,
+        outboxQueue: OutboxQueue,
+    ): SyncManager = SyncManager(context, outboxQueue)
+
+    /**
+     * Provê o gerenciador corporativo de canais e notificações [NotificationManagerHelper].
+     */
+    @Provides
+    @Singleton
+    fun provideNotificationManagerHelper(
+        @ApplicationContext context: Context,
+    ): NotificationManagerHelper = NotificationManagerHelper(context)
+
+    /**
+     * Provê o utilitário corporativo de leitura de tags NFC [NfcHelper].
+     */
+    @Provides
+    @Singleton
+    fun provideNfcHelper(
+        @ApplicationContext context: Context,
+    ): NfcHelper = NfcHelper(context)
+
+    /**
+     * Provê o scanner reativo de periféricos Bluetooth Low Energy [BleScannerHelper].
+     */
+    @Provides
+    @Singleton
+    fun provideBleScannerHelper(
+        @ApplicationContext context: Context,
+    ): BleScannerHelper = BleScannerHelper(context)
+
+    /**
+     * Provê o cliente corporativo reativo de WebSocket [CoreWebSocketClient].
+     */
+    @Provides
+    @Singleton
+    fun provideCoreWebSocketClient(okHttpClient: OkHttpClient): CoreWebSocketClient = CoreWebSocketClient(okHttpClient)
 }

@@ -1,6 +1,15 @@
 public final class br/com/wgc/bundle/persistence/PersistenceFacade {
-	public fun <init> (Landroid/content/Context;)V
+	public static final field Companion Lbr/com/wgc/bundle/persistence/PersistenceFacade$Companion;
+	public fun <init> (Landroid/content/Context;Lbr/com/wgc/core/sync/OutboxQueue;)V
+	public synthetic fun <init> (Landroid/content/Context;Lbr/com/wgc/core/sync/OutboxQueue;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun createTwoLevelCache (I)Lbr/com/wgc/core/storage/cache/TwoLevelCache;
+	public static synthetic fun createTwoLevelCache$default (Lbr/com/wgc/bundle/persistence/PersistenceFacade;IILjava/lang/Object;)Lbr/com/wgc/core/storage/cache/TwoLevelCache;
+	public final fun getOutboxQueue ()Lbr/com/wgc/core/sync/OutboxQueue;
 	public final fun getStatus ()Ljava/lang/String;
+	public final fun getSyncManager ()Lbr/com/wgc/core/sync/SyncManager;
+}
+
+public final class br/com/wgc/bundle/persistence/PersistenceFacade$Companion {
 }
 
 public final class br/com/wgc/bundle/persistence/PersistenceInitializer {

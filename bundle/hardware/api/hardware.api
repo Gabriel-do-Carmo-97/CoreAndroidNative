@@ -1,5 +1,11 @@
 public final class br/com/wgc/bundle/hardware/HardwareFacade {
 	public fun <init> (Landroid/content/Context;)V
+	public final fun getBleScannerHelper ()Lbr/com/wgc/core/device/hardware/BleScannerHelper;
+	public final fun getDeviceInfo ()Lbr/com/wgc/core/device/DeviceInfo;
+	public final fun getHapticFeedbackHelper ()Lbr/com/wgc/core/device/HapticFeedbackHelper;
+	public final fun getLocationClient ()Lbr/com/wgc/core/location/LocationClient;
+	public final fun getNfcHelper ()Lbr/com/wgc/core/device/hardware/NfcHelper;
+	public final fun getNotificationManagerHelper ()Lbr/com/wgc/core/device/notification/NotificationManagerHelper;
 	public final fun getStatus ()Ljava/lang/String;
 }
 

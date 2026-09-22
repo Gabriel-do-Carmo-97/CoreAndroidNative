@@ -1,5 +1,10 @@
 public final class br/com/wgc/bundle/networking/NetworkingFacade {
 	public fun <init> (Landroid/content/Context;)V
+	public final fun createServerSentEventClient (Lokhttp3/OkHttpClient;)Lbr/com/wgc/core/network/sse/ServerSentEventClient;
+	public static synthetic fun createServerSentEventClient$default (Lbr/com/wgc/bundle/networking/NetworkingFacade;Lokhttp3/OkHttpClient;ILjava/lang/Object;)Lbr/com/wgc/core/network/sse/ServerSentEventClient;
+	public final fun createWebSocketClient (Lokhttp3/OkHttpClient;)Lbr/com/wgc/core/network/websocket/CoreWebSocketClient;
+	public static synthetic fun createWebSocketClient$default (Lbr/com/wgc/bundle/networking/NetworkingFacade;Lokhttp3/OkHttpClient;ILjava/lang/Object;)Lbr/com/wgc/core/network/websocket/CoreWebSocketClient;
+	public final fun getNetworkMonitor ()Lbr/com/wgc/core/network/NetworkMonitor;
 	public final fun getStatus ()Ljava/lang/String;
 }
 
