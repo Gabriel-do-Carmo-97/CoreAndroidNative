@@ -95,17 +95,17 @@ Para arquiteturas limpas onde cada camada importa apenas o que precisa:
 
 | Artefato | Namespace | Compose? | Descrição |
 | :--- | :--- | :---: | :--- |
-| **`core-common`** | `br.com.wgc.core.common` | ❌ **NÃO** | `ResultState`, `CoroutineDispatchers`, `retryWithBackoff`, `CoreLogger` (PII Masking), `Validators` (CPF, CNPJ, Email, Telefone, CEP), `Formatters`, Feature Flags com Rollout Percentual Determinístico. |
-| **`core-storage`** | `br.com.wgc.core.storage` | ❌ **NÃO** | `KeyValueDataStore`, `DataStorePreferencesCore`, `EncryptedSharedPreferencesCore` (AES-256 GCM), `SessionManager` (Logout atômico), Motor de Sincronização Offline (`OutboxQueue`, `SyncManager`) e Cache em Dois Níveis com TTL (`TwoLevelCache`). |
-| **`core-database`** | `br.com.wgc.core.database` | ❌ **NÃO** | **Room**, Criptografia com **SQLCipher**, `BaseDao`, `RoomConverters` (Date, UUID, List), `DatabaseEncrypter` e Paginação Paging 3 com `BaseRemoteMediator`. |
-| **`core-network`** | `br.com.wgc.core.network` | ❌ **NÃO** | `AuthInterceptor`, `TokenAuthenticator` (Mutex), `SslPinningHelper`, `ApiResult`, `CoreWebSocketClient` reativo e `ServerSentEventClient` (SSE). |
-| **`core-analytics`** | `br.com.wgc.core.analytics` | ❌ **NÃO** | `LgpdConsentManager` (Consentimento explícito por tipo) e telemetria segura. |
-| **`core-device`** | `br.com.wgc.core.device` | ❌ **NÃO** | `DeviceInfo`, `NetworkMonitor` reativo via ConnectivityManager, `HapticFeedbackHelper`, `NotificationManagerHelper` (Canais e Payloads), `NfcHelper`, `BleScannerHelper` e `DeviceSecurityHelper`. |
+| **`core-common`** | `br.com.wgc.core.common` | ❌ **NÃO** | `ResultState`, `CoroutineDispatchers`, `SupervisedAppScope`, `retryWithBackoff`, `CoreLogger` (PII Masking), `Validators` (CPF, CNPJ, Email, Telefone, CEP), `Formatters`, `MemorySanitizer`, `LeakMonitoringHelper`, Feature Flags com Rollout Percentual Determinístico. |
+| **`core-storage`** | `br.com.wgc.core.storage` | ❌ **NÃO** | `KeyValueDataStore`, `DataStorePreferencesCore`, `EncryptedSharedPreferencesCore` (AES-256 GCM), `BiometricCryptoHelper`, `KeyRotationHelper`, `PrefetchCacheManager`, `SessionManager` (Logout atômico), Motor de Sincronização Offline (`OutboxQueue`, `SyncManager`) e Cache em Dois Níveis com TTL (`TwoLevelCache`). |
+| **`core-database`** | `br.com.wgc.core.database` | ❌ **NÃO** | **Room**, Criptografia com **SQLCipher**, `BaseDao`, `RoomConverters` (Date, UUID, List), `DatabaseEncrypter`, `DatabaseMaintenanceHelper` (VACUUM, WAL Checkpoint, ANALYZE), `DatabaseBackupManager` (Dump e Restauração AES-256-GCM) e Paginação Paging 3 com `BaseRemoteMediator`. |
+| **`core-network`** | `br.com.wgc.core.network` | ❌ **NÃO** | `AuthInterceptor`, `TokenAuthenticator` (Mutex), `DynamicCertificatePinner`, `CircuitBreakerInterceptor`, `ResumableDownloader` (HTTP Range), `MockEngineInterceptor`, `TrafficStatsInterceptor`, `IdempotencyKeyInterceptor`, `NetworkQualityMonitor`, `ApiResult`, `CoreWebSocketClient` reativo e `ServerSentEventClient` (SSE). |
+| **`core-analytics`** | `br.com.wgc.core.analytics` | ❌ **NÃO** | `LgpdConsentManager` (Consentimento explícito por tipo), `AppStartupTracer` (Métricas de Cold/Warm Start e TTFD), `BreadcrumbManager` (Ring-buffer de diagnóstico) e telemetria segura. |
+| **`core-device`** | `br.com.wgc.core.device` | ❌ **NÃO** | `DeviceInfo`, `NetworkMonitor` reativo via ConnectivityManager, `HapticFeedbackHelper`, `NotificationManagerHelper` (Canais e Payloads), `NfcHelper`, `BleScannerHelper`, `SecurityIntegrityHelper` (Anti-Tampering Frida/Root/Debugger) e `SecureClipboardManager`. |
 | **`core-location`** | `br.com.wgc.core.location` | ❌ **NÃO** | `LocationClient` reativo com FusedLocationProvider e `DistanceUtils` (Fórmula de Haversine). |
 | **`core-camera`** | `br.com.wgc.core.camera` | ⚠️ UI | `CameraPreview` com suporte ao Lifecycle do Compose e `QrCodeScannerAnalyzer` via Google ML Kit. |
-| **`core-ui`** | `br.com.wgc.core.ui` | ✅ **SIM** | `VisualTransformations` (CPF, CNPJ, Telefone, CEP), `ModifierExtensions` (`debouncedClick`), Shimmer Skeletons, MultiPreviews e `UiEffectChannel`. |
-| **`core-testing`** | `br.com.wgc.core.testing` | ❌ **NÃO** | Utilitários de teste: `MainDispatcherRule` para corrotinas, `FakeTokenProvider` e `MockWebServerHelper`. |
-| **`core-android-native`** | `br.com.wgc.core` | Transitivo | Módulo guarda-chuva agregador com o Hilt `CoreModule` central. |
+| **`core-ui`** | `br.com.wgc.core.ui` | ✅ **SIM** | `VisualTransformations` (CPF, CNPJ, Telefone, CEP), `ModifierExtensions` (`debouncedClick`), Shimmer Skeletons, MultiPreviews, `UiEffectChannel` e `FrameMetricsMonitor` (Jank & Frozen frames). |
+| **`core-testing`** | `br.com.wgc.core.testing` | ❌ **NÃO** | Utilitários de teste: `MainDispatcherRule` para corrotinas, `FakeTokenProvider`, `MockWebServerHelper` e `ArchitectureFitnessTest`. |
+| **`core-android-native`** | `br.com.wgc.core` | Transitivo | Módulo guarda-chuva agregador com o Hilt `CoreModule` central configurado. |
 
 ---
 

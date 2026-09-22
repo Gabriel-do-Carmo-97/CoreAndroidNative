@@ -43,8 +43,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import br.com.wgc.core.analytics.breadcrumbs.BreadcrumbManager
 import br.com.wgc.core.analytics.consent.ConsentType
 import br.com.wgc.core.analytics.consent.LgpdConsentManager
+import br.com.wgc.core.analytics.startup.AppStartupTracer
 import br.com.wgc.core.database.security.DatabaseEncrypter
 import br.com.wgc.core.device.DeviceInfo
 import br.com.wgc.core.device.DeviceSecurityHelper
@@ -52,12 +54,14 @@ import br.com.wgc.core.device.HapticFeedbackHelper
 import br.com.wgc.core.device.hardware.BleScannerHelper
 import br.com.wgc.core.device.hardware.NfcHelper
 import br.com.wgc.core.device.notification.NotificationChannelConfig
+import br.com.wgc.core.device.security.SecurityIntegrityHelper
 import br.com.wgc.core.featureflag.DefaultFeatureToggle
 import br.com.wgc.core.featureflag.FeatureToggleManager
 import br.com.wgc.core.formatters.unmask
 import br.com.wgc.core.location.LocationClient
 import br.com.wgc.core.logging.CoreLogger
 import br.com.wgc.core.network.NetworkMonitor
+import br.com.wgc.core.network.quality.NetworkQualityMonitor
 import br.com.wgc.core.session.SessionManager
 import br.com.wgc.core.storage.cache.TwoLevelCache
 import br.com.wgc.core.sync.DefaultOutboxQueue
@@ -106,6 +110,18 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var featureToggleManager: FeatureToggleManager
 
+    @Inject
+    lateinit var securityIntegrityHelper: SecurityIntegrityHelper
+
+    @Inject
+    lateinit var networkQualityMonitor: NetworkQualityMonitor
+
+    @Inject
+    lateinit var breadcrumbManager: BreadcrumbManager
+
+    @Inject
+    lateinit var appStartupTracer: AppStartupTracer
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -122,6 +138,10 @@ class MainActivity : ComponentActivity() {
                     databaseEncrypter = databaseEncrypter,
                     locationClient = locationClient,
                     featureToggleManager = featureToggleManager,
+                    securityIntegrityHelper = securityIntegrityHelper,
+                    networkQualityMonitor = networkQualityMonitor,
+                    breadcrumbManager = breadcrumbManager,
+                    appStartupTracer = appStartupTracer,
                 )
             }
         }
@@ -141,6 +161,10 @@ fun ShowcaseScreen(
     databaseEncrypter: DatabaseEncrypter,
     locationClient: LocationClient,
     featureToggleManager: FeatureToggleManager,
+    securityIntegrityHelper: SecurityIntegrityHelper,
+    networkQualityMonitor: NetworkQualityMonitor,
+    breadcrumbManager: BreadcrumbManager,
+    appStartupTracer: AppStartupTracer,
 ) {
     val isConnected by networkMonitor.isConnected.collectAsState(initial = true)
     var cpfInput by remember { mutableStateOf("") }
@@ -169,7 +193,17 @@ fun ShowcaseScreen(
     var rolloutPercentage by remember { mutableIntStateOf(50) }
     var rolloutResult by remember { mutableStateOf<Boolean?>(null) }
 
-    val tabs = listOf("🌐 Rede", "🎨 UI", "📳 Haptics", "🔒 Sessão", "🛡️ Segurança", "🚀 Nível 5", "⚡ Avançado")
+    val tabs =
+        listOf(
+            "🌐 Rede",
+            "🎨 UI",
+            "📳 Haptics",
+            "🔒 Sessão",
+            "🛡️ Segurança",
+            "🚀 Nível 5",
+            "⚡ Avançado",
+            "💎 Novas Features",
+        )
 
     Scaffold(
         topBar = {
@@ -703,6 +737,132 @@ fun ShowcaseScreen(
                                         style = MaterialTheme.typography.bodyMedium,
                                     )
                                 }
+                            }
+                        }
+                    }
+                    7 -> {
+                        // Aba 7: Fases 1 a 5 (Novas Features Corporativas)
+                        val networkQuality by networkQualityMonitor.quality.collectAsState()
+                        val averageLatency by networkQualityMonitor.averageLatencyMs.collectAsState()
+                        var auditResult by remember { mutableStateOf<String?>(null) }
+                        var breadcrumbCount by remember { mutableIntStateOf(breadcrumbManager.size()) }
+
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text("🛡️ Anti-Tampering & Zero-Trust", style = MaterialTheme.typography.titleMedium)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Button(
+                                    onClick = {
+                                        val audit = securityIntegrityHelper.checkSecurityIntegrity()
+                                        val compromised = audit.isCompromised
+                                        val frida = audit.isFridaDetected
+                                        val debugger = audit.isDebuggerAttached
+                                        val hooking = audit.isHookingDetected
+                                        auditResult =
+                                            "Comprometido: $compromised | Frida: $frida\n" +
+                                            "Debugger: $debugger | Hooking: $hooking"
+                                        hapticHelper.vibrateClick()
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Text("Executar Auditoria de Integridade")
+                                }
+                                if (auditResult != null) {
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    val isSecure = !auditResult!!.contains("Comprometido: true")
+                                    Text(
+                                        text = auditResult!!,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = if (isSecure) Color(0xFF2E7D32) else MaterialTheme.colorScheme.error,
+                                    )
+                                }
+                            }
+                        }
+
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text("📶 Qualidade Dinâmica da Rede", style = MaterialTheme.typography.titleMedium)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    "Classificação: $networkQuality",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = Color(0xFF2E7D32),
+                                )
+                                Text(
+                                    "Latência Média: ${averageLatency}ms",
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                OutlinedButton(
+                                    onClick = {
+                                        networkQualityMonitor.recordSample(95L, true)
+                                        hapticHelper.vibrateClick()
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Text("Simular Amostra de Conexão Rápida")
+                                }
+                            }
+                        }
+
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text("📍 Breadcrumbs & Diagnóstico", style = MaterialTheme.typography.titleMedium)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    "Eventos no Buffer: $breadcrumbCount",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                ) {
+                                    Button(
+                                        onClick = {
+                                            breadcrumbManager.addBreadcrumb("Ação no showcase", "ui")
+                                            breadcrumbCount = breadcrumbManager.size()
+                                            hapticHelper.vibrateSuccess()
+                                        },
+                                        modifier = Modifier.weight(1f),
+                                    ) {
+                                        Text("Adicionar")
+                                    }
+                                    OutlinedButton(
+                                        onClick = {
+                                            breadcrumbManager.clear()
+                                            breadcrumbCount = breadcrumbManager.size()
+                                            hapticHelper.vibrateClick()
+                                        },
+                                        modifier = Modifier.weight(1f),
+                                    ) {
+                                        Text("Limpar")
+                                    }
+                                }
+                            }
+                        }
+
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text("⏱️ App Startup Tracer (APM)", style = MaterialTheme.typography.titleMedium)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    "Métricas de Startup: Instrumentação Cold/Warm Start ativa",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color(0xFF2E7D32),
+                                )
                             }
                         }
                     }
