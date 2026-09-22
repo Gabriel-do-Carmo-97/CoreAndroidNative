@@ -102,6 +102,79 @@ public final class br/com/wgc/core/network/TokenProvider$DefaultImpls {
 	public static fun getCachedAccessToken (Lbr/com/wgc/core/network/TokenProvider;)Ljava/lang/String;
 }
 
+public abstract interface class br/com/wgc/core/network/download/DownloadProgress {
+}
+
+public final class br/com/wgc/core/network/download/DownloadProgress$Completed : br/com/wgc/core/network/download/DownloadProgress {
+	public fun <init> (Ljava/io/File;J)V
+	public final fun component1 ()Ljava/io/File;
+	public final fun component2 ()J
+	public final fun copy (Ljava/io/File;J)Lbr/com/wgc/core/network/download/DownloadProgress$Completed;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/network/download/DownloadProgress$Completed;Ljava/io/File;JILjava/lang/Object;)Lbr/com/wgc/core/network/download/DownloadProgress$Completed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDestinationFile ()Ljava/io/File;
+	public final fun getTotalBytes ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/network/download/DownloadProgress$Failed : br/com/wgc/core/network/download/DownloadProgress {
+	public fun <init> (Ljava/lang/Throwable;J)V
+	public final fun component1 ()Ljava/lang/Throwable;
+	public final fun component2 ()J
+	public final fun copy (Ljava/lang/Throwable;J)Lbr/com/wgc/core/network/download/DownloadProgress$Failed;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/network/download/DownloadProgress$Failed;Ljava/lang/Throwable;JILjava/lang/Object;)Lbr/com/wgc/core/network/download/DownloadProgress$Failed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBytesDownloaded ()J
+	public final fun getError ()Ljava/lang/Throwable;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/network/download/DownloadProgress$Running : br/com/wgc/core/network/download/DownloadProgress {
+	public fun <init> (JLjava/lang/Long;Ljava/lang/Float;)V
+	public final fun component1 ()J
+	public final fun component2 ()Ljava/lang/Long;
+	public final fun component3 ()Ljava/lang/Float;
+	public final fun copy (JLjava/lang/Long;Ljava/lang/Float;)Lbr/com/wgc/core/network/download/DownloadProgress$Running;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/network/download/DownloadProgress$Running;JLjava/lang/Long;Ljava/lang/Float;ILjava/lang/Object;)Lbr/com/wgc/core/network/download/DownloadProgress$Running;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBytesDownloaded ()J
+	public final fun getProgressPercentage ()Ljava/lang/Float;
+	public final fun getTotalBytes ()Ljava/lang/Long;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/network/download/ResumableDownloader {
+	public static final field Companion Lbr/com/wgc/core/network/download/ResumableDownloader$Companion;
+	public fun <init> (Lokhttp3/OkHttpClient;)V
+	public final fun download (Ljava/lang/String;Ljava/io/File;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class br/com/wgc/core/network/download/ResumableDownloader$Companion {
+}
+
+public final class br/com/wgc/core/network/download/ResumableDownloader_Factory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/network/download/ResumableDownloader_Factory;
+	public fun get ()Lbr/com/wgc/core/network/download/ResumableDownloader;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun newInstance (Lokhttp3/OkHttpClient;)Lbr/com/wgc/core/network/download/ResumableDownloader;
+}
+
+public final class br/com/wgc/core/network/idempotency/IdempotencyKeyInterceptor : okhttp3/Interceptor {
+	public static final field Companion Lbr/com/wgc/core/network/idempotency/IdempotencyKeyInterceptor$Companion;
+	public static final field DEFAULT_HEADER_NAME Ljava/lang/String;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/util/Set;Lkotlin/jvm/functions/Function0;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/Set;Lkotlin/jvm/functions/Function0;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun intercept (Lokhttp3/Interceptor$Chain;)Lokhttp3/Response;
+}
+
+public final class br/com/wgc/core/network/idempotency/IdempotencyKeyInterceptor$Companion {
+	public final fun getDEFAULT_MUTATING_METHODS ()Ljava/util/Set;
+}
+
 public final class br/com/wgc/core/network/metrics/NetworkMetric {
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;JJJZLjava/lang/String;)V
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;JJJZLjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -145,6 +218,75 @@ public final class br/com/wgc/core/network/metrics/NetworkMetricsEventListener$F
 	public fun create (Lokhttp3/Call;)Lokhttp3/EventListener;
 }
 
+public final class br/com/wgc/core/network/metrics/NetworkTrafficStats {
+	public fun <init> ()V
+	public final fun getBytesReceived ()J
+	public final fun getBytesSent ()J
+	public final fun getTotalBytes ()J
+	public final fun recordTraffic (JJ)V
+	public final fun reset ()V
+}
+
+public final class br/com/wgc/core/network/metrics/NetworkTrafficStats_Factory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/network/metrics/NetworkTrafficStats_Factory;
+	public fun get ()Lbr/com/wgc/core/network/metrics/NetworkTrafficStats;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun newInstance ()Lbr/com/wgc/core/network/metrics/NetworkTrafficStats;
+}
+
+public final class br/com/wgc/core/network/metrics/TrafficStatsInterceptor : okhttp3/Interceptor {
+	public fun <init> (Lbr/com/wgc/core/network/metrics/NetworkTrafficStats;)V
+	public fun intercept (Lokhttp3/Interceptor$Chain;)Lokhttp3/Response;
+}
+
+public final class br/com/wgc/core/network/mock/MockEngineInterceptor : okhttp3/Interceptor {
+	public fun <init> ()V
+	public fun <init> (Z)V
+	public synthetic fun <init> (ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun addRule (Ljava/lang/String;Ljava/lang/String;Lbr/com/wgc/core/network/mock/MockResponse;)Lbr/com/wgc/core/network/mock/MockEngineInterceptor;
+	public final fun addRule (Lkotlin/jvm/functions/Function1;Lbr/com/wgc/core/network/mock/MockResponse;)Lbr/com/wgc/core/network/mock/MockEngineInterceptor;
+	public static synthetic fun addRule$default (Lbr/com/wgc/core/network/mock/MockEngineInterceptor;Ljava/lang/String;Ljava/lang/String;Lbr/com/wgc/core/network/mock/MockResponse;ILjava/lang/Object;)Lbr/com/wgc/core/network/mock/MockEngineInterceptor;
+	public final fun clearRules ()V
+	public fun intercept (Lokhttp3/Interceptor$Chain;)Lokhttp3/Response;
+	public final fun isEnabled ()Z
+	public final fun setEnabled (Z)V
+}
+
+public final class br/com/wgc/core/network/mock/MockResponse {
+	public fun <init> ()V
+	public fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/util/Map;J)V
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/util/Map;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/util/Map;
+	public final fun component5 ()J
+	public final fun copy (ILjava/lang/String;Ljava/lang/String;Ljava/util/Map;J)Lbr/com/wgc/core/network/mock/MockResponse;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/network/mock/MockResponse;ILjava/lang/String;Ljava/lang/String;Ljava/util/Map;JILjava/lang/Object;)Lbr/com/wgc/core/network/mock/MockResponse;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBody ()Ljava/lang/String;
+	public final fun getContentType ()Ljava/lang/String;
+	public final fun getDelayMs ()J
+	public final fun getHeaders ()Ljava/util/Map;
+	public final fun getStatusCode ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class br/com/wgc/core/network/mock/MockRule {
+	public fun <init> (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
+	public final fun component1 ()Lkotlin/jvm/functions/Function1;
+	public final fun component2 ()Lkotlin/jvm/functions/Function1;
+	public final fun copy (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Lbr/com/wgc/core/network/mock/MockRule;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/network/mock/MockRule;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lbr/com/wgc/core/network/mock/MockRule;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPredicate ()Lkotlin/jvm/functions/Function1;
+	public final fun getResponseProvider ()Lkotlin/jvm/functions/Function1;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class br/com/wgc/core/network/quality/NetworkQuality : java/lang/Enum {
 	public static final field EXCELLENT Lbr/com/wgc/core/network/quality/NetworkQuality;
 	public static final field GOOD Lbr/com/wgc/core/network/quality/NetworkQuality;
@@ -179,6 +321,38 @@ public final class br/com/wgc/core/network/quality/NetworkQualityMonitor_Factory
 	public fun get ()Lbr/com/wgc/core/network/quality/NetworkQualityMonitor;
 	public synthetic fun get ()Ljava/lang/Object;
 	public static fun newInstance ()Lbr/com/wgc/core/network/quality/NetworkQualityMonitor;
+}
+
+public final class br/com/wgc/core/network/resilience/CircuitBreakerInterceptor : okhttp3/Interceptor {
+	public static final field Companion Lbr/com/wgc/core/network/resilience/CircuitBreakerInterceptor$Companion;
+	public static final field DEFAULT_FAILURE_THRESHOLD I
+	public static final field DEFAULT_RESET_TIMEOUT_MS J
+	public fun <init> ()V
+	public fun <init> (IJ)V
+	public synthetic fun <init> (IJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun currentFailureCount ()I
+	public final fun currentState ()Lbr/com/wgc/core/network/resilience/CircuitState;
+	public final fun forceOpen ()V
+	public fun intercept (Lokhttp3/Interceptor$Chain;)Lokhttp3/Response;
+	public final fun reset ()V
+}
+
+public final class br/com/wgc/core/network/resilience/CircuitBreakerInterceptor$Companion {
+}
+
+public final class br/com/wgc/core/network/resilience/CircuitBreakerOpenException : java/io/IOException {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class br/com/wgc/core/network/resilience/CircuitState : java/lang/Enum {
+	public static final field CLOSED Lbr/com/wgc/core/network/resilience/CircuitState;
+	public static final field HALF_OPEN Lbr/com/wgc/core/network/resilience/CircuitState;
+	public static final field OPEN Lbr/com/wgc/core/network/resilience/CircuitState;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lbr/com/wgc/core/network/resilience/CircuitState;
+	public static fun values ()[Lbr/com/wgc/core/network/resilience/CircuitState;
 }
 
 public final class br/com/wgc/core/network/security/DynamicCertificatePinner {

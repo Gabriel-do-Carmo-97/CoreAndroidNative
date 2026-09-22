@@ -33,6 +33,8 @@ import br.com.wgc.core.logging.CoreLogger
 import br.com.wgc.core.logging.DefaultCoreLogger
 import br.com.wgc.core.network.NetworkClientFactory
 import br.com.wgc.core.network.NetworkMonitor
+import br.com.wgc.core.network.download.ResumableDownloader
+import br.com.wgc.core.network.metrics.NetworkTrafficStats
 import br.com.wgc.core.network.quality.NetworkQualityMonitor
 import br.com.wgc.core.network.security.DynamicCertificatePinner
 import br.com.wgc.core.network.websocket.CoreWebSocketClient
@@ -418,4 +420,18 @@ object CoreModule {
     @Provides
     @Singleton
     fun provideNetworkQualityMonitor(): NetworkQualityMonitor = NetworkQualityMonitor()
+
+    /**
+     * Provê o utilitário resiliente de download com suporte a HTTP Range [ResumableDownloader].
+     */
+    @Provides
+    @Singleton
+    fun provideResumableDownloader(okHttpClient: OkHttpClient): ResumableDownloader = ResumableDownloader(okHttpClient)
+
+    /**
+     * Provê o monitor agregador de consumo de dados e tráfego de rede [NetworkTrafficStats].
+     */
+    @Provides
+    @Singleton
+    fun provideNetworkTrafficStats(): NetworkTrafficStats = NetworkTrafficStats()
 }

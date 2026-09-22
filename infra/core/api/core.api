@@ -34,11 +34,13 @@ public final class br/com/wgc/core/di/CoreModule {
 	public final fun provideLocationClient (Landroid/content/Context;)Lbr/com/wgc/core/location/LocationClient;
 	public final fun provideNetworkMonitor (Landroid/content/Context;)Lbr/com/wgc/core/network/NetworkMonitor;
 	public final fun provideNetworkQualityMonitor ()Lbr/com/wgc/core/network/quality/NetworkQualityMonitor;
+	public final fun provideNetworkTrafficStats ()Lbr/com/wgc/core/network/metrics/NetworkTrafficStats;
 	public final fun provideNfcHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/hardware/NfcHelper;
 	public final fun provideNotificationManagerHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/notification/NotificationManagerHelper;
 	public final fun provideOkHttpClient ()Lokhttp3/OkHttpClient;
 	public final fun provideOutboxQueue ()Lbr/com/wgc/core/sync/OutboxQueue;
 	public final fun providePermissionManager (Landroid/content/Context;)Lbr/com/wgc/core/device/PermissionManager;
+	public final fun provideResumableDownloader (Lokhttp3/OkHttpClient;)Lbr/com/wgc/core/network/download/ResumableDownloader;
 	public final fun provideSecureClipboardManager (Landroid/content/Context;)Lbr/com/wgc/core/device/security/SecureClipboardManager;
 	public final fun provideSecurityIntegrityHelper ()Lbr/com/wgc/core/device/security/SecurityIntegrityHelper;
 	public final fun provideSessionManager (Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;Lbr/com/wgc/core/file/FileManager;Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)Lbr/com/wgc/core/session/SessionManager;
@@ -253,6 +255,14 @@ public final class br/com/wgc/core/di/CoreModule_ProvideNetworkQualityMonitorFac
 	public static fun provideNetworkQualityMonitor ()Lbr/com/wgc/core/network/quality/NetworkQualityMonitor;
 }
 
+public final class br/com/wgc/core/di/CoreModule_ProvideNetworkTrafficStatsFactory : dagger/internal/Factory {
+	public fun <init> ()V
+	public static fun create ()Lbr/com/wgc/core/di/CoreModule_ProvideNetworkTrafficStatsFactory;
+	public fun get ()Lbr/com/wgc/core/network/metrics/NetworkTrafficStats;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideNetworkTrafficStats ()Lbr/com/wgc/core/network/metrics/NetworkTrafficStats;
+}
+
 public final class br/com/wgc/core/di/CoreModule_ProvideNfcHelperFactory : dagger/internal/Factory {
 	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideNfcHelperFactory;
 	public fun get ()Lbr/com/wgc/core/device/hardware/NfcHelper;
@@ -288,6 +298,13 @@ public final class br/com/wgc/core/di/CoreModule_ProvidePermissionManagerFactory
 	public fun get ()Lbr/com/wgc/core/device/PermissionManager;
 	public synthetic fun get ()Ljava/lang/Object;
 	public static fun providePermissionManager (Landroid/content/Context;)Lbr/com/wgc/core/device/PermissionManager;
+}
+
+public final class br/com/wgc/core/di/CoreModule_ProvideResumableDownloaderFactory : dagger/internal/Factory {
+	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideResumableDownloaderFactory;
+	public fun get ()Lbr/com/wgc/core/network/download/ResumableDownloader;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static fun provideResumableDownloader (Lokhttp3/OkHttpClient;)Lbr/com/wgc/core/network/download/ResumableDownloader;
 }
 
 public final class br/com/wgc/core/di/CoreModule_ProvideSecureClipboardManagerFactory : dagger/internal/Factory {
