@@ -1,14 +1,10 @@
-package br.com.wgc.core.ui.performance
+﻿package br.com.wgc.core.analytics.performance
 
-import android.app.Activity
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.view.FrameMetrics
 import android.view.Window
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.ui.platform.LocalContext
 
 /**
  * Dados de métrica de renderização de um frame com lentidão (jank) detectado.
@@ -99,26 +95,5 @@ class FrameMetricsMonitor(
         const val DEFAULT_JANK_THRESHOLD_MS: Long = 16L
         const val FROZEN_THRESHOLD_MS: Long = 700L
         private const val NANOS_PER_MILLI: Long = 1_000_000L
-    }
-}
-
-/**
- * Composable Effect para monitoramento automático de Jank durante o ciclo de vida da tela Compose.
- */
-@Composable
-fun TrackJankEffect(
-    thresholdMs: Long = FrameMetricsMonitor.DEFAULT_JANK_THRESHOLD_MS,
-    onJankDetected: (JankReport) -> Unit,
-) {
-    val context = LocalContext.current
-    val activity = context as? Activity ?: return
-
-    DisposableEffect(activity, thresholdMs) {
-        val monitor = FrameMetricsMonitor(thresholdMs)
-        monitor.startMonitoring(activity.window, onJankDetected = onJankDetected)
-
-        onDispose {
-            monitor.stopMonitoring(activity.window)
-        }
     }
 }

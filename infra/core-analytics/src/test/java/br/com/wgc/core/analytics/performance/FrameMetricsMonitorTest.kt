@@ -1,4 +1,4 @@
-package br.com.wgc.core.ui.performance
+﻿package br.com.wgc.core.analytics.performance
 
 import android.app.Activity
 import org.junit.Assert.assertFalse

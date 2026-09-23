@@ -9,7 +9,7 @@ Bem-vindo ao **CoreAndroidNative**! Este guia fornece aos desenvolvedores e squa
 O **CoreAndroidNative** é construído sob os fundamentos de **Platform Engineering** e **Clean Architecture**:
 
 1. **Separação Rígida de Camadas:** Módulos de domínio e regras de negócio não devem conhecer frameworks de UI. O submódulo `:infra:core-common` é 100% livre de Jetpack Compose.
-2. **Desacoplamento do Design System:** O Design System reside em repositório e módulo próprio dedicado a tokens visuais e componentes de marca. O `CoreAndroidNative` fornece apenas primitivas de infraestrutura de apresentação (`:infra:core-ui`, `:infra:core-camera`).
+2. **Desacoplamento Total do Design System:** O ecossistema de UI (tokens visuais, componentes de marca, máscaras e templates) reside exclusivamente no repositório `DesignSystemAndroid`. O `CoreAndroidNative` é focado em infraestrutura de dados, rede, segurança e hardware (`:infra:core-camera`).
 3. **Distribuição em Dois Níveis:**
    - **Módulos Atômicos (`:infra:core-*`):** Para squads que exigem isolamento granular e menor pegada de compilação.
    - **Bundles Temáticos (`:bundle:*`):** Pacotes agregadores prontos para consumo por domínio funcional (`persistence`, `networking`, `hardware`, `presentation`).
@@ -78,9 +78,11 @@ dependencies {
     implementation("br.com.wgc:core-network:1.2.0")
 }
 
-// 📁 No módulo :feature-login:presentation (telas Compose)
+// 📁 No módulo :feature-login:presentation (telas Compose do Design System)
 dependencies {
-    implementation("br.com.wgc:core-ui:1.2.0")
+    implementation("br.com.wgc:design-system:1.0.0")
+    // Se utilizar scanner QR / câmera:
+    // implementation("br.com.wgc:core-camera:1.2.0")
 }
 ```
 

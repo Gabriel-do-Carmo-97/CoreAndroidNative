@@ -32,6 +32,7 @@ class ArchitectureFitnessTest {
                 "infra/core-database",
                 "infra/core-network",
                 "infra/core-device",
+                "infra/core-analytics",
             )
 
         val violations = mutableListOf<String>()

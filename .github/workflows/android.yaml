@@ -168,43 +168,6 @@ jobs:
           path: infra/core-network/build/outputs/aar/*-debug.aar
           if-no-files-found: ignore
 
-  core-ui:
-    name: "infra: core-ui"
-    needs: [core-common]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with: { fetch-depth: 0, lfs: true }
-      - name: Setup Android & Java Environment
-        uses: ./.github/actions/setup-android-env
-      - name: 🔍 Detekt, Lint, Testes e Build
-        run: ./gradlew :infra:core-ui:detekt :infra:core-ui:lintDebug :infra:core-ui:testDebugUnitTest :infra:core-ui:assembleRelease :infra:core-ui:assembleDebug
-      - name: 📊 Upload Reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: reports-core-ui
-          path: |
-            infra/core-ui/build/reports/tests/
-            infra/core-ui/build/reports/detekt/
-            infra/core-ui/build/reports/lint-results*.html
-          if-no-files-found: ignore
-      - name: ⬆️ Upload Release AAR
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-aar-core-ui
-          path: infra/core-ui/build/outputs/aar/*-release.aar
-          if-no-files-found: error
-      - name: ⬆️ Upload Debug AAR
-        uses: actions/upload-artifact@v4
-        with:
-          name: debug-aar-core-ui
-          path: infra/core-ui/build/outputs/aar/*-debug.aar
-          if-no-files-found: ignore
-
   core-location:
     name: "infra: core-location"
     needs: [core-common]
@@ -405,7 +368,6 @@ jobs:
       - core-storage
       - core-device
       - core-network
-      - core-ui
       - core-location
       - core-camera
       - core-database
@@ -528,7 +490,7 @@ jobs:
 
   bundle-presentation:
     name: "bundle: presentation"
-    needs: [core-common, core-device, core-ui, core-camera]
+    needs: [core-common, core-device, core-camera]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -729,7 +691,7 @@ jobs:
         if: steps.changed_modules.outputs.any_changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :infra:core-common:publish :infra:core-storage:publish :infra:core-device:publish :infra:core-network:publish :infra:core-ui:publish :infra:core-database:publish :infra:core-location:publish :infra:core-camera:publish :infra:core-analytics:publish :infra:core-testing:publish :infra:core:publish -Pversion="${{ steps.semver.outputs.version }}"
+        run: ./gradlew :infra:core-common:publish :infra:core-storage:publish :infra:core-device:publish :infra:core-network:publish :infra:core-database:publish :infra:core-location:publish :infra:core-camera:publish :infra:core-analytics:publish :infra:core-testing:publish :infra:core:publish -Pversion="${{ steps.semver.outputs.version }}"
 
       - name: ⬇️ Download Infra Release AARs
         if: steps.changed_modules.outputs.any_changed == 'true'
@@ -772,7 +734,6 @@ jobs:
               - br.com.wgc:core-storage
               - br.com.wgc:core-device
               - br.com.wgc:core-network
-              - br.com.wgc:core-ui
               - br.com.wgc:core-database
               - br.com.wgc:core-location
               - br.com.wgc:core-camera

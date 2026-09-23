@@ -12,7 +12,6 @@ android {
 dependencies {
     api(project(":infra:core-common"))
     api(project(":infra:core-device"))
-    api(project(":infra:core-ui"))
     api(project(":infra:core-camera"))
 
     testImplementation(libs.junit)

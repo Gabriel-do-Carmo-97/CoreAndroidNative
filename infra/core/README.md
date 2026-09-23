@@ -3,7 +3,7 @@
 [![Artefato](https://img.shields.io/badge/Artifact-br.com.wgc:core--android--native-blue.svg)](https://github.com/Gabriel-do-Carmo-97/CoreAndroidNative)
 ![Min SDK](https://img.shields.io/badge/minSdk-29-green.svg)
 
-O **`:infra:core`** é o módulo agregador (guarda-chuva) da arquitetura. Sua principal função é exportar (`api(...)`) todos os submódulos de infraestrutura (`:infra:core-common`, `:infra:core-storage`, `:infra:core-device`, `:infra:core-network`, `:infra:core-ui`, `:infra:core-database`, `:infra:core-location`, `:infra:core-camera`, `:infra:core-analytics`, `:infra:core-testing`) em um único ponto de dependência unificado.
+O **`:infra:core`** é o módulo agregador (guarda-chuva) da arquitetura. Sua principal função é exportar (`api(...)`) todos os submódulos de infraestrutura (`:infra:core-common`, `:infra:core-storage`, `:infra:core-device`, `:infra:core-network`, `:infra:core-database`, `:infra:core-location`, `:infra:core-camera`, `:infra:core-analytics`, `:infra:core-testing`) em um único ponto de dependência unificado.
 
 ---
 

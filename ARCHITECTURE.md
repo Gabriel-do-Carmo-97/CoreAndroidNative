@@ -8,7 +8,7 @@ O **CoreAndroidNative** é a fundação de plataforma compartilhada para aplica�
 
 1. **Zero UI nas Camadas Base:**
    - Módulos de regras de negócio (`:infra:core-common`), armazenamento (`:infra:core-storage`), banco de dados (`:infra:core-database`), rede (`:infra:core-network`) e sistema (`:infra:core-device`) **NÃO** dependem de Jetpack Compose nem de frameworks de interface.
-   - Apenas `:infra:core-ui` e `:infra:core-camera` contêm dependências visuais.
+   - Apenas `:infra:core-camera` contém dependência com preview visual (CameraX). O ecossistema de UI (Design System, componentes visuais, máscaras e templates) reside exclusivamente no repositório `DesignSystemAndroid`.
 2. **Abstração Baseada em Contratos:**
    - Todo componente reutilizável expõe uma `interface` pública (ex: `KeyValueDataStore`, `NetworkMonitor`, `TokenProvider`, `LocationClient`) antes da sua implementação concreta, facilitando a substituição em testes com fakes determinísticos.
 3. **Distribuição em Dois Níveis:**
@@ -38,7 +38,6 @@ graph TD
     Device[":infra:core-device<br/>(DeviceInfo, Notificações, NFC, BLE)"]:::infra
     Location[":infra:core-location<br/>(GPS, DistanceUtils)"]:::infra
     Camera[":infra:core-camera<br/>(CameraX, ML Kit QR)"]:::infra
-    UI[":infra:core-ui<br/>(Máscaras, Shimmer, MVI Effects)"]:::infra
     Testing[":infra:core-testing<br/>(MainDispatcherRule, Fakes)"]:::infra
 
     BundlePersist["📦 :bundle:persistence"]:::bundle

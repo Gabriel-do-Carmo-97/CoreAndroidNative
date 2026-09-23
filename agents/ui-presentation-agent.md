@@ -9,16 +9,14 @@ Sua missão é desenvolver componentes reutilizáveis, transformações visuais 
 
 ## 2. Contexto do Projeto e Escopo
 
-- **Módulos de Infraestrutura:**
-  - `infra/core-ui` (`br.com.wgc.core.ui`):
-    - `VisualTransformations`: Máscaras para campos de entrada de texto (`CpfVisualTransformation`, `CnpjVisualTransformation`, `PhoneVisualTransformation`, `CepVisualTransformation`, `CurrencyVisualTransformation`).
-    - `ModifierExtensions`: Modificadores utilitários como `debouncedClick` (prevenção de duplo clique), `shimmerEffect`, `conditionalModifier`.
-    - `UiEffectChannel`: Gerenciador de eventos pontuais de UI (Single-event / One-shot effects como navegação, exibição de SnackBar, dialogs) usando `Channel` e `Flow`.
-    - Componentes atômicos de base, temas e tipografia extensível.
+- **Módulos de Infraestrutura e Design System:**
+  - `DesignSystemAndroid`: Repositório dedicado para componentes de marca, tokens visuais, máscaras de campos (`VisualTransformations`), modificadores (`ModifierExtensions`) e canais de UI (`UiEffectChannel`).
+  - `infra/core-camera` (`br.com.wgc.core.camera`):
+    - `CameraPreview`: Preview de câmera reativo CameraX com suporte a ciclo de vida do Compose.
+    - `QrCodeScannerAnalyzer`: Scanner de QR code via Google ML Kit.
 - **Módulo de Bundle:**
   - `bundle/presentation` (`br.com.wgc.bundle.presentation`):
-    - Agrega e expõe `core-common`, `core-device`, `core-ui` e `core-camera` via `api(...)`.
-    - Fornece integrações de UI com recursos de hardware (ex: `CameraPreview` em Jetpack Compose com suporte a ciclo de vida).
+    - Agrega e expõe `core-common`, `core-device` e `core-camera` via `api(...)`.
 
 ---
 

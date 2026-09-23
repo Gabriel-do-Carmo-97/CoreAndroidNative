@@ -13,7 +13,6 @@ dependencies {
     api(project(":infra:core-storage"))
     api(project(":infra:core-device"))
     api(project(":infra:core-network"))
-    api(project(":infra:core-ui"))
     api(project(":infra:core-database"))
     api(project(":infra:core-location"))
     api(project(":infra:core-camera"))

@@ -16,6 +16,5 @@ class CoreModuleTest {
         assertNotNull(CoreModule.provideCoroutineDispatchers())
         assertNotNull(CoreModule.provideCoreLogger())
         assertNotNull(CoreModule.provideAnalyticsTracker())
-        assertNotNull(CoreModule.provideImageCompressor(CoreModule.provideCoroutineDispatchers()))
     }
 }

@@ -34,12 +34,11 @@ graph TD
     Device[":infra:core-device<br/>(DeviceInfo, NetworkMonitor, Haptics, Security)"]:::infra
     Location[":infra:core-location<br/>(GPS, DistanceUtils, FusedLocation)"]:::infra
     Camera[":infra:core-camera<br/>(CameraX, QR Code Scanner)"]:::infra
-    UI[":infra:core-ui<br/>(VisualTransformations, Compose Modifiers)"]:::infra
 
     %% Bundles
     BundlePersist["📦 :bundle:persistence<br/>(Storage + Database)"]:::bundle
     BundleNet["📦 :bundle:networking<br/>(Network + Analytics)"]:::bundle
-    BundlePres["📦 :bundle:presentation<br/>(UI + Camera)"]:::bundle
+    BundlePres["📦 :bundle:presentation<br/>(Camera + Device)"]:::bundle
     BundleHW["📦 :bundle:hardware<br/>(Device + Location)"]:::bundle
 
     %% Umbrella
@@ -87,7 +86,7 @@ Empacotam soluções temáticas completas prontas para consumo:
 | :--- | :--- | :--- |
 | **`bundle-persistence`** | `br.com.wgc.bundle.persistence` | Solução completa de persistência: **`core-storage`** + **`core-database`** (Room criptografado, DataStore e SharedPreferences). |
 | **`bundle-networking`** | `br.com.wgc.bundle.networking` | Stack de comunicação: **`core-network`** + **`core-analytics`** + **`core-device`** (Conectividade, Telemetria e LGPD). |
-| **`bundle-presentation`** | `br.com.wgc.bundle.presentation` | Camada visual: **`core-ui`** + **`core-camera`** (Compose Masks, Modifiers e CameraX Preview). |
+| **`bundle-presentation`** | `br.com.wgc.bundle.presentation` | Camada de sensores visuais: **`core-camera`** + **`core-device`** (CameraX Preview e scanner QR Code). *(UI visual de marca reside no Design System)*. |
 | **`bundle-hardware`** | `br.com.wgc.bundle.hardware` | Integrações físicas: **`core-device`** + **`core-location`** (GPS, Notificações e Haptics). |
 
 ### 2. Módulos de Infraestrutura Atômica (Importação Granular)
@@ -99,11 +98,10 @@ Para arquiteturas limpas onde cada camada importa apenas o que precisa:
 | **`core-storage`** | `br.com.wgc.core.storage` | ❌ **NÃO** | `KeyValueDataStore`, `DataStorePreferencesCore`, `EncryptedSharedPreferencesCore` (AES-256 GCM), `BiometricCryptoHelper`, `KeyRotationHelper`, `PrefetchCacheManager`, `SessionManager` (Logout atômico), Motor de Sincronização Offline (`OutboxQueue`, `SyncManager`) e Cache em Dois Níveis com TTL (`TwoLevelCache`). |
 | **`core-database`** | `br.com.wgc.core.database` | ❌ **NÃO** | **Room**, Criptografia com **SQLCipher**, `BaseDao`, `RoomConverters` (Date, UUID, List), `DatabaseEncrypter`, `DatabaseMaintenanceHelper` (VACUUM, WAL Checkpoint, ANALYZE), `DatabaseBackupManager` (Dump e Restauração AES-256-GCM) e Paginação Paging 3 com `BaseRemoteMediator`. |
 | **`core-network`** | `br.com.wgc.core.network` | ❌ **NÃO** | `AuthInterceptor`, `TokenAuthenticator` (Mutex), `DynamicCertificatePinner`, `CircuitBreakerInterceptor`, `ResumableDownloader` (HTTP Range), `MockEngineInterceptor`, `TrafficStatsInterceptor`, `IdempotencyKeyInterceptor`, `NetworkQualityMonitor`, `ApiResult`, `CoreWebSocketClient` reativo e `ServerSentEventClient` (SSE). |
-| **`core-analytics`** | `br.com.wgc.core.analytics` | ❌ **NÃO** | `LgpdConsentManager` (Consentimento explícito por tipo), `AppStartupTracer` (Métricas de Cold/Warm Start e TTFD), `BreadcrumbManager` (Ring-buffer de diagnóstico) e telemetria segura. |
+| **`core-analytics`** | `br.com.wgc.core.analytics` | ❌ **NÃO** | `LgpdConsentManager`, `AppStartupTracer` (Métricas de Cold/Warm Start e TTFD), `BreadcrumbManager` (Ring-buffer de diagnóstico), `FrameMetricsMonitor` (Jank & Frozen frames) e telemetria segura. |
 | **`core-device`** | `br.com.wgc.core.device` | ❌ **NÃO** | `DeviceInfo`, `NetworkMonitor` reativo via ConnectivityManager, `HapticFeedbackHelper`, `NotificationManagerHelper` (Canais e Payloads), `NfcHelper`, `BleScannerHelper`, `SecurityIntegrityHelper` (Anti-Tampering Frida/Root/Debugger) e `SecureClipboardManager`. |
 | **`core-location`** | `br.com.wgc.core.location` | ❌ **NÃO** | `LocationClient` reativo com FusedLocationProvider e `DistanceUtils` (Fórmula de Haversine). |
 | **`core-camera`** | `br.com.wgc.core.camera` | ⚠️ UI | `CameraPreview` com suporte ao Lifecycle do Compose e `QrCodeScannerAnalyzer` via Google ML Kit. |
-| **`core-ui`** | `br.com.wgc.core.ui` | ✅ **SIM** | `VisualTransformations` (CPF, CNPJ, Telefone, CEP), `ModifierExtensions` (`debouncedClick`), Shimmer Skeletons, MultiPreviews, `UiEffectChannel` e `FrameMetricsMonitor` (Jank & Frozen frames). |
 | **`core-testing`** | `br.com.wgc.core.testing` | ❌ **NÃO** | Utilitários de teste: `MainDispatcherRule` para corrotinas, `FakeTokenProvider`, `MockWebServerHelper` e `ArchitectureFitnessTest`. |
 | **`core-android-native`** | `br.com.wgc.core` | Transitivo | Módulo guarda-chuva agregador com o Hilt `CoreModule` central configurado. |
 
@@ -158,8 +156,10 @@ implementation("br.com.wgc:core-common:1.2.0")
 implementation("br.com.wgc:core-storage:1.2.0")
 implementation("br.com.wgc:core-database:1.2.0")
 
-// No módulo :presentation (Telas e componentes)
-implementation("br.com.wgc:core-ui:1.2.0")
+// No módulo :presentation (Telas e componentes do Design System)
+// implementation("br.com.wgc:design-system:x.y.z")
+// No módulo com suporte a câmera / sensores visuais:
+implementation("br.com.wgc:core-camera:1.2.0")
 ```
 
 ---

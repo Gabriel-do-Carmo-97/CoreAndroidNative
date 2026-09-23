@@ -53,8 +53,6 @@ import br.com.wgc.core.sharedPreferences.SharedPreferencesCore
 import br.com.wgc.core.sync.DefaultOutboxQueue
 import br.com.wgc.core.sync.OutboxQueue
 import br.com.wgc.core.sync.SyncManager
-import br.com.wgc.core.ui.media.DefaultImageCompressor
-import br.com.wgc.core.ui.media.ImageCompressor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -274,13 +272,6 @@ object CoreModule {
     @Singleton
     fun provideAnalyticsTracker(): AnalyticsTracker =
         CompositeAnalyticsTracker(trackers = emptyList(), enablePiiMasking = true)
-
-    /**
-     * Provê a instância singleton de [ImageCompressor] para processamento assíncrono de imagens.
-     */
-    @Provides
-    @Singleton
-    fun provideImageCompressor(dispatchers: CoroutineDispatchers): ImageCompressor = DefaultImageCompressor(dispatchers)
 
     /**
      * Provê a instância singleton de [LgpdConsentManager] para gestão de consentimentos de privacidade.

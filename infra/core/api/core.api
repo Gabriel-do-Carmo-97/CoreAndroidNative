@@ -29,7 +29,6 @@ public final class br/com/wgc/core/di/CoreModule {
 	public final fun provideFeatureToggleManager ()Lbr/com/wgc/core/featureflag/FeatureToggleManager;
 	public final fun provideFileManager (Landroid/content/Context;)Lbr/com/wgc/core/file/FileManager;
 	public final fun provideHapticFeedbackHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/HapticFeedbackHelper;
-	public final fun provideImageCompressor (Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)Lbr/com/wgc/core/ui/media/ImageCompressor;
 	public final fun provideKeyRotationHelper ()Lbr/com/wgc/core/security/keyrotation/KeyRotationHelper;
 	public final fun provideKeyValueDataStore (Lbr/com/wgc/core/dataStorePreferences/DataStorePreferencesCore;)Lbr/com/wgc/core/dataStorePreferences/KeyValueDataStore;
 	public final fun provideKeyValueStorage (Lbr/com/wgc/core/sharedPreferences/SharedPreferencesCore;)Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;
@@ -223,13 +222,6 @@ public final class br/com/wgc/core/di/CoreModule_ProvideHapticFeedbackHelperFact
 	public fun get ()Lbr/com/wgc/core/device/HapticFeedbackHelper;
 	public synthetic fun get ()Ljava/lang/Object;
 	public static fun provideHapticFeedbackHelper (Landroid/content/Context;)Lbr/com/wgc/core/device/HapticFeedbackHelper;
-}
-
-public final class br/com/wgc/core/di/CoreModule_ProvideImageCompressorFactory : dagger/internal/Factory {
-	public static fun create (Ldagger/internal/Provider;)Lbr/com/wgc/core/di/CoreModule_ProvideImageCompressorFactory;
-	public fun get ()Lbr/com/wgc/core/ui/media/ImageCompressor;
-	public synthetic fun get ()Ljava/lang/Object;
-	public static fun provideImageCompressor (Lbr/com/wgc/core/coroutines/CoroutineDispatchers;)Lbr/com/wgc/core/ui/media/ImageCompressor;
 }
 
 public final class br/com/wgc/core/di/CoreModule_ProvideKeyRotationHelperFactory : dagger/internal/Factory {

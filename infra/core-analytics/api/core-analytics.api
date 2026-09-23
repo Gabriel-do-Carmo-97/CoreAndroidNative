@@ -77,6 +77,38 @@ public final class br/com/wgc/core/analytics/consent/LgpdConsentManager_Factory 
 	public static fun newInstance (Lbr/com/wgc/core/sharedPreferences/KeyValueStorage;)Lbr/com/wgc/core/analytics/consent/LgpdConsentManager;
 }
 
+public final class br/com/wgc/core/analytics/performance/FrameMetricsMonitor {
+	public static final field Companion Lbr/com/wgc/core/analytics/performance/FrameMetricsMonitor$Companion;
+	public static final field DEFAULT_JANK_THRESHOLD_MS J
+	public static final field FROZEN_THRESHOLD_MS J
+	public fun <init> ()V
+	public fun <init> (J)V
+	public synthetic fun <init> (JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun isMonitoring ()Z
+	public final fun startMonitoring (Landroid/view/Window;Landroid/os/Handler;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun startMonitoring$default (Lbr/com/wgc/core/analytics/performance/FrameMetricsMonitor;Landroid/view/Window;Landroid/os/Handler;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public final fun stopMonitoring (Landroid/view/Window;)V
+}
+
+public final class br/com/wgc/core/analytics/performance/FrameMetricsMonitor$Companion {
+}
+
+public final class br/com/wgc/core/analytics/performance/JankReport {
+	public fun <init> (JZJ)V
+	public synthetic fun <init> (JZJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()J
+	public final fun component2 ()Z
+	public final fun component3 ()J
+	public final fun copy (JZJ)Lbr/com/wgc/core/analytics/performance/JankReport;
+	public static synthetic fun copy$default (Lbr/com/wgc/core/analytics/performance/JankReport;JZJILjava/lang/Object;)Lbr/com/wgc/core/analytics/performance/JankReport;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getTimestamp ()J
+	public final fun getTotalDurationMs ()J
+	public fun hashCode ()I
+	public final fun isFrozen ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class br/com/wgc/core/analytics/startup/AppStartupTracer {
 	public fun <init> ()V
 	public final fun finishTrace ()Lbr/com/wgc/core/analytics/startup/StartupMetrics;
