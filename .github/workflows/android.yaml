@@ -1,16 +1,56 @@
-name: Android Publish Lib CoreAndroidNative
+name: Android CI/CD & Security Pipeline
 
 on:
   push:
     branches: [ "master", "feat/**" ]
   pull_request:
     branches: [ "master" ]
+  schedule:
+    - cron: '0 3 * * 1'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  packages: write
+  pages: write
+  id-token: write
+  security-events: write
 
 jobs:
+  # ═════════════════════════════════════════════════════════════════════════════
+  # NÍVEL 0: ANÁLISE ESTÁTICA DE SEGURANÇA SAST (CODEQL)
+  # ═════════════════════════════════════════════════════════════════════════════
+
+  codeql-analysis:
+    name: "🛡️ CodeQL SAST Analysis (Java & Kotlin)"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Android & Java Environment
+        uses: ./.github/actions/setup-android-env
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: java-kotlin
+          queries: security-extended,security-and-quality
+
+      - name: Build Debug Artifacts
+        run: ./gradlew assembleDebug
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:java-kotlin"
+
   # ═════════════════════════════════════════════════════════════════════════════
   # NÍVEL 1: FUNDAÇÃO
   # ═════════════════════════════════════════════════════════════════════════════
@@ -628,6 +668,7 @@ jobs:
       - core-umbrella
       - sample-app
       - coverage-report
+      - codeql-analysis
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     environment:
