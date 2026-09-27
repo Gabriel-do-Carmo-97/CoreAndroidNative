@@ -131,13 +131,14 @@ class RaspDetector(
         try {
             val mapsFile = File("/proc/self/maps")
             if (mapsFile.exists()) {
-                val hasFridaLib = mapsFile.useLines { lines ->
-                    lines.any { line ->
-                        line.contains("frida-gadget", ignoreCase = true) ||
-                            line.contains("frida-agent", ignoreCase = true) ||
-                            line.contains("libgadget.so", ignoreCase = true)
+                val hasFridaLib =
+                    mapsFile.useLines { lines ->
+                        lines.any { line ->
+                            line.contains("frida-gadget", ignoreCase = true) ||
+                                line.contains("frida-agent", ignoreCase = true) ||
+                                line.contains("libgadget.so", ignoreCase = true)
+                        }
                     }
-                }
                 if (hasFridaLib) return true
             }
         } catch (_: Exception) {

@@ -35,6 +35,7 @@ object NetworkClientFactory {
         enableLogging: Boolean = false,
         certificatePins: Map<String, List<String>>? = null,
         enableDistributedTracing: Boolean = true,
+        enableHttp3: Boolean = false,
         metricsListener: ((NetworkMetric) -> Unit)? = null,
     ): OkHttpClient {
         val builder =
@@ -43,6 +44,10 @@ object NetworkClientFactory {
                 .connectTimeout(connectTimeoutSeconds, TimeUnit.SECONDS)
                 .readTimeout(readTimeoutSeconds, TimeUnit.SECONDS)
                 .writeTimeout(writeTimeoutSeconds, TimeUnit.SECONDS)
+
+        if (enableHttp3) {
+            builder.protocols(listOf(okhttp3.Protocol.HTTP_2, okhttp3.Protocol.HTTP_1_1))
+        }
 
         if (enableDistributedTracing) {
             builder.addInterceptor(TraceIdInterceptor())

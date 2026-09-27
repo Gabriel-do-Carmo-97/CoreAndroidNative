@@ -1,4 +1,4 @@
-﻿package br.com.wgc.core.sync
+package br.com.wgc.core.sync
 
 import android.content.Context
 import androidx.work.Constraints
@@ -23,20 +23,31 @@ class SyncManager(
     private val workManager by lazy { WorkManager.getInstance(context) }
 
     suspend fun enqueue(request: OutboxRequest) {
-        outboxQueue.enqueue(request)
+        val headersWithIdempotency =
+            request.headers.toMutableMap().apply {
+                putIfAbsent("X-Idempotency-Key", request.id)
+            }
+        val enriched = request.copy(headers = headersWithIdempotency)
+        outboxQueue.enqueue(enriched)
         scheduleSyncWork()
     }
 
-    fun scheduleSyncWork() {
+    fun scheduleSyncWork(requireUnmetered: Boolean = false) {
+        val networkType = if (requireUnmetered) NetworkType.UNMETERED else NetworkType.CONNECTED
         val constraints =
             Constraints
                 .Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiredNetworkType(networkType)
                 .build()
 
         val requestBuilder =
             OneTimeWorkRequestBuilder<SyncWorker>()
                 .setConstraints(constraints)
+                .setBackoffCriteria(
+                    androidx.work.BackoffPolicy.EXPONENTIAL,
+                    15,
+                    java.util.concurrent.TimeUnit.SECONDS,
+                )
 
         workManager.enqueueUniqueWork(
             SYNC_WORK_NAME,
