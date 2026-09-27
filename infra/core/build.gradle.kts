@@ -21,3 +21,5 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     testImplementation(libs.junit)
 }
+
+// Release trigger: bump for v1.2.x publication

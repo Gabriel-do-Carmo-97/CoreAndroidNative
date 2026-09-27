@@ -21,3 +21,5 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.okhttp.mockwebserver)
 }
+
+// Release trigger: bump for v1.2.x publication

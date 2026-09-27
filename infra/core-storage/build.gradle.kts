@@ -30,3 +30,5 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
+
+// Release trigger: bump for v1.2.x publication

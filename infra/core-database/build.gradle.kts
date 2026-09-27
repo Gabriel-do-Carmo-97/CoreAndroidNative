@@ -26,3 +26,5 @@ dependencies {
     testImplementation(libs.turbine)
     testImplementation(libs.kotlinx.coroutines.test)
 }
+
+// Release trigger: bump for v1.2.x publication

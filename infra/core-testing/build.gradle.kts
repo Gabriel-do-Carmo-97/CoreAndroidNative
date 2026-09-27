@@ -17,3 +17,5 @@ dependencies {
     api(libs.mockk)
     api(libs.okhttp.mockwebserver)
 }
+
+// Release trigger: bump for v1.2.x publication

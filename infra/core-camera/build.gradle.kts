@@ -30,3 +30,5 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk)
 }
+
+// Release trigger: bump for v1.2.x publication

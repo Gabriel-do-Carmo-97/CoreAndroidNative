@@ -42,9 +42,10 @@ jobs:
         with:
           languages: java-kotlin
           queries: security-extended,security-and-quality
+          build-mode: manual
 
       - name: Build Debug Artifacts
-        run: ./gradlew assembleDebug
+        run: ./gradlew --no-daemon clean assembleDebug
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
