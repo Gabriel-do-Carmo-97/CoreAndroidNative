@@ -55,6 +55,34 @@ class DatabaseMaintenanceHelper
         }
 
         /**
+         * Executa o comando PRAGMA optimize recomendado pelo SQLite antes de fechar conexões
+         * ou periodicamente para calibrar estimativas de query planner.
+         */
+        fun optimize(database: RoomDatabase) {
+            database.openHelper.writableDatabase.execSQL("PRAGMA optimize;")
+        }
+
+        /**
+         * Verifica a integridade física do arquivo SQLite através de PRAGMA integrity_check.
+         * Retorna `true` se o banco estiver íntegro.
+         */
+        fun checkIntegrity(database: RoomDatabase): Boolean {
+            return try {
+                val cursor = database.openHelper.writableDatabase.query("PRAGMA integrity_check;")
+                cursor.use {
+                    if (it.moveToFirst()) {
+                        val result = it.getString(0)
+                        result.equals("ok", ignoreCase = true)
+                    } else {
+                        false
+                    }
+                }
+            } catch (_: Exception) {
+                false
+            }
+        }
+
+        /**
          * Calcula o tamanho total em disco ocupado pela base de dados (arquivo `.db` + `-wal` + `-shm`).
          */
         fun getDatabaseSizeBytes(

@@ -70,4 +70,22 @@ class DatabaseMaintenanceHelperTest {
         assertNotNull(report.error)
         assertEquals("Database locked", report.error?.message)
     }
+
+    @Test
+    fun `optimize executes PRAGMA optimize`() {
+        helper.optimize(database)
+        verify { sqLiteDatabase.execSQL("PRAGMA optimize;") }
+    }
+
+    @Test
+    fun `checkIntegrity returns true when integrity_check returns ok`() {
+        val cursor: android.database.Cursor = mockk()
+        every { sqLiteDatabase.query("PRAGMA integrity_check;") } returns cursor
+        every { cursor.moveToFirst() } returns true
+        every { cursor.getString(0) } returns "ok"
+        every { cursor.close() } returns Unit
+
+        val isHealthy = helper.checkIntegrity(database)
+        assertTrue(isHealthy)
+    }
 }
