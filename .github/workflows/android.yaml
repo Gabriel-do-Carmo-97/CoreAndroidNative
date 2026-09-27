@@ -733,7 +733,7 @@ jobs:
         run: ./gradlew :infra:core-common:publish :infra:core-storage:publish :infra:core-device:publish :infra:core-network:publish :infra:core-database:publish :infra:core-location:publish :infra:core-camera:publish :infra:core-analytics:publish :infra:core-testing:publish :infra:core:publish -Pversion="${{ steps.semver.outputs.version }}"
 
       - name: ⬇️ Download Infra Release AARs
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: release-aar-core-*
           merge-multiple: true
@@ -838,7 +838,7 @@ jobs:
         run: ./gradlew :bundle:persistence:publish :bundle:networking:publish :bundle:presentation:publish :bundle:hardware:publish -Pversion="${{ steps.semver.outputs.version }}"
 
       - name: ⬇️ Download Bundle Release AARs
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: release-aar-bundle-*
           merge-multiple: true
