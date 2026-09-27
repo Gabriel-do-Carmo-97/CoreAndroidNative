@@ -15,6 +15,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
+    kspTest(libs.androidx.room.compiler)
     api(libs.sqlcipher)
     api(libs.androidx.paging.runtime)
     api(libs.androidx.paging.common)
