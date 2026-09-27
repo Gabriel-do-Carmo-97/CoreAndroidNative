@@ -94,10 +94,7 @@ class DefaultCoreLogger(
 
     override fun maskPii(message: String): String {
         if (!enablePiiMasking) return message
-        return message
-            .replace(CPF_REGEX, CPF_MASK)
-            .replace(CARD_REGEX, CARD_MASK)
-            .replace(BEARER_REGEX, BEARER_REPLACEMENT)
+        return SensitiveDataMasker.mask(message)
     }
 
     private fun log(

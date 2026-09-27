@@ -65,6 +65,44 @@ class DynamicCertificatePinner(
     }
 
     /**
+     * Valida se um determinado padrão possui pelo menos um backup pin registrado (mínimo de 2 pins por host, RFC 7469).
+     */
+    fun hasBackupPins(pattern: String): Boolean {
+        return (pinStore[pattern]?.size ?: 0) >= 2
+    }
+
+    /**
+     * Realiza a rotação segura de pins validando a assinatura criptográfica HMAC-SHA256 da payload,
+     * impedindo ataques de MITM com injeção de hashes falsos via Remote Config.
+     *
+     * @param pattern Hostname alvo
+     * @param newPins Novos hashes a serem registrados
+     * @param signatureHex Assinatura HMAC-SHA256 em hexadecimal
+     * @param sharedSecret Chave secreta compartilhada para verificação
+     * @return true se a assinatura for válida e os pins forem atualizados com sucesso
+     */
+    fun rotatePinsWithSignature(
+        pattern: String,
+        newPins: List<String>,
+        signatureHex: String,
+        sharedSecret: ByteArray,
+    ): Boolean {
+        val payload = "$pattern:" + newPins.sorted().joinToString(",")
+        val mac = javax.crypto.Mac.getInstance("HmacSHA256")
+        mac.init(javax.crypto.spec.SecretKeySpec(sharedSecret, "HmacSHA256"))
+        val expected = mac.doFinal(payload.toByteArray(Charsets.UTF_8)).joinToString("") { "%02x".format(it) }
+
+        if (!expected.equals(signatureHex, ignoreCase = true)) {
+            return false
+        }
+
+        val set = pinStore.computeIfAbsent(pattern) { ConcurrentHashMap.newKeySet() }
+        set.clear()
+        set.addAll(newPins)
+        return true
+    }
+
+    /**
      * Constrói e retorna uma instância imutável de [CertificatePinner] do OkHttp
      * contendo todos os hashes atualmente registrados.
      */

@@ -54,4 +54,39 @@ class DynamicCertificatePinnerTest {
         val okHttpPinner = pinner.buildCertificatePinner()
         assertNotNull(okHttpPinner)
     }
+
+    @Test
+    fun hasBackupPins_returnsTrueWhenAtLeastTwoPins() {
+        val pinner = DynamicCertificatePinner()
+        pinner.addPins("api.test.com", "sha256/PIN1", "sha256/PIN2")
+        assertTrue(pinner.hasBackupPins("api.test.com"))
+    }
+
+    @Test
+    fun rotatePinsWithSignature_updatesOnValidSignature() {
+        val pinner = DynamicCertificatePinner()
+        val secret = "super-secret-key-12345".toByteArray()
+        val pattern = "api.test.com"
+        val pins = listOf("sha256/NEWPIN1", "sha256/NEWPIN2")
+
+        val payload = "$pattern:" + pins.sorted().joinToString(",")
+        val mac = javax.crypto.Mac.getInstance("HmacSHA256")
+        mac.init(javax.crypto.spec.SecretKeySpec(secret, "HmacSHA256"))
+        val validSig = mac.doFinal(payload.toByteArray()).joinToString("") { "%02x".format(it) }
+
+        val rotated = pinner.rotatePinsWithSignature(pattern, pins, validSig, secret)
+        assertTrue(rotated)
+        assertEquals(2, pinner.getPins(pattern).size)
+    }
+
+    @Test
+    fun rotatePinsWithSignature_rejectsInvalidSignature() {
+        val pinner = DynamicCertificatePinner()
+        val secret = "super-secret-key-12345".toByteArray()
+        val pattern = "api.test.com"
+        val pins = listOf("sha256/NEWPIN1")
+
+        val rotated = pinner.rotatePinsWithSignature(pattern, pins, "invalidsig", secret)
+        org.junit.Assert.assertFalse(rotated)
+    }
 }
