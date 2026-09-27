@@ -40,6 +40,12 @@ dependencyResolutionManagement {
 rootProject.name = "CoreAndroidNative"
 include(":app")
 
+buildCache {
+    local {
+        directory = file("$rootDir/.gradle/build-cache")
+    }
+}
+
 fun registerModule(name: String) {
     include(":infra:$name")
     project(":infra:$name").projectDir = file("infra/$name")
