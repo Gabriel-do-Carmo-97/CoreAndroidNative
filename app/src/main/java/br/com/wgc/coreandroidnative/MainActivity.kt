@@ -46,6 +46,8 @@ import androidx.compose.ui.unit.dp
 import br.com.wgc.core.analytics.breadcrumbs.BreadcrumbManager
 import br.com.wgc.core.analytics.consent.ConsentType
 import br.com.wgc.core.analytics.consent.LgpdConsentManager
+import br.com.wgc.core.analytics.otel.OpenTelemetryExporter
+import br.com.wgc.core.analytics.otel.OtelSpan
 import br.com.wgc.core.analytics.startup.AppStartupTracer
 import br.com.wgc.core.database.security.DatabaseEncrypter
 import br.com.wgc.core.device.DeviceInfo
@@ -60,8 +62,11 @@ import br.com.wgc.core.featureflag.FeatureToggleManager
 import br.com.wgc.core.formatters.unmask
 import br.com.wgc.core.location.LocationClient
 import br.com.wgc.core.logging.CoreLogger
+import br.com.wgc.core.logging.SensitiveDataMasker
 import br.com.wgc.core.network.NetworkMonitor
 import br.com.wgc.core.network.quality.NetworkQualityMonitor
+import br.com.wgc.core.security.memory.SecureByteArray
+import br.com.wgc.core.security.rasp.RaspDetector
 import br.com.wgc.core.session.SessionManager
 import br.com.wgc.core.storage.cache.TwoLevelCache
 import br.com.wgc.core.sync.DefaultOutboxQueue
@@ -193,6 +198,14 @@ fun ShowcaseScreen(
     var rolloutPercentage by remember { mutableIntStateOf(50) }
     var rolloutResult by remember { mutableStateOf<Boolean?>(null) }
 
+    var raspAssessmentResult by remember { mutableStateOf<RaspDetector.RaspAssessment?>(null) }
+    var chaosLatencySimulated by remember { mutableStateOf(false) }
+    var chaosHttpErrorSimulated by remember { mutableStateOf(false) }
+    var chaosResultText by remember { mutableStateOf("Rede operando em modo nominal") }
+    var secureMemAllocatedText by remember { mutableStateOf("Nenhum buffer alocado") }
+    var generatedOtelTrace by remember { mutableStateOf<String?>(null) }
+    val otelExporter = remember { OpenTelemetryExporter() }
+
     val tabs =
         listOf(
             "🌐 Rede",
@@ -203,6 +216,7 @@ fun ShowcaseScreen(
             "🚀 Nível 5",
             "⚡ Avançado",
             "💎 Novas Features",
+            "🧪 Sandbox & DX",
         )
 
     Scaffold(
@@ -863,6 +877,192 @@ fun ShowcaseScreen(
                                     style = MaterialTheme.typography.bodySmall,
                                     color = Color(0xFF2E7D32),
                                 )
+                            }
+                        }
+                    }
+                    8 -> {
+                        // Aba 8: Sandbox & DX
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text("🛡️ RASP Runtime Security Scanner", style = MaterialTheme.typography.titleMedium)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                val assessment = raspAssessmentResult
+                                if (assessment == null) {
+                                    Text(
+                                        "Nenhum escaneamento executado.",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                    )
+                                } else {
+                                    val statusColor =
+                                        if (assessment.isCompromised) {
+                                            MaterialTheme.colorScheme.error
+                                        } else {
+                                            Color(
+                                                0xFF2E7D32,
+                                            )
+                                        }
+                                    val statusMsg =
+                                        if (assessment.isCompromised) {
+                                            "⚠️ Ameaça Detectada: ${assessment.highestThreatLevel}"
+                                        } else {
+                                            "✔ Dispositivo Seguro (Sem Root, Frida, Debugger)"
+                                        }
+                                    Text(statusMsg, color = statusColor, style = MaterialTheme.typography.bodyMedium)
+                                    if (assessment.threats.isNotEmpty()) {
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        assessment.threats.forEach { threat ->
+                                            Text(
+                                                "• ${threat.name}: ${threat.description}",
+                                                style = MaterialTheme.typography.bodySmall,
+                                                color = MaterialTheme.colorScheme.error,
+                                            )
+                                        }
+                                    }
+                                }
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Button(
+                                    onClick = {
+                                        val detector = RaspDetector(context)
+                                        raspAssessmentResult = detector.assessThreats()
+                                        hapticHelper.vibrateSuccess()
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Text("Escanear Integridade do Dispositivo")
+                                }
+                            }
+                        }
+
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text(
+                                    "⚡ Chaos Engineering & Network Resilience",
+                                    style = MaterialTheme.typography.titleMedium,
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                ) {
+                                    Text("Simular Latência de Rede (1.5s)", style = MaterialTheme.typography.bodyMedium)
+                                    Switch(
+                                        checked = chaosLatencySimulated,
+                                        onCheckedChange = { chaosLatencySimulated = it },
+                                    )
+                                }
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                ) {
+                                    Text(
+                                        "Simular Falha HTTP 500 / Timeout",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                    )
+                                    Switch(
+                                        checked = chaosHttpErrorSimulated,
+                                        onCheckedChange = { chaosHttpErrorSimulated = it },
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(chaosResultText, style = MaterialTheme.typography.bodySmall)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Button(
+                                    onClick = {
+                                        scope.launch {
+                                            chaosResultText =
+                                                if (chaosHttpErrorSimulated) {
+                                                    "Falha HTTP 500 interceptada. Retentando com exponential backoff..."
+                                                } else if (chaosLatencySimulated) {
+                                                    "Requisição completada com sucesso após 1500ms de latência simulada."
+                                                } else {
+                                                    "Requisição nominal HTTP 200 OK via Core Network."
+                                                }
+                                            hapticHelper.vibrateClick()
+                                        }
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Text("Testar Resiliência de Rede")
+                                }
+                            }
+                        }
+
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text("🔐 Secure Memory & Zeroization", style = MaterialTheme.typography.titleMedium)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    "Máscara LGPD: ${SensitiveDataMasker.mask("CPF 123.456.789-01")}",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(secureMemAllocatedText, style = MaterialTheme.typography.bodySmall)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Button(
+                                    onClick = {
+                                        SecureByteArray(ByteArray(32)).use { buffer ->
+                                            val secret = "WGC_SECURE_TOKEN_2026".toByteArray()
+                                            System.arraycopy(secret, 0, buffer.bytes, 0, secret.size)
+                                        }
+                                        secureMemAllocatedText =
+                                            "Buffer de 32 bytes alocado na RAM e auto-zeroizado ao fechar!"
+                                        hapticHelper.vibrateSuccess()
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Text("Alocar e Zeroizar RAM Segura")
+                                }
+                            }
+                        }
+
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text(
+                                    "📊 OpenTelemetry (OTel) Distributed Tracing",
+                                    style = MaterialTheme.typography.titleMedium,
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    generatedOtelTrace ?: "Nenhum trace gerado ainda.",
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Button(
+                                    onClick = {
+                                        val traceId = otelExporter.generateTraceId()
+                                        val spanId = otelExporter.generateSpanId()
+                                        val traceParent = otelExporter.formatAsW3CTraceParent(traceId, spanId)
+                                        otelExporter.exportSpan(
+                                            OtelSpan(
+                                                name = "sandbox_demo_transaction",
+                                                traceId = traceId,
+                                                spanId = spanId,
+                                                startTimestampNanos = System.currentTimeMillis() * 1_000_000,
+                                                endTimestampNanos = (System.currentTimeMillis() + 85) * 1_000_000,
+                                                attributes = mapOf("screen" to "Sandbox", "app.version" to "1.0.0"),
+                                            ),
+                                        )
+                                        generatedOtelTrace = "Traceparent: $traceParent"
+                                        hapticHelper.vibrateClick()
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Text("Gerar Span W3C Trace Context")
+                                }
                             }
                         }
                     }

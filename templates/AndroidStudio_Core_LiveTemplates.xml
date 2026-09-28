@@ -1,0 +1,50 @@
+<templateSet group="WGC Core Android Native">
+    <template name="coreRepo" value="class $NAME$Repository @Inject constructor(&#10;    private val networkClient: br.com.wgc.core.network.NetworkClient,&#10;    private val storage: br.com.wgc.core.storage.KeyValueStorage,&#10;    private val logger: br.com.wgc.core.logging.CoreLogger,&#10;) {&#10;    suspend fun fetchData(): br.com.wgc.core.network.NetworkResult&lt;$TYPE$&gt; {&#10;        logger.d(&quot;$NAME$Repository&quot;) { &quot;Fetching data...&quot; }&#10;        return try {&#10;            $END$&#10;        } catch (e: Exception) {&#10;            br.com.wgc.core.network.NetworkResult.Error(e)&#10;        }&#10;    }&#10;}" description="WGC Core Repository Template" toReformat="true" toShortenFQNames="true">
+        <variable name="NAME" expression="" defaultValue="&quot;Example&quot;" alwaysStopAt="true" />
+        <variable name="TYPE" expression="" defaultValue="&quot;String&quot;" alwaysStopAt="true" />
+        <context>
+            <option name="KOTLIN" value="true" />
+        </context>
+    </template>
+
+    <template name="coreLogger" value="private val logger = br.com.wgc.core.logging.CoreLogger.withTag(&quot;$TAG$&quot;)&#10;&#10;logger.d { &quot;$MESSAGE$&quot; }$END$" description="WGC Core Logger with Tag" toReformat="true" toShortenFQNames="true">
+        <variable name="TAG" expression="kotlinClassName()" defaultValue="&quot;TAG&quot;" alwaysStopAt="true" />
+        <variable name="MESSAGE" expression="" defaultValue="&quot;Action completed&quot;" alwaysStopAt="true" />
+        <context>
+            <option name="KOTLIN_STATEMENT" value="true" />
+        </context>
+    </template>
+
+    <template name="coreSync" value="val syncEngine = br.com.wgc.core.network.sync.BidirectionalSyncEngine&lt;$ENTITY$&gt;(&#10;    syncManager = $SYNC_MGR$,&#10;    conflictResolver = br.com.wgc.core.network.sync.LastWriteWinsResolver()&#10;)&#10;val syncResult = syncEngine.sync(local = $LOCAL_FLOW$, remote = $REMOTE_FLOW$)&#10;$END$" description="WGC Bidirectional Sync Engine Template" toReformat="true" toShortenFQNames="true">
+        <variable name="ENTITY" expression="" defaultValue="&quot;SyncableEntity&quot;" alwaysStopAt="true" />
+        <variable name="SYNC_MGR" expression="" defaultValue="&quot;syncManager&quot;" alwaysStopAt="true" />
+        <variable name="LOCAL_FLOW" expression="" defaultValue="&quot;localData&quot;" alwaysStopAt="true" />
+        <variable name="REMOTE_FLOW" expression="" defaultValue="&quot;remoteData&quot;" alwaysStopAt="true" />
+        <context>
+            <option name="KOTLIN_STATEMENT" value="true" />
+        </context>
+    </template>
+
+    <template name="coreMask" value="val maskedData = br.com.wgc.core.masking.SensitiveDataMasker.mask$TYPE$($INPUT$)&#10;$END$" description="WGC Sensitive Data Masker" toReformat="true" toShortenFQNames="true">
+        <variable name="TYPE" expression="" defaultValue="&quot;Cpf&quot;" alwaysStopAt="true" />
+        <variable name="INPUT" expression="" defaultValue="&quot;rawCpf&quot;" alwaysStopAt="true" />
+        <context>
+            <option name="KOTLIN_EXPRESSION" value="true" />
+            <option name="KOTLIN_STATEMENT" value="true" />
+        </context>
+    </template>
+
+    <template name="coreSecureMem" value="br.com.wgc.core.security.memory.SecureByteArray($SIZE$).use { secureBuffer -&gt;&#10;    // Process sensitive credentials in volatile auto-zeroized memory&#10;    $END$&#10;}" description="WGC Secure Memory Auto-Zeroizing Block" toReformat="true" toShortenFQNames="true">
+        <variable name="SIZE" expression="" defaultValue="&quot;32&quot;" alwaysStopAt="true" />
+        <context>
+            <option name="KOTLIN_STATEMENT" value="true" />
+        </context>
+    </template>
+
+    <template name="coreTest" value="@org.junit.Test&#10;fun `$TEST_NAME$`() = kotlinx.coroutines.test.runTest {&#10;    // Given&#10;    val fakeLogger = br.com.wgc.core.testing.FakeCoreLogger()&#10;    val validCpf = br.com.wgc.core.testing.BrazilFixtureDataFactory.generateValidCpf()&#10;&#10;    // When&#10;    $END$&#10;&#10;    // Then&#10;    org.junit.Assert.assertTrue(true)&#10;}" description="WGC Core Unit Test with Fixture Factory" toReformat="true" toShortenFQNames="true">
+        <variable name="TEST_NAME" expression="" defaultValue="should_succeed_when_valid_input" alwaysStopAt="true" />
+        <context>
+            <option name="KOTLIN_CLASS" value="true" />
+        </context>
+    </template>
+</templateSet>

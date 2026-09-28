@@ -64,6 +64,14 @@ style:
     active: true
     allowedNames: '(_|ignored|expected)'
     ignoreAnnotated: ['Preview']
+  ForbiddenImport:
+    active: true
+    imports:
+      - value: 'android.content.SharedPreferences'
+        reason: 'Use KeyValueStorage or EncryptedPreferences from :infra:core-storage instead of direct SharedPreferences.'
+      - value: 'java.net.HttpURLConnection'
+        reason: 'Use NetworkClientFactory from :infra:core-network instead of raw HttpURLConnection.'
+    excludes: ['**/test/**', '**/androidTest/**', '**/core-storage/**']
 
 exceptions:
   TooGenericExceptionCaught:

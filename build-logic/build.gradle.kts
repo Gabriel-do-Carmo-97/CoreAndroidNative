@@ -47,5 +47,9 @@ gradlePlugin {
             id = "wgc.android.dokka"
             implementationClass = "AndroidDokkaConventionPlugin"
         }
+        register("coreSetup") {
+            id = "wgc.core.setup"
+            implementationClass = "CoreSetupConventionPlugin"
+        }
     }
 }
