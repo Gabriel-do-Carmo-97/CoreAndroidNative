@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package br.com.wgc.core.testing.fixtures
 
 import java.util.Random

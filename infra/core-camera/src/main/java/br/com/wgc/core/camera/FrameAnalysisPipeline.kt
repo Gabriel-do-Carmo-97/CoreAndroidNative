@@ -50,7 +50,7 @@ class FrameAnalysisPipeline(
                 )
 
             frameListener(image, metadata.copy(processingTimeMs = System.currentTimeMillis() - startTime))
-        } catch (_: Throwable) {
+        } catch (ignored: Exception) {
             // Ignora exceções isoladas do analisador para não travar a câmera
         } finally {
             image.close()

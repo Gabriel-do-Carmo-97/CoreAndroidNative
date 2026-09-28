@@ -60,7 +60,7 @@ class CrashCatcher(
                 """.trimIndent()
 
             file.writeText(payload)
-        } catch (_: Throwable) {
+        } catch (ignored: Exception) {
             // Garante que falha na persistência nunca impeça o encerramento do processo
         } finally {
             defaultHandler?.uncaughtException(thread, throwable)

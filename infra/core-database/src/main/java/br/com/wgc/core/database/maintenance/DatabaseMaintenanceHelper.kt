@@ -77,7 +77,7 @@ class DatabaseMaintenanceHelper
                         false
                     }
                 }
-            } catch (_: Exception) {
+            } catch (ignored: Exception) {
                 false
             }
         }

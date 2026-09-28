@@ -38,6 +38,7 @@ class BleScannerEngine(
      * @param serviceUuid UUID opcional do serviço GATT a ser filtrado.
      */
     @SuppressLint("MissingPermission")
+    @Suppress("TooGenericExceptionCaught")
     fun scanBleDevices(serviceUuid: String? = null): Flow<DiscoveredBleDevice> =
         callbackFlow {
             val scanner = bluetoothAdapter?.bluetoothLeScanner
@@ -95,7 +96,7 @@ class BleScannerEngine(
             awaitClose {
                 try {
                     scanner.stopScan(callback)
-                } catch (_: Exception) {
+                } catch (ignored: Exception) {
                     // Ignora se o adapter já estiver desligado
                 }
             }

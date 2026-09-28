@@ -13,6 +13,8 @@ class PostQuantumHybridKdf {
     companion object {
         private const val HMAC_ALGORITHM = "HmacSHA512"
         private const val DEFAULT_OUTPUT_KEY_SIZE = 32 // 256 bits
+        private const val MIN_OUTPUT_KEY_SIZE = 16
+        private const val MAX_OUTPUT_KEY_SIZE = 64
     }
 
     /**
@@ -27,7 +29,9 @@ class PostQuantumHybridKdf {
     ): ByteArray {
         require(classicalIkm.isNotEmpty()) { "Classical IKM cannot be empty" }
         require(postQuantumSecret.isNotEmpty()) { "Post-quantum secret cannot be empty" }
-        require(outputLength in 16..64) { "Output key size must be between 16 and 64 bytes" }
+        require(outputLength in MIN_OUTPUT_KEY_SIZE..MAX_OUTPUT_KEY_SIZE) {
+            "Output key size must be between $MIN_OUTPUT_KEY_SIZE and $MAX_OUTPUT_KEY_SIZE bytes"
+        }
 
         // Step 1: Combine classical + post-quantum secrets into combined IKM
         val combinedIkm = ByteArray(classicalIkm.size + postQuantumSecret.size)

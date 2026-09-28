@@ -1,6 +1,6 @@
 package br.com.wgc.core.location.geofence
 
-import br.com.wgc.core.location.DistanceUtils
+private const val MILLIS_PER_SECOND = 1000f
 
 /**
  * Filtro de Kalman para suavização de ruído e jitter em coordenadas geográficas (GPS/Network).
@@ -39,7 +39,7 @@ class KalmanLocationFilter(
         val timeDeltaMs = (timeMs - timestampMs).coerceAtLeast(1L)
         if (timeDeltaMs > 0) {
             // Predição de incerteza no tempo
-            variance += (timeDeltaMs / 1000f) * qMetresPerSecond * qMetresPerSecond
+            variance += (timeDeltaMs / MILLIS_PER_SECOND) * qMetresPerSecond * qMetresPerSecond
             timestampMs = timeMs
         }
 

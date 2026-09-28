@@ -18,14 +18,6 @@ class DefaultCoreLogger(
         ::defaultAndroidLogWriter,
 ) : CoreLogger {
     companion object {
-        private val CPF_REGEX = Regex("""\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b""")
-        private val CARD_REGEX = Regex("""\b(?:\d{4}[ -]?){3}\d{4}\b""")
-        private val BEARER_REGEX = Regex("""(?i)(bearer\s+)[A-Za-z0-9\-._~+/]+=*""")
-
-        private const val CPF_MASK = "***.***.***-**"
-        private const val CARD_MASK = "****-****-****-****"
-        private const val BEARER_REPLACEMENT = "$1[MASKED_TOKEN]"
-
         /**
          * Emissor padrão que utiliza [android.util.Log], realizando fallback para `println`
          * caso executado em ambientes JVM onde a biblioteca Android nativa não esteja inicializada.

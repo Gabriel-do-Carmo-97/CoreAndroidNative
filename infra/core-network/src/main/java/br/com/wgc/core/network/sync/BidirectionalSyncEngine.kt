@@ -75,8 +75,8 @@ class BidirectionalSyncEngine<T>(
         if (local != null && remote == null) {
             return SyncAction.PushLocal(local)
         }
-        if (local == null && remote == null) {
-            throw IllegalArgumentException("Both local and remote cannot be null")
+        require(local != null || remote != null) {
+            "Both local and remote cannot be null"
         }
 
         val l = local!!

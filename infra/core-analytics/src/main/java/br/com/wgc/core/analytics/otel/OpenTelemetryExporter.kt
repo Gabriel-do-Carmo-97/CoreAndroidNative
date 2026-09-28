@@ -63,7 +63,13 @@ class OpenTelemetryExporter {
                     span.attributes.entries.joinToString(",") { (k, v) ->
                         """{"key":"$k","value":{"stringValue":"$v"}}"""
                     }
-                """{"traceId":"${span.traceId}","spanId":"${span.spanId}","name":"${span.name}","startTimeUnixNano":"${span.startTimestampNanos}","endTimeUnixNano":"${span.endTimestampNanos}","attributes":[$attrs]}"""
+                val tId = span.traceId
+                val sId = span.spanId
+                val name = span.name
+                val start = span.startTimestampNanos
+                val end = span.endTimestampNanos
+                """{"traceId":"$tId","spanId":"$sId","name":"$name",""" +
+                    """"startTimeUnixNano":"$start","endTimeUnixNano":"$end","attributes":[$attrs]}"""
             }
         return """{"resourceSpans":[{"scopeSpans":[{"spans":[$spansJson]}]}]}"""
     }

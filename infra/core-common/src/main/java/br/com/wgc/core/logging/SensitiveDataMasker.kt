@@ -16,6 +16,7 @@ object SensitiveDataMasker {
 
     private const val CPF_MASK = "***.***.***-**"
     private const val CARD_MASK = "****-****-****-****"
+    private const val TRACE_HASH_LENGTH = 16
 
     /**
      * Aplica regras exaustivas de mascaramento em uma string de log ou payload JSON/URL.
@@ -43,6 +44,6 @@ object SensitiveDataMasker {
         val md = MessageDigest.getInstance("SHA-256")
         md.update(salt.toByteArray(Charsets.UTF_8))
         val digest = md.digest(sensitiveId.toByteArray(Charsets.UTF_8))
-        return digest.joinToString("") { "%02x".format(it) }.take(16)
+        return digest.joinToString("") { "%02x".format(it) }.take(TRACE_HASH_LENGTH)
     }
 }

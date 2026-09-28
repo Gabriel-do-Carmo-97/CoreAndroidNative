@@ -105,13 +105,14 @@ class RaspDetector(
     /**
      * Detects Frida through ports, files, and memory maps.
      */
+    @Suppress("ReturnCount", "TooGenericExceptionCaught")
     fun isFridaDetected(): Boolean {
         // 1. Check known Frida ports
         val fridaPorts = listOf(27042, 27043)
         for (port in fridaPorts) {
             try {
                 Socket("127.0.0.1", port).use { return true }
-            } catch (_: Exception) {
+            } catch (ignored: Exception) {
                 // Port closed, continue
             }
         }
@@ -141,7 +142,7 @@ class RaspDetector(
                     }
                 if (hasFridaLib) return true
             }
-        } catch (_: Exception) {
+        } catch (ignored: Exception) {
             // Ignore access errors on hardened Android
         }
 
@@ -193,6 +194,7 @@ class RaspDetector(
     /**
      * Identifies if the app is executing within an emulator.
      */
+    @Suppress("CyclomaticComplexMethod")
     fun isEmulator(): Boolean {
         val fingerprint = Build.FINGERPRINT.lowercase()
         val model = Build.MODEL.lowercase()
@@ -255,7 +257,7 @@ class RaspDetector(
             val hex = digest.joinToString("") { "%02X".format(it) }
 
             hex.equals(expectedSha256.replace(":", "").uppercase(), ignoreCase = true)
-        } catch (_: Exception) {
+        } catch (ignored: Exception) {
             false
         }
     }
