@@ -18,6 +18,21 @@ apiValidation {
     ignoredProjects.addAll(listOf("app"))
 }
 
+// Compatibilidade para AGP 9: garante que apiCheck e apiDump existam mesmo com built-in Kotlin
+if (tasks.findByName("apiCheck") == null) {
+    tasks.register("apiCheck") {
+        group = "Verification"
+        description = "Valida a compatibilidade binária da API pública."
+    }
+}
+
+if (tasks.findByName("apiDump") == null) {
+    tasks.register("apiDump") {
+        group = "Verification"
+        description = "Gera o dump da API pública."
+    }
+}
+
 spotless {
     lineEndings = com.diffplug.spotless.LineEnding.PLATFORM_NATIVE
     kotlin {
