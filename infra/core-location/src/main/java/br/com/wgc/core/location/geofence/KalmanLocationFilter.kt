@@ -1,5 +1,7 @@
 package br.com.wgc.core.location.geofence
 
+import br.com.wgc.core.location.DistanceUtils
+
 private const val MILLIS_PER_SECOND = 1000f
 
 /**
