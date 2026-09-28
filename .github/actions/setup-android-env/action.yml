@@ -1,5 +1,11 @@
 name: 'Setup Android Build Environment'
-description: 'Sets up JDK 17 (Temurin), Android SDK, Gradle caching and permissions'
+description: 'Sets up JDK (Temurin), Android SDK, Gradle caching and permissions'
+
+inputs:
+  java-version:
+    description: 'Java version to set up (17 or 21)'
+    required: false
+    default: '17'
 
 runs:
   using: 'composite'
@@ -8,10 +14,10 @@ runs:
       shell: bash
       run: chmod +x gradlew
 
-    - name: Set up JDK 17
+    - name: Set up JDK
       uses: actions/setup-java@v4
       with:
-        java-version: '17'
+        java-version: ${{ inputs.java-version }}
         distribution: 'temurin'
         cache: gradle
 

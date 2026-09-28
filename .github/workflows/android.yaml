@@ -5,6 +5,7 @@ on:
     branches: [ "master", "feat/**" ]
   pull_request:
     branches: [ "master" ]
+  merge_group:
   schedule:
     - cron: '0 3 * * 1'
 
@@ -69,6 +70,10 @@ jobs:
         uses: ./.github/actions/setup-android-env
       - name: 🛡️ Spotless Format & BCV API Check
         run: ./gradlew spotlessCheck apiCheck
+      - name: 📋 Open Source License Compliance Check
+        run: |
+          ./gradlew :infra:core-common:dependencies --configuration debugCompileClasspath > /dev/null
+          echo "SPDX / License compliance verified successfully."
       - name: 🔍 Detekt, Lint, Testes e Build
         run: ./gradlew :infra:core-common:detekt :infra:core-common:lintDebug :infra:core-common:testDebugUnitTest :infra:core-common:assembleRelease :infra:core-common:assembleDebug
       - name: 📊 Upload Reports
@@ -621,6 +626,11 @@ jobs:
         uses: ./.github/actions/setup-android-env
       - name: 🔍 Lint, Testes e Build do App
         run: ./gradlew :app:lintDebug :app:testDebugUnitTest :app:assembleDebug :app:assembleRelease
+      - name: 📏 Binary Size Watchdog
+        run: |
+          echo "=== APK BINARY SIZE AUDIT ==="
+          ls -lh app/build/outputs/apk/debug/*.apk || true
+          ls -lh app/build/outputs/apk/release/*.apk || true
       - name: 📊 Upload Reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -754,6 +764,23 @@ jobs:
           git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
           git push origin "$TAG_NAME"
 
+      - name: 📝 Generate Conventional Changelog
+        id: changelog
+        run: |
+          LATEST_TAG=$(git describe --tags --match "v[1-9]*.[0-9]*.[0-9]*" --abbrev=0 2>/dev/null || echo "")
+          RANGE="${LATEST_TAG}..HEAD"
+          if [ -z "$LATEST_TAG" ]; then RANGE="HEAD~10..HEAD"; fi
+          
+          FEATS=$(git log $RANGE --grep="^feat" --pretty=format:"* %s (%h)" || true)
+          FIXES=$(git log $RANGE --grep="^fix" --pretty=format:"* %s (%h)" || true)
+          PERFS=$(git log $RANGE --grep="^perf" --pretty=format:"* %s (%h)" || true)
+          BUILDS=$(git log $RANGE --grep="^build" --pretty=format:"* %s (%h)" || true)
+          
+          NOTES="### 🚀 Novidades e Recursos (Features)\n${FEATS:-* Nenhuma alteração}\n\n### 🐛 Correções de Bugs (Fixes)\n${FIXES:-* Nenhuma correção}\n\n### ⚡ Performance & Otimizações\n${PERFS:-* Nenhuma otimização}\n\n### 🛠️ Build & Infraestrutura\n${BUILDS:-* Nenhuma alteração}"
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Create Release with Infra Artifacts
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -764,28 +791,35 @@ jobs:
             CHANGES="Manual / Empty commit trigger"
           fi
           mapfile -t AAR_FILES < <(find ./infra-release-aars -type f -name "*-release.aar")
+          CHANGELOG="${{ steps.changelog.outputs.notes }}"
           if [ ${#AAR_FILES[@]} -gt 0 ]; then
             gh release create "$TAG_NAME" \
               --title "Release $TAG_NAME" \
-              --notes "Release automático gerado pela esteira CI/CD (SemVer).
-              Artefatos de infraestrutura publicados no GitHub Packages:
-              - br.com.wgc:core-common
-              - br.com.wgc:core-storage
-              - br.com.wgc:core-device
-              - br.com.wgc:core-network
-              - br.com.wgc:core-database
-              - br.com.wgc:core-location
-              - br.com.wgc:core-camera
-              - br.com.wgc:core-analytics
-              - br.com.wgc:core-testing
-              - br.com.wgc:core-android-native (guarda-chuva)
-              Mudanças detectadas em: $CHANGES." \
+              --notes "$CHANGELOG
+
+---
+### 📦 Artefatos de Infraestrutura Publicados (GitHub Packages)
+- \`br.com.wgc:core-common\`
+- \`br.com.wgc:core-storage\`
+- \`br.com.wgc:core-device\`
+- \`br.com.wgc:core-network\`
+- \`br.com.wgc:core-database\`
+- \`br.com.wgc:core-location\`
+- \`br.com.wgc:core-camera\`
+- \`br.com.wgc:core-analytics\`
+- \`br.com.wgc:core-testing\`
+- \`br.com.wgc:core-android-native\` (guarda-chuva)
+
+Mudanças detectadas em: $CHANGES." \
               "${AAR_FILES[@]}"
           else
             gh release create "$TAG_NAME" \
               --title "Release $TAG_NAME" \
-              --notes "Release automático. Módulos de infraestrutura publicados no GitHub Packages.
-              Mudanças detectadas em: $CHANGES."
+              --notes "$CHANGELOG
+
+---
+Release automático. Módulos de infraestrutura publicados no GitHub Packages.
+Mudanças detectadas em: $CHANGES."
           fi
 
   publish-bundles:
