@@ -1,7 +1,5 @@
 package br.com.wgc.core.analytics.deadlock
 
-import java.lang.management.ManagementFactory
-
 /**
  * Diagnostic result of JVM thread deadlock inspection.
  */
@@ -15,21 +13,25 @@ data class DeadlockReport(
  */
 object DeadlockDetector {
     /**
-     * Inspects JVM thread MXBean for deadlocked threads.
+     * Inspects JVM thread MXBean for deadlocked threads via reflection if supported.
      */
+    @Suppress("TooGenericExceptionCaught")
     fun detectDeadlocks(): DeadlockReport {
         return try {
-            val threadMxBean = ManagementFactory.getThreadMXBean()
-            val deadlockedIds = threadMxBean.findDeadlockedThreads()
-            if (deadlockedIds != null && deadlockedIds.isNotEmpty()) {
+            val clazz = Class.forName("java.lang.management.ManagementFactory")
+            val getBeanMethod = clazz.getMethod("getThreadMXBean")
+            val bean = getBeanMethod.invoke(null) ?: return DeadlockReport(hasDeadlocks = false)
+            val findMethod = bean.javaClass.getMethod("findDeadlockedThreads")
+            val deadlocked = findMethod.invoke(bean) as? LongArray
+            if (deadlocked != null && deadlocked.isNotEmpty()) {
                 DeadlockReport(
                     hasDeadlocks = true,
-                    deadlockedThreadIds = deadlockedIds.toList(),
+                    deadlockedThreadIds = deadlocked.toList(),
                 )
             } else {
                 DeadlockReport(hasDeadlocks = false)
             }
-        } catch (ignored: Exception) {
+        } catch (_: Throwable) {
             DeadlockReport(hasDeadlocks = false)
         }
     }
