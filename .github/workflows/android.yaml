@@ -784,42 +784,43 @@ jobs:
       - name: Create Release with Infra Artifacts
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ steps.semver.outputs.tag_name }}
+          CHANGES: ${{ steps.changed_modules.outputs.all_changed_files }}
+          CHANGELOG: ${{ steps.changelog.outputs.notes }}
         run: |
-          TAG_NAME="${{ steps.semver.outputs.tag_name }}"
-          CHANGES="${{ steps.changed_modules.outputs.all_changed_files }}"
           if [ -z "$CHANGES" ]; then
             CHANGES="Manual / Empty commit trigger"
           fi
           mapfile -t AAR_FILES < <(find ./infra-release-aars -type f -name "*-release.aar")
-          CHANGELOG="${{ steps.changelog.outputs.notes }}"
+
+          cat <<EOF > ./release_notes.md
+          $CHANGELOG
+
+          ---
+          ### 📦 Artefatos de Infraestrutura Publicados (GitHub Packages)
+          - \`br.com.wgc:core-common\`
+          - \`br.com.wgc:core-storage\`
+          - \`br.com.wgc:core-device\`
+          - \`br.com.wgc:core-network\`
+          - \`br.com.wgc:core-database\`
+          - \`br.com.wgc:core-location\`
+          - \`br.com.wgc:core-camera\`
+          - \`br.com.wgc:core-analytics\`
+          - \`br.com.wgc:core-testing\`
+          - \`br.com.wgc:core-android-native\` (guarda-chuva)
+
+          Mudanças detectadas em: $CHANGES.
+          EOF
+
           if [ ${#AAR_FILES[@]} -gt 0 ]; then
             gh release create "$TAG_NAME" \
               --title "Release $TAG_NAME" \
-              --notes "$CHANGELOG
-
----
-### 📦 Artefatos de Infraestrutura Publicados (GitHub Packages)
-- \`br.com.wgc:core-common\`
-- \`br.com.wgc:core-storage\`
-- \`br.com.wgc:core-device\`
-- \`br.com.wgc:core-network\`
-- \`br.com.wgc:core-database\`
-- \`br.com.wgc:core-location\`
-- \`br.com.wgc:core-camera\`
-- \`br.com.wgc:core-analytics\`
-- \`br.com.wgc:core-testing\`
-- \`br.com.wgc:core-android-native\` (guarda-chuva)
-
-Mudanças detectadas em: $CHANGES." \
+              --notes-file ./release_notes.md \
               "${AAR_FILES[@]}"
           else
             gh release create "$TAG_NAME" \
               --title "Release $TAG_NAME" \
-              --notes "$CHANGELOG
-
----
-Release automático. Módulos de infraestrutura publicados no GitHub Packages.
-Mudanças detectadas em: $CHANGES."
+              --notes-file ./release_notes.md
           fi
 
   publish-bundles:
