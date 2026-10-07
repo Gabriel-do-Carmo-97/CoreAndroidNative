@@ -5,3 +5,6 @@
 
 # Preserve analytics event data classes and consent models
 -keepclassmembers class br.com.wgc.core.analytics.** { *; }
+
+# JVM management MXBeans are not available in Android runtime; suppress R8 warnings
+-dontwarn java.lang.management.**
